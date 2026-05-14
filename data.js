@@ -1,55 +1,55 @@
 /* ============================================================
-   श्री गणेश उत्पादने — Shared Data & Utilities
+   अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट — Shared Data & Utilities
    All pages import this file. No Node.js, no server needed.
    ============================================================ */
 
 // ===== PRODUCTS =====
 const PRODUCTS = [
   {
-    id: 1, emoji: '🥜',
-    name: 'शेंगदाणा तेल',
-    category: 'तेल',
-    desc: 'परंपरागत घाण्यावर काढलेले शुद्ध शेंगदाणा तेल. कोणतेही रसायन नाही.',
-    price: 280, mrp: 350, weight: '1 लिटर',
+    id: 1, emoji: '',
+    name: 'गणपती',
+    category: 'शेणापासून',
+    desc:'.',
+    price: 280, mrp: 350, weight: 'नग',
     bestseller: true
   },
   {
-    id: 2, emoji: '🌻',
-    name: 'खोबरेल तेल (नारळ)',
-    category: 'तेल',
-    desc: 'ताज्या नारळापासून काढलेले थंड दाब नारळ तेल. स्वयंपाक व त्वचेसाठी उत्कृष्ट.',
-    price: 320, mrp: 420, weight: '500 मि.ली.',
-    bestseller: false
+    id: 2, emoji: '',
+    name: 'अगरबत्ती',
+    category: 'घरगुती सुगंधित उत्पादने',
+    desc: 'पूजा, ध्यान, सुगंधित वातावरण निर्मिती.',
+    price: 320, mrp: 420, weight: 'नग.',
+    bestseller: true
   },
   {
-    id: 3, emoji: '🌶️',
-    name: 'कोल्हापुरी मसाला',
-    category: 'मसाले',
-    desc: 'खास कोल्हापुरी पद्धतीने तयार केलेला तिखट व सुगंधी मसाला. मटण-चिकनसाठी आदर्श.',
-    price: 150, mrp: 200, weight: '200 ग्रॅम',
-    bestseller: true
+    id: 1, emoji: '',
+    name: 'धूप',
+    category: 'घरगुती सुगंधित उत्पादने',
+    desc:'पूजा, ध्यान, सुगंधित वातावरण निर्मिती.',
+    price: 280, mrp: 350, weight: 'नग',
+    bestseller: true 
   },
   {
     id: 4, emoji: '🍃',
-    name: 'गोडा मसाला',
-    category: 'मसाले',
-    desc: 'महाराष्ट्रीय स्वयंपाकाचा आत्मा — घरगुती गोडा मसाला. आमटी-भाजीसाठी परिपूर्ण.',
-    price: 120, mrp: 160, weight: '150 ग्रॅम',
+    name: 'पणती',
+    category: 'शेणामातीपासुन',
+    desc:'.',
+    price: 120, mrp: 160, weight: 'नग',
     bestseller: true
   },
   {
-    id: 5, emoji: '🍯',
-    name: 'शुद्ध मधुमक्षिका मध',
+    id: 5, emoji: '',
+    name: 'गौरी',
     category: 'नैसर्गिक',
-    desc: 'सह्याद्री डोंगरातून गोळा केलेला शुद्ध वन्य मध. कोणतीही भेसळ नाही.',
-    price: 450, mrp: 600, weight: '500 ग्रॅम',
-    bestseller: false
+    desc: .',
+    price: 450, mrp: 600, weight: 'नग',
+    bestseller: true
   },
   {
-    id: 6, emoji: '🌾',
-    name: 'नाचणी पीठ',
-    category: 'पीठ',
-    desc: 'दगडी चक्कीवर दळलेले शुद्ध नाचणी पीठ. आरोग्यदायी व पौष्टिक.',
+    id: 6, emoji: '',
+    name: '',
+    category: '',
+    desc: '.',
     price: 80, mrp: 100, weight: '1 किलो',
     bestseller: false
   },

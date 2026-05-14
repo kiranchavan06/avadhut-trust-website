@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - श्री गणेश उत्पादने</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body { background: #F5F5F5; }
+    .admin-wrap { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
+    .admin-card { background: white; border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+    .stat-mini {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem; margin-bottom: 1.5rem;
+    }
+    .stat-mini-card {
+      background: white; border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--saffron);
+      box-shadow: var(--shadow);
+    }
+    .stat-mini-num { font-size: 1.8rem; font-weight: 800; color: var(--saffron-dark); }
+    .stat-mini-lbl { font-size: 0.82rem; color: var(--text-light); }
+    .badge-pending { background: #FFF8E1; color: #F57F17; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600; }
+    .badge-approved { background: #E8F5E9; color: #2E7D32; padding: 0.2rem 0.5rem; border-radius: 6px; font-size: 0.78rem; font-weight: 600; }
+    .login-logo { text-align: center; font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .login-title { text-align: center; font-size: 1.4rem; font-weight: 800; color: var(--saffron-dark); margin-bottom: 0.25rem; }
+    .login-sub { text-align: center; color: var(--text-light); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .login-error { color: #C62828; background: #FFEBEE; padding: 0.6rem 1rem; border-radius: 6px; font-size: 0.88rem; margin-bottom: 1rem; display: none; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">🪔 श्री गणेश <span>उत्पादने</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">मुख्यपृष्ठ</a></li>
+      <li><a href="events.html">कार्यक्रम</a></li>
+      <li><a href="products.html">उत्पादने</a></li>
+      <li><a href="reviews.html">अभिप्राय</a></li>
+      <li><a href="admin.html" class="active">Admin</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- LOGIN FORM -->
+<div id="loginSection">
+  <div class="admin-login" style="margin-top:4rem;">
+    <div class="login-logo">🔐</div>
+    <div class="login-title">Admin लॉगिन</div>
+    <div class="login-sub">श्री गणेश उत्पादने व्यवस्थापन पॅनेल</div>
+    <div class="login-error" id="loginError">❌ चुकीचे नाव किंवा पासवर्ड</div>
+    <form onsubmit="doLogin(event)">
+      <div class="form-row">
+        <label>वापरकर्ता नाव</label>
+        <input type="text" id="adminUser" placeholder="admin" required />
+      </div>
+      <div class="form-row">
+        <label>पासवर्ड</label>
+        <input type="password" id="adminPass" placeholder="••••••••" required />
+      </div>
+      <button type="submit" class="btn btn-saffron" style="width:100%; justify-content:center; margin-top:0.5rem;">
+        🔓 लॉगिन करा
+      </button>
+    </form>
+    <p style="text-align:center; margin-top:1rem; font-size:0.82rem; color:var(--text-light);">
+      Demo: admin / admin123
+    </p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" class="admin-wrap" style="display:none;">
+
+  <!-- Header -->
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <h1 style="font-size:1.6rem; font-weight:800; color:var(--saffron-dark);">🛠️ Admin डॅशबोर्ड</h1>
+      <p style="color:var(--text-light); font-size:0.9rem;">श्री गणेश उत्पादने व्यवस्थापन</p>
+    </div>
+    <button class="btn btn-outline" style="color:var(--saffron); border-color:var(--saffron);" onclick="doLogout()">
+      🚪 लॉगआउट
+    </button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-mini" id="adminStats"></div>
+
+  <!-- Tabs -->
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="showTab('reviews', this)">⭐ अभिप्राय</button>
+    <button class="admin-tab" onclick="showTab('products', this)">🛍️ उत्पादने</button>
+    <button class="admin-tab" onclick="showTab('events', this)">📅 कार्यक्रम</button>
+    <button class="admin-tab" onclick="showTab('orders', this)">📦 ऑर्डर</button>
+  </div>
+
+  <!-- Reviews Tab -->
+  <div id="tab-reviews" class="admin-section visible admin-card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+      <h3 style="font-size:1.1rem; font-weight:700; color:var(--text-dark);">ग्राहकांचे अभिप्राय</h3>
+      <button class="action-btn del" onclick="clearAllReviews()">🗑️ सर्व साफ करा</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="reviewsTable">
+        <thead>
+          <tr>
+            <th>नाव</th><th>शहर</th><th>उत्पादन</th><th>रेटिंग</th><th>अभिप्राय</th><th>तारीख</th><th>कृती</th>
+          </tr>
+        </thead>
+        <tbody id="reviewsBody"></tbody>
+      </table>
+    </div>
+    <p id="noReviews" style="text-align:center;color:var(--text-light);padding:2rem;display:none;">कोणतेही अभिप्राय नाहीत.</p>
+  </div>
+
+  <!-- Products Tab -->
+  <div id="tab-products" class="admin-section admin-card">
+    <h3 style="font-size:1.1rem; font-weight:700; color:var(--text-dark); margin-bottom:1rem;">उत्पादन यादी</h3>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr><th>उत्पादन</th><th>श्रेणी</th><th>किंमत</th><th>MRP</th><th>वजन</th><th>बेस्टसेलर</th></tr>
+        </thead>
+        <tbody id="productsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Events Tab -->
+  <div id="tab-events" class="admin-section admin-card">
+    <h3 style="font-size:1.1rem; font-weight:700; color:var(--text-dark); margin-bottom:1rem;">कार्यक्रम यादी</h3>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr><th>कार्यक्रम</th><th>तारीख</th><th>ठिकाण</th><th>वेळ</th><th>प्रकार</th><th>स्थिती</th></tr>
+        </thead>
+        <tbody id="eventsBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Orders Tab -->
+  <div id="tab-orders" class="admin-section admin-card">
+    <h3 style="font-size:1.1rem; font-weight:700; color:var(--text-dark); margin-bottom:1rem;">
+      📦 ऑर्डर नोंदी
+    </h3>
+    <div style="background:var(--saffron-pale); border-radius:var(--radius-sm); padding:1.5rem; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:0.75rem;">📲</div>
+      <p style="color:var(--text-mid); font-weight:600;">सर्व ऑर्डर WhatsApp द्वारे येतात</p>
+      <p style="color:var(--text-light); font-size:0.9rem; margin-top:0.5rem;">ग्राहक "खरेदी करा" बटण दाबल्यावर थेट WhatsApp वर संपर्क करतात.</p>
+      <a href="https://wa.me/919876543210" target="_blank" class="btn btn-wa" style="margin-top:1.25rem; display:inline-flex;">
+        📱 WhatsApp उघडा
+      </a>
+    </div>
+    <div style="margin-top:1.5rem;">
+      <h4 style="font-size:1rem; font-weight:700; color:var(--text-dark); margin-bottom:0.75rem;">आज येणारे संदेश</h4>
+      <p style="color:var(--text-light); font-size:0.88rem;">WhatsApp Business अॅपवर ऑर्डरचे सर्व संदेश पाहता येतात. <a href="https://business.whatsapp.com/" target="_blank" style="color:var(--saffron);">अधिक जाणून घ्या →</a></p>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+<script src="data.js"></script>
+<script>
+function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'admin123';
+
+function doLogin(e) {
+  e.preventDefault();
+  const u = document.getElementById('adminUser').value;
+  const p = document.getElementById('adminPass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    document.getElementById('loginSection').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    loadAdminData();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  document.getElementById('loginSection').style.display = 'block';
+  document.getElementById('adminPanel').style.display = 'none';
+}
+
+function showTab(name, btn) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('visible');
+  btn.classList.add('active');
+}
+
+function loadAdminData() {
+  const reviews = getReviews();
+  const totalProducts = PRODUCTS.length;
+  const totalEvents = EVENTS.length + PAST_EVENTS.length;
+
+  // Stats
+  document.getElementById('adminStats').innerHTML = `
+    <div class="stat-mini-card"><div class="stat-mini-num">${reviews.length}</div><div class="stat-mini-lbl">एकूण अभिप्राय</div></div>
+    <div class="stat-mini-card"><div class="stat-mini-num">${totalProducts}</div><div class="stat-mini-lbl">उत्पादने</div></div>
+    <div class="stat-mini-card"><div class="stat-mini-num">${totalEvents}</div><div class="stat-mini-lbl">कार्यक्रम</div></div>
+    <div class="stat-mini-card"><div class="stat-mini-num">${EVENTS.filter(e=>e.status==='upcoming').length}</div><div class="stat-mini-lbl">येणारे कार्यक्रम</div></div>
+  `;
+
+  // Reviews table
+  const rb = document.getElementById('reviewsBody');
+  rb.innerHTML = '';
+  if (reviews.length === 0) {
+    document.getElementById('noReviews').style.display = 'block';
+  } else {
+    document.getElementById('noReviews').style.display = 'none';
+    reviews.forEach(r => {
+      rb.innerHTML += `
+        <tr id="rev-${r.id}">
+          <td><strong>${r.name}</strong></td>
+          <td>${r.city}</td>
+          <td>${r.product}</td>
+          <td>${'★'.repeat(r.rating)}</td>
+          <td style="max-width:200px; font-size:0.85rem; color:var(--text-mid);">${r.text.substring(0,80)}${r.text.length>80?'...':''}</td>
+          <td style="font-size:0.82rem; color:var(--text-light);">${r.date}</td>
+          <td>
+            <button class="action-btn del" onclick="deleteReview(${r.id})">🗑️ काढा</button>
+          </td>
+        </tr>`;
+    });
+  }
+
+  // Products table
+  const pb = document.getElementById('productsBody');
+  pb.innerHTML = '';
+  PRODUCTS.forEach(p => {
+    pb.innerHTML += `
+      <tr>
+        <td>${p.emoji} ${p.name}</td>
+        <td><span class="tag tag-saffron">${p.category}</span></td>
+        <td><strong>₹${p.price}</strong></td>
+        <td style="color:var(--text-light); text-decoration:line-through;">₹${p.mrp}</td>
+        <td>${p.weight}</td>
+        <td>${p.bestseller ? '<span class="badge-approved">✅ हो</span>' : '<span style="color:var(--text-light);">नाही</span>'}</td>
+      </tr>`;
+  });
+
+  // Events table
+  const eb = document.getElementById('eventsBody');
+  eb.innerHTML = '';
+  EVENTS.forEach(e => {
+    eb.innerHTML += `
+      <tr>
+        <td><strong>${e.title}</strong></td>
+        <td>${e.day} ${e.month}</td>
+        <td>${e.location}</td>
+        <td>${e.time}</td>
+        <td><span class="tag tag-saffron">${e.type}</span></td>
+        <td><span class="badge-approved">येणारे</span></td>
+      </tr>`;
+  });
+  PAST_EVENTS.forEach(e => {
+    eb.innerHTML += `
+      <tr>
+        <td><strong>${e.title}</strong></td>
+        <td>${e.day} ${e.month}</td>
+        <td>${e.location}</td>
+        <td>—</td>
+        <td>—</td>
+        <td><span style="background:#F5F5F5;color:#777;padding:0.2rem 0.5rem;border-radius:6px;font-size:0.78rem;">पूर्ण</span></td>
+      </tr>`;
+  });
+}
+
+function deleteReview(id) {
+  if (!confirm('हा अभिप्राय काढायचा आहे का?')) return;
+  const reviews = getReviews().filter(r => r.id !== id);
+  localStorage.setItem('shrigenasha_reviews', JSON.stringify(reviews));
+  document.getElementById('rev-' + id)?.remove();
+  showToast('अभिप्राय काढला. ✓');
+  loadAdminData();
+}
+
+function clearAllReviews() {
+  if (!confirm('सर्व अभिप्राय कायमचे काढायचे आहेत का?')) return;
+  localStorage.setItem('shrigenasha_reviews', JSON.stringify([]));
+  loadAdminData();
+  showToast('सर्व अभिप्राय साफ झाले. ✓');
+}
+</script>
+</body>
+</html>

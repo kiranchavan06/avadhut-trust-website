@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - श्री गणेश उत्पादने</title>
+  <title>Admin - अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body { background: #F5F5F5; }
@@ -33,7 +33,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">🪔 श्री गणेश <span>उत्पादने</span></a>
+    <a href="index.html" class="nav-logo">🪔 अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट <span></span></a>
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html">मुख्यपृष्ठ</a></li>
       <li><a href="events.html">कार्यक्रम</a></li>
@@ -50,23 +50,22 @@
   <div class="admin-login" style="margin-top:4rem;">
     <div class="login-logo">🔐</div>
     <div class="login-title">Admin लॉगिन</div>
-    <div class="login-sub">श्री गणेश उत्पादने व्यवस्थापन पॅनेल</div>
+    <div class="login-sub">अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट</div>
     <div class="login-error" id="loginError">❌ चुकीचे नाव किंवा पासवर्ड</div>
     <form onsubmit="doLogin(event)">
       <div class="form-row">
         <label>वापरकर्ता नाव</label>
-        <input type="text" id="adminUser" placeholder="admin" required />
+        <input type="text" id="trust" placeholder="username" required />
       </div>
       <div class="form-row">
         <label>पासवर्ड</label>
-        <input type="password" id="adminPass" placeholder="••••••••" required />
+        <input type="password" id="trust@12345" placeholder="Password" required />
       </div>
       <button type="submit" class="btn btn-saffron" style="width:100%; justify-content:center; margin-top:0.5rem;">
         🔓 लॉगिन करा
       </button>
     </form>
     <p style="text-align:center; margin-top:1rem; font-size:0.82rem; color:var(--text-light);">
-      Demo: admin / admin123
     </p>
   </div>
 </div>
@@ -78,7 +77,7 @@
   <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; flex-wrap:wrap; gap:1rem;">
     <div>
       <h1 style="font-size:1.6rem; font-weight:800; color:var(--saffron-dark);">🛠️ Admin डॅशबोर्ड</h1>
-      <p style="color:var(--text-light); font-size:0.9rem;">श्री गणेश उत्पादने व्यवस्थापन</p>
+      <p style="color:var(--text-light); font-size:0.9rem;">अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट</p>
     </div>
     <button class="btn btn-outline" style="color:var(--saffron); border-color:var(--saffron);" onclick="doLogout()">
       🚪 लॉगआउट
@@ -167,8 +166,8 @@
 <script>
 function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
 
-const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'admin123';
+const ADMIN_USER = 'trust';
+const ADMIN_PASS = 'trust@12345';
 
 function doLogin(e) {
   e.preventDefault();

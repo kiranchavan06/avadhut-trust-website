@@ -148,7 +148,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div class="form-row"><label>ठिकाण *</label><input type="text" id="eLocation" placeholder="उदा. तळेगाव मळे" /></div>
 <div class="form-row"><label>वर्णन</label><textarea id="eDesc" placeholder="कार्यक्रमाचे वर्णन"></textarea></div>
 <div class="form-row"><label>प्रकार</label>
-<select id="eType"><option>धार्मिक</option><option>सामाजिक</option><option>शैक्षणिक</option><option>इतर</option></select></div>
+<select id="eType"><option>धार्मिक</option><option>सामाजिक</option><option>इतर</option></select></div>
 
 <!-- Event Photo Upload -->
 <div class="form-row">
@@ -163,6 +163,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
   <div class="upload-status" id="eUploadStatus"></div>
   <img id="eImagePreview" class="event-img-preview" />
   <input type="hidden" id="eImage" />
+  <div class="form-row"><label>एकूण जागा</label><input type="number" id="eSeats" placeholder="उदा. 50" /></div>
 </div>
 
 <button class="btn-saffron" id="eSaveBtn" onclick="saveEvent()">💾 कार्यक्रम जोडा</button>

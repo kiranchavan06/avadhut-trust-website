@@ -16,7 +16,6 @@ body { background: #F5F5F5; }
 .btn-saffron { background: #FF6F00; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; }
 .btn-saffron:disabled { background: #ccc; cursor: not-allowed; }
 .btn-danger { background: #C62828; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
-.btn-edit { background: #1565C0; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; margin-right: 0.3rem; }
 .admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
 .admin-tab { padding: 0.5rem 1rem; border: 2px solid #FF6F00; border-radius: 8px; background: white; color: #FF6F00; cursor: pointer; font-weight: 600; }
 .admin-tab.active { background: #FF6F00; color: white; }
@@ -35,7 +34,6 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 .upload-progress-bar { height: 100%; background: #FF6F00; border-radius: 100px; transition: width 0.3s; width: 0%; }
 .upload-status { font-size: 0.85rem; color: #FF6F00; margin-top: 0.4rem; display: none; }
 #toast { position: fixed; bottom: 2rem; right: 2rem; background: #333; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: none; z-index: 999; }
-.edit-form { background: #FFF8F0; border: 2px solid #FF6F00; border-radius: 10px; padding: 1rem; margin-bottom: 1rem; display: none; }
 </style>
 </head>
 <body>
@@ -74,38 +72,12 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div class="admin-tabs">
 <button class="admin-tab active" onclick="showTab('products', this)">🛍️ उत्पादने</button>
 <button class="admin-tab" onclick="showTab('events', this)">📅 कार्यक्रम</button>
-<button class="admin-tab" onclick="showTab('bookings', this)">🎟️ Seat Bookings</button>
 <button class="admin-tab" onclick="showTab('reviews', this)">⭐ अभिप्राय</button>
 </div>
 
 <!-- PRODUCTS TAB -->
 <div id="tab-products" class="admin-section visible admin-card">
 <h3 style="color:#FF6F00; margin-bottom:1rem;">🛍️ नवीन उत्पादन जोडा</h3>
-
-<!-- EDIT FORM -->
-<div class="edit-form" id="editProductForm">
-<h4 style="color:#1565C0; margin-bottom:1rem;">✏️ उत्पादन Edit करा</h4>
-<input type="hidden" id="editProductId" />
-<div class="form-row"><label>उत्पादनाचे नाव *</label><input type="text" id="epName" /></div>
-<div class="form-row"><label>श्रेणी *</label>
-<select id="epCategory">
-<option>शेणापासून</option>
-<option>घरगुती सुगंधित उत्पादने</option>
-<option>गोमूत्र उत्पादने</option>
-<option>इतर</option>
-</select></div>
-<div class="form-row"><label>वर्णन</label><textarea id="epDesc"></textarea></div>
-<div class="form-row"><label>किंमत (₹) *</label><input type="number" id="epPrice" /></div>
-<div class="form-row"><label>MRP (₹)</label><input type="number" id="epMrp" /></div>
-<div class="form-row"><label>वजन</label><input type="text" id="epWeight" /></div>
-<div class="form-row"><label>Bestseller?</label>
-<select id="epBestseller"><option value="false">नाही</option><option value="true">हो</option></select></div>
-<div style="display:flex; gap:0.5rem;">
-<button class="btn-saffron" onclick="updateProduct()">💾 Update करा</button>
-<button class="btn-danger" onclick="cancelEditProduct()">❌ Cancel</button>
-</div>
-</div>
-
 <div class="form-row"><label>उत्पादनाचे नाव *</label><input type="text" id="pName" placeholder="उदा. गणपती अगरबत्ती" /></div>
 <div class="form-row"><label>श्रेणी *</label>
 <select id="pCategory">
@@ -134,7 +106,6 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div class="form-row"><label>Bestseller?</label>
 <select id="pBestseller"><option value="false">नाही</option><option value="true">हो</option></select></div>
 <button class="btn-saffron" id="pSaveBtn" onclick="saveProduct()">💾 उत्पादन जोडा</button>
-
 <h3 style="color:#FF6F00; margin:1.5rem 0 1rem;">📋 उत्पादन यादी</h3>
 <div id="productsList"></div>
 </div>
@@ -168,12 +139,6 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div id="eventsList"></div>
 </div>
 
-<!-- BOOKINGS TAB -->
-<div id="tab-bookings" class="admin-section admin-card">
-<h3 style="color:#FF6F00; margin-bottom:1rem;">🎟️ Seat Booking यादी</h3>
-<div id="bookingsList"></div>
-</div>
-
 <!-- REVIEWS TAB -->
 <div id="tab-reviews" class="admin-section admin-card">
 <h3 style="color:#FF6F00; margin-bottom:1rem;">⭐ अभिप्राय यादी</h3>
@@ -185,7 +150,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 const firebaseConfig = {
@@ -203,7 +168,7 @@ const storage = getStorage(app);
 
 window.toggleNav = () => document.getElementById('navLinks').classList.toggle('open');
 
-// ===== LOGIN =====
+// ===== LOGIN SESSION =====
 window.doLogin = () => {
   const u = document.getElementById('adminUser').value;
   const p = document.getElementById('adminPass').value;
@@ -224,10 +189,13 @@ window.doLogout = () => {
 function showAdminPanel() {
   document.getElementById('loginSection').style.display = 'none';
   document.getElementById('adminPanel').style.display = 'block';
-  loadProducts(); loadEvents(); loadReviews(); loadBookings();
+  loadProducts(); loadEvents(); loadReviews();
 }
 
-if (sessionStorage.getItem('adminLoggedIn') === 'true') showAdminPanel();
+// Auto login if session exists
+if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+  showAdminPanel();
+}
 
 window.showTab = (name, btn) => {
   document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('visible'));
@@ -271,7 +239,7 @@ function uploadPhoto(file, folder, progressBarId, progressDivId, statusId, previ
       document.getElementById(statusId).textContent = `⏳ ${pct}% अपलोड...`;
     },
     (error) => {
-      document.getElementById(statusId).textContent = '❌ अपलोड अयशस्वी!';
+      document.getElementById(statusId).textContent = '❌ अपलोड अयशस्वी! Storage upgrade करा.';
       document.getElementById(saveBtn).disabled = false;
     },
     async () => {
@@ -329,51 +297,12 @@ async function loadProducts() {
       <td><strong>${p.name}</strong><br><small>${p.desc?.substring(0,40) || ''}</small></td>
       <td>₹${p.price}<br><small style="text-decoration:line-through;color:#999;">₹${p.mrp}</small></td>
       <td>${p.category}</td>
-      <td>
-        <button class="btn-edit" onclick="editProduct('${d.id}','${p.name}','${p.category}','${p.desc?.replace(/'/g,"\\'")||""}',${p.price},${p.mrp||0},'${p.weight||""}',${p.bestseller})">✏️ Edit</button>
-        <button class="btn-danger" onclick="deleteProduct('${d.id}')">🗑️ काढा</button>
-      </td>
+      <td><button class="btn-danger" onclick="deleteProduct('${d.id}')">🗑️ काढा</button></td>
     </tr>`;
   });
   html += '</tbody></table>';
   div.innerHTML = html;
 }
-
-window.editProduct = (id, name, category, desc, price, mrp, weight, bestseller) => {
-  document.getElementById('editProductId').value = id;
-  document.getElementById('epName').value = name;
-  document.getElementById('epCategory').value = category;
-  document.getElementById('epDesc').value = desc;
-  document.getElementById('epPrice').value = price;
-  document.getElementById('epMrp').value = mrp;
-  document.getElementById('epWeight').value = weight;
-  document.getElementById('epBestseller').value = bestseller ? 'true' : 'false';
-  document.getElementById('editProductForm').style.display = 'block';
-  document.getElementById('editProductForm').scrollIntoView({ behavior: 'smooth' });
-};
-
-window.cancelEditProduct = () => {
-  document.getElementById('editProductForm').style.display = 'none';
-};
-
-window.updateProduct = async () => {
-  const id = document.getElementById('editProductId').value;
-  const name = document.getElementById('epName').value.trim();
-  const price = document.getElementById('epPrice').value;
-  if (!name || !price) { alert('नाव आणि किंमत आवश्यक आहे!'); return; }
-  await updateDoc(doc(db, 'products', id), {
-    name,
-    price: Number(price),
-    mrp: Number(document.getElementById('epMrp').value) || 0,
-    category: document.getElementById('epCategory').value,
-    desc: document.getElementById('epDesc').value,
-    weight: document.getElementById('epWeight').value,
-    bestseller: document.getElementById('epBestseller').value === 'true'
-  });
-  showToast('✅ उत्पादन update झाले!');
-  document.getElementById('editProductForm').style.display = 'none';
-  loadProducts();
-};
 
 window.deleteProduct = async (id) => {
   if (!confirm('हे उत्पादन काढायचे आहे का?')) return;
@@ -410,5 +339,57 @@ window.saveEvent = async () => {
 };
 
 async function loadEvents() {
-  const snap = aw
-  
+  const snap = await getDocs(collection(db, 'events'));
+  const div = document.getElementById('eventsList');
+  if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतेही कार्यक्रम नाही.</p>'; return; }
+  let html = '<table><thead><tr><th>फोटो</th><th>नाव</th><th>तारीख</th><th>जागा</th><th>कृती</th></tr></thead><tbody>';
+  snap.forEach(d => {
+    const e = d.data();
+    html += `<tr>
+      <td>${e.image ? `<img src="${e.image}" class="product-img" />` : '📅'}</td>
+      <td><strong>${e.title}</strong><br><small>${e.location || ''}</small></td>
+      <td>${e.date} ${e.time || ''}</td>
+      <td>${e.seats ? `${e.registeredSeats || 0}/${e.seats}` : '-'}</td>
+      <td><button class="btn-danger" onclick="deleteEvent('${d.id}')">🗑️ काढा</button></td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  div.innerHTML = html;
+}
+
+window.deleteEvent = async (id) => {
+  if (!confirm('हा कार्यक्रम काढायचा आहे का?')) return;
+  await deleteDoc(doc(db, 'events', id));
+  showToast('🗑️ कार्यक्रम काढला!');
+  loadEvents();
+};
+
+// ===== REVIEWS =====
+async function loadReviews() {
+  const snap = await getDocs(collection(db, 'reviews'));
+  const div = document.getElementById('reviewsList');
+  if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतेही अभिप्राय नाही.</p>'; return; }
+  let html = '<table><thead><tr><th>नाव</th><th>उत्पादन</th><th>रेटिंग</th><th>अभिप्राय</th><th>कृती</th></tr></thead><tbody>';
+  snap.forEach(d => {
+    const r = d.data();
+    html += `<tr>
+      <td><strong>${r.name}</strong><br><small>${r.city || ''}</small></td>
+      <td>${r.product || ''}</td>
+      <td>${'★'.repeat(r.rating)}</td>
+      <td style="max-width:200px;font-size:0.85rem;">${r.text?.substring(0,80) || ''}</td>
+      <td><button class="btn-danger" onclick="deleteReview('${d.id}')">🗑️ काढा</button></td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  div.innerHTML = html;
+}
+
+window.deleteReview = async (id) => {
+  if (!confirm('हा अभिप्राय काढायचा आहे का?')) return;
+  await deleteDoc(doc(db, 'reviews', id));
+  showToast('🗑️ अभिप्राय काढला!');
+  loadReviews();
+};
+</script>
+</body>
+</html>

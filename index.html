@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">🪔 <span>अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">मुख्यपृष्ठ</a></li>
+      <li><a href="events.html">कार्यक्रम</a></li>
+      <li><a href="products.html">उत्पादने</a></li>
+      <li><a href="reviews.html">अभिप्राय</a></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"></div>
+
+  <div style="margin: 1.5rem auto; max-width: 500px; height:auto;">
+    <img src="images/temple.png.jpeg" alt="अवधूत चिंतन" style="width:100%; border-radius:16px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);" />
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">अवधुत चिंतन बहुउद्देशिय सेवाभावी संस्था तळेगाव (मळे) ता-कोपरगाव जि-अहिल्यानगर</div>
+      <div>नोंदणी क्रमांक F-0025785(AHM)</div>
+      <div>80.g.-</div>
+      <div>A-12.-</div>
+      <div class="stat-lbl">आमच्या संस्थेमध्ये आपले स्वागत आहे.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED PRODUCTS -->
+<div class="section">
+  <div class="section-title">
+    <h2>लोकप्रिय उत्पादने</h2>
+    <div class="divider"></div>
+    <p>आमची सर्वाधिक मागणी असलेली शुद्ध उत्पादने</p>
+  </div>
+  <div class="grid-3" id="featuredProducts"></div>
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="products.html" class="btn btn-saffron">सर्व उत्पादने पहा →</a>
+  </div>
+</div>
+
+<!-- WHY US -->
+<div style="background: white; padding: 1px 0;">
+<div class="section">
+  <div class="section-title">
+    <h2>आम्ही का वेगळे आहोत?</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-3">
+    <div class="card" style="padding:2rem; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🌱</div>
+      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">१०० % नैसर्गिक</h3>
+      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">निसर्गाचे शुद्ध वरदान थेट तुमच्यापर्यंत.</p>
+    </div>
+    <div class="card" style="padding:2rem; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🏡</div>
+      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">गृहउद्योग</h3>
+      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट.</p>
+    </div>
+    <div class="card" style="padding:2rem; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🚚</div>
+      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">दारापर्यंत डिलिव्हरी</h3>
+      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">पुणे, नाशिक, कोल्हापूर, सोलापूर आणि इतर जिल्ह्यांमध्ये जलद आणि सुरक्षित डिलिव्हरी.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- UPCOMING EVENTS -->
+<div class="section">
+  <div class="section-title">
+    <h2>येणारे कार्यक्रम</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-2" id="homeEvents"></div>
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="events.html" class="btn btn-saffron">सर्व कार्यक्रम पहा →</a>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<div style="background:white; padding:1px 0;">
+<div class="section">
+  <div class="section-title">
+    <h2>ग्राहकांचे अभिप्राय</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-3" id="homeReviews"></div>
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="reviews.html" class="btn btn-saffron">अभिप्राय लिहा →</a>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">🪔 अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट</div>
+      <p style="font-size:0.88rem; line-height:1.6; color:rgba(255,255,255,0.6);">अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट तुमच्यापर्यंत पोहोचवतो.</p>
+    </div>
+    <div>
+      <h4>द्रुत दुवे</h4>
+      <ul>
+        <li><a href="index.html">मुख्यपृष्ठ</a></li>
+        <li><a href="products.html">उत्पादने</a></li>
+        <li><a href="events.html">कार्यक्रम</a></li>
+        <li><a href="reviews.html">अभिप्राय</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>संपर्क</h4>
+      <ul>
+        <li><a href="https://wa.me/91xxxxxxxxxx">📱 WhatsApp: +91 xxxxxxxxxx</a></li>
+        <li><a href="#">📍 अहिल्यानगर, महाराष्ट्र</a></li>
+        <li><a href="#">📧 avadhuttrust@email.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट. सर्व हक्क राखीव. | महाराष्ट्र, भारत 🇮🇳
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script src="data.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
+  authDomain: "avadhut-trust.firebaseapp.com",
+  projectId: "avadhut-trust",
+  storageBucket: "avadhut-trust.firebasestorage.app",
+  messagingSenderId: "291155545994",
+  appId: "1:291155545994:web:2aaf2ad05bc1c716630273"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.toggleNav = () => {
+  document.getElementById('navLinks').classList.toggle('open');
+};
+
+window.orderWhatsApp = (name, price) => {
+  const msg = `नमस्कार 🙏\n\nमला "${name}" खरेदी करायचे आहे.\n💰 किंमत: ₹${price}\n\nकृपया ऑर्डर कशी करायची ते सांगा.`;
+  window.open('https://wa.me/91xxxxxxxxxxxx?text=' + encodeURIComponent(msg), '_blank');
+};
+
+// Firebase मधून Featured Products
+async function loadFeaturedProducts() {
+  const fp = document.getElementById('featuredProducts');
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    const products = [];
+    snap.forEach(d => products.push({ id: d.id, ...d.data() }));
+
+    if (products.length === 0) {
+      fp.innerHTML = '<p style="text-align:center;color:#999;grid-column:1/-1;">उत्पादने लवकरच येतील...</p>';
+      return;
+    }
+
+    products.slice(0, 3).forEach(p => {
+      fp.innerHTML += `
+        <div class="card">
+          <div class="product-img" style="min-height:180px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFF3E8,#FFE0C0);">
+            ${p.image
+              ? `<img src="${p.image}" style="width:100%;height:180px;object-fit:cover;" />`
+              : `<span style="font-size:4rem;">📦</span>`}
+          </div>
+          <div class="product-body">
+            <h3>${p.name}</h3>
+            <p>${p.desc || ''}</p>
+          </div>
+          <div class="product-footer">
+            <div class="price">₹${p.price} ${p.mrp ? `<span>₹${p.mrp}</span>` : ''}</div>
+            <button class="btn btn-wa"
+              onclick="orderWhatsApp('${p.name}', ${p.price})"
+              style="padding:0.5rem 1rem; font-size:0.88rem;">
+              🛒 खरेदी करा
+            </button>
+          </div>
+        </div>`;
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Firebase मधून Home Events
+async function loadHomeEvents() {
+  const he = document.getElementById('homeEvents');
+  try {
+    const snap = await getDocs(collection(db, 'events'));
+    const events = [];
+    snap.forEach(d => events.push({ id: d.id, ...d.data() }));
+    events.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    if (events.length === 0) {
+      he.innerHTML = '<p style="color:#999;grid-column:1/-1;">कार्यक्रम लवकरच येतील...</p>';
+      return;
+    }
+
+    const monthNames = ['जानेवारी','फेब्रुवारी','मार्च','एप्रिल','मे','जून','जुलै','ऑगस्ट','सप्टेंबर','ऑक्टोबर','नोव्हेंबर','डिसेंबर'];
+    events.slice(0, 2).forEach(e => {
+      const dateObj = new Date(e.date);
+      const day = dateObj.getDate().toString().padStart(2,'0');
+      const month = monthNames[dateObj.getMonth()];
+      he.innerHTML += `
+        <div class="card event-card">
+          <div class="event-date">
+            <div class="day">${day}</div>
+            <div class="month">${month}</div>
+          </div>
+          <div class="event-info">
+            <h3>${e.title}</h3>
+            <p>${e.desc || ''}</p>
+            <div class="event-meta">
+              <span>📍 ${e.location || ''}</span>
+              <span>🕐 ${e.time || ''}</span>
+            </div>
+          </div>
+        </div>`;
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// Reviews - data.js मधून
+const hr = document.getElementById('homeReviews');
+getReviews().slice(0, 3).forEach(r => {
+  hr.innerHTML += reviewCard(r);
+});
+
+loadFeaturedProducts();
+loadHomeEvents();
+</script>
+</body>
+</html>

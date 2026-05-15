@@ -1,263 +1,224 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .product-hero { background: linear-gradient(135deg, #E05A00, #FF8C3A); color:white; text-align:center; padding:3.5rem 1.5rem 3rem; }
-    .filter-bar { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; }
-    .filter-btn { padding:0.45rem 1.1rem; border-radius:100px; border:2px solid var(--saffron); background:transparent; color:var(--saffron-dark); font-weight:600; cursor:pointer; font-size:0.88rem; transition:all 0.2s; }
-    .filter-btn.active, .filter-btn:hover { background:var(--saffron); color:white; }
-    .search-bar { display:flex; gap:0.75rem; margin-bottom:1.5rem; }
-    .search-bar input { flex:1; padding:0.7rem 1rem; border:2px solid #E8D5C5; border-radius:100px; font-size:0.95rem; outline:none; background:white; font-family:inherit; }
-    .search-bar input:focus { border-color:var(--saffron); }
-    .product-count { color:var(--text-light); font-size:0.9rem; margin-bottom:1rem; }
-    .badge-bestseller {
-      position:absolute; top:10px; right:10px;
-      background:var(--saffron); color:white;
-      font-size:0.72rem; font-weight:700;
-      padding:0.25rem 0.6rem; border-radius:100px;
-    }
-    .product-card-wrap { position:relative; }
-    .empty-state { text-align:center; padding:4rem 1rem; color:var(--text-light); }
-    .empty-state div { font-size:3rem; margin-bottom:1rem; }
-    .order-modal {
-      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
-      z-index:200; align-items:center; justify-content:center; padding:1rem;
-    }
-    .order-modal.open { display:flex; }
-    .order-modal-inner {
-      background:white; border-radius:var(--radius); padding:2rem;
-      max-width:480px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,0.3);
-    }
-    .qty-control { display:flex; align-items:center; gap:1rem; margin:1rem 0; }
-    .qty-btn { width:36px; height:36px; border:2px solid var(--saffron); background:transparent; border-radius:8px; font-size:1.2rem; font-weight:700; color:var(--saffron); cursor:pointer; display:flex; align-items:center; justify-content:center; }
-    .qty-btn:hover { background:var(--saffron); color:white; }
-    .qty-num { font-size:1.3rem; font-weight:800; color:var(--text-dark); min-width:2rem; text-align:center; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>उत्पादने - अवधूत चिंतन गोशाळा</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.product-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.product-card:hover { transform: translateY(-4px); }
+.product-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  background: #FFF3E0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+}
+.product-img img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+.product-info { padding: 1rem; }
+.product-name { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 0.3rem; }
+.product-category { font-size: 0.8rem; color: #FF6F00; font-weight: 600; margin-bottom: 0.5rem; }
+.product-desc { font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; }
+.product-price { font-size: 1.2rem; font-weight: 800; color: #FF6F00; }
+.product-mrp { font-size: 0.85rem; color: #999; text-decoration: line-through; margin-left: 0.5rem; }
+.product-weight { font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
+.btn-buy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #25D366;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  width: 100%;
+  justify-content: center;
+}
+.bestseller-badge {
+  background: #FF6F00;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  display: inline-block;
+}
+.filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.filter-btn {
+  padding: 0.4rem 1rem;
+  border: 2px solid #FF6F00;
+  border-radius: 20px;
+  background: white;
+  color: #FF6F00;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.filter-btn.active { background: #FF6F00; color: white; }
+.loading { text-align: center; padding: 3rem; color: #999; font-size: 1.1rem; }
+.page-title {
+  text-align: center;
+  padding: 2rem 1rem 0.5rem;
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #FF6F00;
+}
+</style>
 </head>
 <body>
-
 <nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">🪔 अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट<span></span></a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">मुख्यपृष्ठ</a></li>
-      <li><a href="events.html">कार्यक्रम</a></li>
-      <li><a href="products.html" class="active">उत्पादने</a></li>
-      <li><a href="reviews.html">अभिप्राय</a></li>
-      <li><a href="admin.html">Admin</a></li>
-    </ul>
-    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
-  </div>
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">🪔 अवधूत चिंतन गोशाळा</a>
+<ul class="nav-links" id="navLinks">
+<li><a href="index.html">मुख्यपृष्ठ</a></li>
+<li><a href="events.html">कार्यक्रम</a></li>
+<li><a href="products.html" class="active">उत्पादने</a></li>
+<li><a href="reviews.html">अभिप्राय</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul>
+<button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+</div>
 </nav>
 
-<div class="product-hero">
-  <div class="hero-badge">🛍️ आमची उत्पादने</div>
-  <h1 style="font-size:clamp(1.8rem,4vw,2.8rem); font-weight:900; margin-bottom:0.75rem;">शुद्ध · नैसर्गिक · परंपरागत</h1>
-  <p style="opacity:0.9; max-width:540px; margin:0 auto; font-size:1.05rem;">महाराष्ट्रीय पारंपरिक पद्धतीने तयार केलेली उत्पादने — कोणतेही कृत्रिम घटक नाहीत</p>
+<h1 class="page-title">🛍️ आमची उत्पादने</h1>
+
+<div class="filter-bar" id="filterBar">
+<button class="filter-btn active" onclick="filterProducts('all', this)">सर्व</button>
 </div>
 
-<div class="section">
-
-  <!-- Search -->
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="🔍 उत्पादन शोधा..." oninput="applyFilters()" />
-  </div>
-
-  <!-- Filter -->
-  <div class="filter-bar" id="filterBar">
-    <button class="filter-btn active" onclick="setFilter('सर्व', this)">सर्व</button>
-  </div>
-
-  <div class="product-count" id="productCount"></div>
-  <div class="grid-3" id="productsGrid"></div>
-
+<div id="productsContainer" class="products-grid">
+<div class="loading">⏳ उत्पादने लोड होत आहेत...</div>
 </div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-<!-- WhatsApp Order Modal -->
-<div class="order-modal" id="orderModal" onclick="closeModal(event)">
-  <div class="order-modal-inner" onclick="event.stopPropagation()">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
-      <h3 style="font-size:1.2rem; font-weight:800; color:var(--saffron-dark);">🛒 ऑर्डर तपशील</h3>
-      <button onclick="document.getElementById('orderModal').classList.remove('open')" 
-              style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-light);">✕</button>
-    </div>
-    <div style="background:var(--saffron-pale); border-radius:var(--radius-sm); padding:1rem; margin-bottom:1.25rem;">
-      <div id="modalProductName" style="font-weight:700; font-size:1.1rem; color:var(--text-dark);"></div>
-      <div id="modalProductWeight" style="font-size:0.85rem; color:var(--text-light); margin-top:0.25rem;"></div>
-    </div>
-    <div class="form-row">
-      <label>तुमचे नाव</label>
-      <input type="text" id="orderName" placeholder="पूर्ण नाव टाका" />
-    </div>
-    <div class="form-row">
-      <label>शहर / गाव</label>
-      <input type="text" id="orderCity" placeholder="तुमचे शहर" />
-    </div>
-    <div class="form-row">
-      <label>प्रमाण</label>
-      <div class="qty-control">
-        <button class="qty-btn" onclick="changeQty(-1)">−</button>
-        <span class="qty-num" id="qtyNum">1</span>
-        <button class="qty-btn" onclick="changeQty(1)">+</button>
-        <span id="qtyTotal" style="color:var(--saffron-dark); font-weight:700;"></span>
-      </div>
-    </div>
-    <div class="form-row">
-      <label>विशेष सूचना (ऐच्छिक)</label>
-      <textarea id="orderNote" placeholder="उदा. सकाळी डिलिव्हरी हवी..." rows="2"></textarea>
-    </div>
-    <div style="display:flex; gap:0.75rem; margin-top:0.5rem;">
-      <button class="btn btn-wa" style="flex:1; justify-content:center;" onclick="sendWhatsAppOrder()">
-        📱 WhatsApp वर ऑर्डर करा
-      </button>
-    </div>
-    <p style="font-size:0.8rem; color:var(--text-light); margin-top:0.75rem; text-align:center;">
-      WhatsApp उघडेल आणि ऑर्डर संदेश तयार असेल
-    </p>
-  </div>
-</div>
+const firebaseConfig = {
+  apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
+  authDomain: "avadhut-trust.firebaseapp.com",
+  projectId: "avadhut-trust",
+  storageBucket: "avadhut-trust.firebasestorage.app",
+  messagingSenderId: "291155545994",
+  appId: "1:291155545994:web:2aaf2ad05bc1c716630273"
+};
 
-<footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-logo">🪔 अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट</div>
-      <p style="font-size:0.88rem; line-height:1.6; color:rgba(255,255,255,0.6);">महाराष्ट्रीय परंपरेचा अभिमान बाळगत शुद्ध नैसर्गिक उत्पादने तुमच्यापर्यंत पोहोचवतो.</p>
-    </div>
-    <div>
-      <h4>श्रेणी</h4>
-      <ul id="footerCats"></ul>
-    </div>
-    <div>
-      <h4>संपर्क</h4>
-      <ul>
-        <li><a href="https://wa.me/919876543210">📱 WhatsApp: +91 98765 43210</a></li>
-        <li><a href="#">📍 अहिल्यानगर, महाराष्ट्र</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">© 2026 अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट. सर्व हक्क राखीव.</div>
-</footer>
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-<div id="toast"></div>
-<script src="data.js"></script>
-<script>
-function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+window.toggleNav = () => document.getElementById('navLinks').classList.toggle('open');
 
-let activeFilter = 'सर्व';
-let currentProduct = null;
-let qty = 1;
+let allProducts = [];
+let categories = new Set();
 
-// Build category filters
-const cats = ['सर्व', ...new Set(PRODUCTS.map(p => p.category))];
-const filterBar = document.getElementById('filterBar');
-filterBar.innerHTML = '';
-cats.forEach((c, i) => {
-  filterBar.innerHTML += `<button class="filter-btn${i===0?' active':''}" onclick="setFilter('${c}', this)">${c}</button>`;
-});
+async function loadProducts() {
+  const container = document.getElementById('productsContainer');
+  const filterBar = document.getElementById('filterBar');
+  
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    
+    if (snap.empty) {
+      container.innerHTML = '<div class="loading">कोणतेही उत्पादन नाही.</div>';
+      return;
+    }
 
-// Footer categories
-const fc = document.getElementById('footerCats');
-cats.slice(1).forEach(c => { fc.innerHTML += `<li><a href="#" onclick="setFilterByName('${c}'); return false;">${c}</a></li>`; });
+    allProducts = [];
+    snap.forEach(d => {
+      allProducts.push({ id: d.id, ...d.data() });
+      if (d.data().category) categories.add(d.data().category);
+    });
 
-function setFilter(cat, btn) {
-  activeFilter = cat;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  applyFilters();
-}
-function setFilterByName(cat) {
-  activeFilter = cat;
-  document.querySelectorAll('.filter-btn').forEach(b => {
-    if (b.textContent === cat) b.classList.add('active');
-    else b.classList.remove('active');
-  });
-  applyFilters();
-  document.querySelector('.section').scrollIntoView({behavior:'smooth'});
+    // Add category filters
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = cat;
+      btn.onclick = () => filterProducts(cat, btn);
+      filterBar.appendChild(btn);
+    });
+
+    displayProducts(allProducts);
+  } catch (err) {
+    container.innerHTML = '<div class="loading">❌ Error: ' + err.message + '</div>';
+  }
 }
 
-function applyFilters() {
-  const q = document.getElementById('searchInput').value.toLowerCase();
-  let filtered = PRODUCTS;
-  if (activeFilter !== 'सर्व') filtered = filtered.filter(p => p.category === activeFilter);
-  if (q) filtered = filtered.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
-
-  document.getElementById('productCount').textContent = `${filtered.length} उत्पादने सापडली`;
-
-  const grid = document.getElementById('productsGrid');
-  if (filtered.length === 0) {
-    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><div>🔍</div><p>कोणतेही उत्पादन सापडले नाही. वेगळा शब्द वापरा.</p></div>`;
+function displayProducts(products) {
+  const container = document.getElementById('productsContainer');
+  
+  if (products.length === 0) {
+    container.innerHTML = '<div class="loading">कोणतेही उत्पादन नाही.</div>';
     return;
   }
-  grid.innerHTML = '';
-  filtered.forEach(p => {
-    const disc = Math.round((1 - p.price/p.mrp)*100);
-    grid.innerHTML += `
-      <div class="card product-card-wrap">
-        ${p.bestseller ? '<div class="badge-bestseller">⭐ बेस्टसेलर</div>' : ''}
-        <div class="product-img" style="min-height:160px; font-size:4rem; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFF3E8,#FFE0C0);">${p.emoji}</div>
-        <div class="product-body">
-          <div style="display:flex; gap:0.4rem; margin-bottom:0.5rem; flex-wrap:wrap;">
-            <span class="tag tag-saffron" style="font-size:0.72rem;">${p.category}</span>
-            ${disc > 0 ? `<span class="tag" style="background:#FFEBEE; color:#C62828; font-size:0.72rem;">${disc}% सूट</span>` : ''}
-          </div>
-          <h3>${p.name}</h3>
-          <p>${p.desc}</p>
-          <div style="font-size:0.82rem; color:var(--text-light); margin-top:-0.5rem; margin-bottom:0.75rem;">⚖️ ${p.weight}</div>
+
+  container.innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-img">
+        ${p.image ? `<img src="${p.image}" alt="${p.name}" />` : '📦'}
+      </div>
+      <div class="product-info">
+        ${p.bestseller ? '<span class="bestseller-badge">⭐ बेस्टसेलर</span>' : ''}
+        <div class="product-name">${p.name}</div>
+        <div class="product-category">${p.category || ''}</div>
+        <div class="product-desc">${p.desc || ''}</div>
+        <div class="product-weight">⚖️ ${p.weight || ''}</div>
+        <div>
+          <span class="product-price">₹${p.price}</span>
+          ${p.mrp ? `<span class="product-mrp">₹${p.mrp}</span>` : ''}
         </div>
-        <div class="product-footer">
-          <div class="price">₹${p.price} <span>₹${p.mrp}</span></div>
-          <button class="btn btn-wa" onclick="openOrder(${p.id})" style="padding:0.5rem 1rem; font-size:0.88rem;">
-            🛒 खरेदी करा
-          </button>
-        </div>
-      </div>`;
-  });
+        <a href="https://wa.me/919876543210?text=मला%20${encodeURIComponent(p.name)}%20खरेदी%20करायचे%20आहे" 
+           class="btn-buy" target="_blank">
+          📱 WhatsApp वर खरेदी करा
+        </a>
+      </div>
+    </div>
+  `).join('');
 }
 
-function openOrder(id) {
-  currentProduct = PRODUCTS.find(p => p.id === id);
-  qty = 1;
-  document.getElementById('modalProductName').textContent = currentProduct.emoji + ' ' + currentProduct.name;
-  document.getElementById('modalProductWeight').textContent = '⚖️ ' + currentProduct.weight + ' · ₹' + currentProduct.price;
-  updateQtyDisplay();
-  document.getElementById('orderModal').classList.add('open');
-}
-function closeModal(e) {
-  if (e.target === document.getElementById('orderModal')) {
-    document.getElementById('orderModal').classList.remove('open');
+window.filterProducts = (category, btn) => {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  
+  if (category === 'all') {
+    displayProducts(allProducts);
+  } else {
+    displayProducts(allProducts.filter(p => p.category === category));
   }
-}
-function changeQty(d) {
-  qty = Math.max(1, qty + d);
-  updateQtyDisplay();
-}
-function updateQtyDisplay() {
-  document.getElementById('qtyNum').textContent = qty;
-  document.getElementById('qtyTotal').textContent = `एकूण: ₹${currentProduct.price * qty}`;
-}
-function sendWhatsAppOrder() {
-  const name = document.getElementById('orderName').value.trim() || 'ग्राहक';
-  const city = document.getElementById('orderCity').value.trim() || '—';
-  const note = document.getElementById('orderNote').value.trim();
-  const msg = `🛍️ *अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट — ऑर्डर*\n\n` +
-    `👤 नाव: ${name}\n` +
-    `📍 शहर: ${city}\n\n` +
-    `🛒 उत्पादन: ${currentProduct.name}\n` +
-    `⚖️ वजन: ${currentProduct.weight}\n` +
-    `🔢 प्रमाण: ${qty}\n` +
-    `💰 किंमत: ₹${currentProduct.price} × ${qty} = *₹${currentProduct.price * qty}*\n` +
-    (note ? `\n📝 सूचना: ${note}\n` : '') +
-    `\nकृपया ऑर्डर कन्फर्म करा 🙏`;
-  window.open('https://wa.me/919876543210?text=' + encodeURIComponent(msg), '_blank');
-  document.getElementById('orderModal').classList.remove('open');
-  showToast('WhatsApp उघडत आहे... ✓');
-}
+};
 
-applyFilters();
+loadProducts();
 </script>
 </body>
 </html>

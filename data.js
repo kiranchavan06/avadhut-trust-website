@@ -9,7 +9,7 @@ const PRODUCTS = [
     id: 1, emoji: '',
     name: 'गणपती',
     category: 'शेणापासून',
-    desc:'.',
+    desc:'पूजा, ध्यान, सुगंधित वातावरण निर्मिती.',
     price: 280, mrp: 350, weight: 'नग',
     bestseller: true
   },
@@ -22,7 +22,7 @@ const PRODUCTS = [
     bestseller: true
   },
   {
-    id: 1, emoji: '',
+    id: 3, emoji: '',
     name: 'धूप',
     category: 'घरगुती सुगंधित उत्पादने',
     desc:'पूजा, ध्यान, सुगंधित वातावरण निर्मिती.',
@@ -33,7 +33,7 @@ const PRODUCTS = [
     id: 4, emoji: '🍃',
     name: 'पणती',
     category: 'शेणामातीपासुन',
-    desc:'.',
+    desc:'भक्ती व श्रद्धेचे प्रतीक: गणपती बाप्पा म्हणजे भक्ती, विश्वास आणि अपार प्रेम, असे मानले जाते.',
     price: 120, mrp: 160, weight: 'नग',
     bestseller: true
   },
@@ -41,7 +41,7 @@ const PRODUCTS = [
     id: 5, emoji: '',
     name: 'गौरी',
     category: 'नैसर्गिक',
-    desc: .',
+    desc: 'धार्मिक विधी: हिंदू धर्मात गोवऱ्या पवित्र मानल्या जातात. यज्ञ, होम-हवन आणि सत्यनारायण पूजेमध्ये गोवऱ्यांचा वापर अग्नी प्रज्वलित करण्यासाठी केला जातो.',
     price: 450, mrp: 600, weight: 'नग',
     bestseller: true
   },

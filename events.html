@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>कार्यक्रम - अवधूत चिंतन गोशाळा</title>
 <link rel="stylesheet" href="style.css" />
+
 <style>
 .events-grid {
   display: grid;
@@ -36,44 +37,57 @@
 .event-location { font-size: 0.85rem; color: #666; margin-bottom: 0.3rem; }
 .event-time { font-size: 0.85rem; color: #888; margin-bottom: 0.5rem; }
 .event-desc { font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; }
-.event-type { background: #FFF3E0; color: #FF6F00; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; font-weight: 600; }
-.seats-bar { margin: 0.75rem 0; }
-.seats-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem; }
-.seats-progress { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
-.seats-fill { height: 100%; background: #FF6F00; border-radius: 4px; transition: width 0.3s; }
-.seats-fill.full { background: #C62828; }
-.btn-register { width: 100%; padding: 0.6rem; border: none; border-radius: 8px; background: #FF6F00; color: white; font-weight: 700; font-size: 0.95rem; cursor: pointer; margin-top: 0.5rem; }
+
+.btn-register {
+  width: 100%;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 8px;
+  background: #FF6F00;
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
 .btn-register:disabled { background: #ccc; cursor: not-allowed; }
 .btn-register.full { background: #C62828; }
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
 .modal-overlay.open { display: flex; }
-.modal { background: white; border-radius: 12px; padding: 1.5rem; width: 90%; max-width: 400px; }
-.modal h3 { color: #FF6F00; margin-bottom: 1rem; }
-.modal .form-row { margin-bottom: 0.75rem; }
-.modal .form-row label { display: block; font-weight: 600; margin-bottom: 0.3rem; font-size: 0.9rem; }
-.modal .form-row input { width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.9rem; }
+.modal {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+}
 .modal-btns { display: flex; gap: 0.5rem; margin-top: 1rem; }
-.btn-confirm { flex: 1; padding: 0.6rem; background: #FF6F00; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
-.btn-cancel { flex: 1; padding: 0.6rem; background: #eee; color: #333; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+.btn-confirm {
+  flex: 1; padding: 0.6rem;
+  background: #FF6F00; color: white;
+  border: none; border-radius: 8px;
+}
+.btn-cancel {
+  flex: 1; padding: 0.6rem;
+  background: #eee; border: none;
+}
 .loading { text-align: center; padding: 3rem; color: #999; }
 .page-title { text-align: center; padding: 2rem 1rem 0.5rem; font-size: 1.8rem; font-weight: 800; color: #FF6F00; }
 #toast { position: fixed; bottom: 2rem; right: 2rem; background: #333; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: none; z-index: 999; }
 </style>
 </head>
+
 <body>
-<nav>
-<div class="nav-inner">
-<a href="index.html" class="nav-logo">🪔 अवधूत चिंतन गोशाळा</a>
-<ul class="nav-links" id="navLinks">
-<li><a href="index.html">मुख्यपृष्ठ</a></li>
-<li><a href="events.html" class="active">कार्यक्रम</a></li>
-<li><a href="products.html">उत्पादने</a></li>
-<li><a href="reviews.html">अभिप्राय</a></li>
-<li><a href="admin.html">Admin</a></li>
-</ul>
-<button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
-</div>
-</nav>
 
 <h1 class="page-title">📅 आमचे कार्यक्रम</h1>
 
@@ -81,21 +95,25 @@
   <div class="loading">⏳ कार्यक्रम लोड होत आहेत...</div>
 </div>
 
-<!-- Registration Modal -->
+<!-- MODAL -->
 <div class="modal-overlay" id="regModal">
   <div class="modal">
     <h3>📝 नोंदणी करा</h3>
-    <p id="modalEventName" style="color:#666; margin-bottom:1rem; font-size:0.9rem;"></p>
-    <div class="form-row"><label>पूर्ण नाव *</label><input type="text" id="regName" placeholder="तुमचे नाव" /></div>
-    <div class="form-row"><label>फोन नंबर *</label><input type="tel" id="regPhone" placeholder="10 अंकी नंबर" /></div>
-    <div class="form-row"><label>गाव/शहर</label><input type="text" id="regCity" placeholder="तुमचे गाव" /></div>
+    <p id="modalEventName"></p>
+
+    <input type="text" id="regName" placeholder="नाव" />
+    <input type="tel" id="regPhone" placeholder="फोन" />
+    <input type="text" id="regCity" placeholder="शहर" />
+
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">रद्द करा</button>
-      <button class="btn-confirm" onclick="confirmRegister()">✅ नोंदणी करा</button>
+      <button class="btn-cancel" onclick="closeModal()">रद्द</button>
+      <button class="btn-confirm" onclick="confirmRegister()">नोंदणी</button>
     </div>
   </div>
 </div>
+
 <div id="toast"></div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -112,81 +130,77 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.toggleNav = () => document.getElementById('navLinks').classList.toggle('open');
+let currentEventId = "";
+let currentEventName = "";
 
-let currentEventId = '';
-let currentEventName = '';
+/* 🔥 NEW: DATE CHECK */
+function isEventPast(dateStr) {
+  if (!dateStr) return false;
 
+  const today = new Date();
+  const eventDate = new Date(dateStr);
+
+  today.setHours(0,0,0,0);
+  eventDate.setHours(0,0,0,0);
+
+  return eventDate < today;
+}
+
+/* LOAD EVENTS */
 async function loadEvents() {
   const container = document.getElementById('eventsContainer');
-  try {
-    const snap = await getDocs(collection(db, 'events'));
-    if (snap.empty) {
-      container.innerHTML = '<div class="loading">📅 सध्या कोणतेही कार्यक्रम नाहीत.</div>';
-      return;
-    }
 
-    let events = [];
-    snap.forEach(d => events.push({ id: d.id, ...d.data() }));
-    events.sort((a, b) => new Date(a.date) - new Date(b.date));
+  const snap = await getDocs(collection(db, 'events'));
 
-    container.innerHTML = events.map(e => {
-      const totalSeats = e.seats || 0;
-      const registeredSeats = e.registeredSeats || 0;
-      const availableSeats = totalSeats - registeredSeats;
-      const isFull = totalSeats > 0 && availableSeats <= 0;
-      const isPast = new Date(e.date) < new Date();
-      const hasSeats = totalSeats > 0;
-      const percent = hasSeats ? Math.min((registeredSeats / totalSeats) * 100, 100) : 0;
-
-      return `
-        <div class="event-card">
-          <div class="event-img">
-            ${e.image ? `<img src="${e.image}" alt="${e.title}" />` : '📅'}
-          </div>
-          <div class="event-info">
-            <span class="event-type">${e.type || 'कार्यक्रम'}</span>
-            <div class="event-title">${e.title}</div>
-            <div class="event-date">📆 ${formatDate(e.date)}</div>
-            <div class="event-time">🕐 ${e.time || ''}</div>
-            <div class="event-location">📍 ${e.location || ''}</div>
-            <div class="event-desc">${e.desc || ''}</div>
-            ${hasSeats ? `
-            <div class="seats-bar">
-              <div class="seats-info">
-                <span>${isFull ? '🔴 सर्व जागा भरल्या' : `🟢 ${availableSeats} जागा उपलब्ध`}</span>
-                <span>${registeredSeats}/${totalSeats}</span>
-              </div>
-              <div class="seats-progress">
-                <div class="seats-fill ${isFull ? 'full' : ''}" style="width:${percent}%"></div>
-              </div>
-            </div>
-            <button class="btn-register ${isFull ? 'full' : ''}" 
-              ${isFull ? 'disabled' : `onclick="openModal('${e.id}', '${e.title}')"`}>
-              ${isFull ? '🔴 नोंदणी बंद' : '📝 नोंदणी करा'}
-            </button>
-            ` : ''}
-          </div>
-        </div>`;
-    }).join('');
-  } catch (err) {
-    container.innerHTML = '<div class="loading">❌ Error: ' + err.message + '</div>';
+  if (snap.empty) {
+    container.innerHTML = "No events";
+    return;
   }
+
+  let events = [];
+  snap.forEach(d => events.push({ id: d.id, ...d.data() }));
+
+  events.sort((a,b) => new Date(a.date) - new Date(b.date));
+
+  container.innerHTML = events.map(e => {
+
+    const totalSeats = e.seats || 0;
+    const registeredSeats = e.registeredSeats || 0;
+    const availableSeats = totalSeats - registeredSeats;
+
+    const isFull = totalSeats > 0 && availableSeats <= 0;
+    const isPast = isEventPast(e.date);
+    const hasSeats = totalSeats > 0;
+    const percent = hasSeats ? Math.min((registeredSeats / totalSeats) * 100, 100) : 0;
+
+    return `
+      <div class="event-card">
+        <div class="event-img">
+          ${e.image ? `<img src="${e.image}">` : "📅"}
+        </div>
+
+        <div class="event-info">
+          <div class="event-title">${e.title}</div>
+          <div class="event-date">📆 ${e.date}</div>
+          <div class="event-time">${e.time || ""}</div>
+          <div class="event-location">${e.location || ""}</div>
+          <div class="event-desc">${e.desc || ""}</div>
+
+          <button class="btn-register ${(isFull || isPast) ? 'full' : ''}"
+            ${(isFull || isPast) ? "disabled" : `onclick="openModal('${e.id}','${e.title}')"`}>
+
+            ${isPast ? "⛔ वेळ संपली" : isFull ? "🔴 बंद" : "📝 नोंदणी करा"}
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-function formatDate(dateStr) {
-  if (!dateStr) return '';
-  const d = new Date(dateStr);
-  return d.toLocaleDateString('mr-IN', { day: 'numeric', month: 'long', year: 'numeric' });
-}
-
-window.openModal = (id, name) => {
+/* MODAL */
+window.openModal = (id,name) => {
   currentEventId = id;
   currentEventName = name;
-  document.getElementById('modalEventName').textContent = '📅 ' + name;
-  document.getElementById('regName').value = '';
-  document.getElementById('regPhone').value = '';
-  document.getElementById('regCity').value = '';
   document.getElementById('regModal').classList.add('open');
 };
 
@@ -194,51 +208,29 @@ window.closeModal = () => {
   document.getElementById('regModal').classList.remove('open');
 };
 
+/* BOOKING */
 window.confirmRegister = async () => {
-  const name = document.getElementById('regName').value.trim();
-  const phone = document.getElementById('regPhone').value.trim();
-  const city = document.getElementById('regCity').value.trim();
+  const name = regName.value;
+  const phone = regPhone.value;
+  const city = regCity.value;
 
-  if (!name || !phone) { alert('नाव आणि फोन नंबर आवश्यक आहे!'); return; }
-  if (phone.length !== 10) { alert('10 अंकी फोन नंबर टाका!'); return; }
+  await addDoc(collection(db,"registrations"),{
+    eventId: currentEventId,
+    eventName: currentEventName,
+    name, phone, city,
+    createdAt: new Date()
+  });
 
-  try {
-    // Check duplicate
-    const q = query(collection(db, 'registrations'), 
-      where('eventId', '==', currentEventId), 
-      where('phone', '==', phone));
-    const existing = await getDocs(q);
-    if (!existing.empty) { alert('हा फोन नंबर आधीच नोंदणी केलेला आहे!'); return; }
+  await updateDoc(doc(db,"events",currentEventId),{
+    registeredSeats: increment(1)
+  });
 
-    // Add registration
-    await addDoc(collection(db, 'registrations'), {
-      eventId: currentEventId,
-      eventName: currentEventName,
-      name, phone, city,
-      createdAt: new Date()
-    });
-
-    // Update seat count
-    await updateDoc(doc(db, 'events', currentEventId), {
-      registeredSeats: increment(1)
-    });
-
-    closeModal();
-    showToast('✅ नोंदणी यशस्वी! ' + name + ' यांचे स्वागत आहे!');
-    loadEvents();
-  } catch (err) {
-    alert('Error: ' + err.message);
-  }
+  closeModal();
+  loadEvents();
 };
-
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 4000);
-}
 
 loadEvents();
 </script>
+
 </body>
 </html>

@@ -135,6 +135,7 @@ async function loadEvents() {
       const registeredSeats = e.registeredSeats || 0;
       const availableSeats = totalSeats - registeredSeats;
       const isFull = totalSeats > 0 && availableSeats <= 0;
+      const isPast = new Date(e.date) < new Date();
       const hasSeats = totalSeats > 0;
       const percent = hasSeats ? Math.min((registeredSeats / totalSeats) * 100, 100) : 0;
 

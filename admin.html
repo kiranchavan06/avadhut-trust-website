@@ -1,125 +1,154 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Admin - अवधूत चिंतन गोशाळा</title>
-<link rel="stylesheet" href="style.css" />
-<style>
-body { background: #F5F5F5; }
-.admin-wrap { max-width: 1000px; margin: 0 auto; padding: 2rem 1rem; }
-.admin-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 1.5rem; }
-.form-row { margin-bottom: 1rem; }
-.form-row label { display: block; font-weight: 600; margin-bottom: 0.4rem; color: #333; }
-.form-row input, .form-row textarea, .form-row select { width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; }
-.form-row textarea { height: 80px; resize: vertical; }
-.btn-saffron { background: #FF6F00; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; }
-.btn-danger { background: #C62828; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
-.btn-edit { background: #1565C0; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
-.admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-.admin-tab { padding: 0.5rem 1rem; border: 2px solid #FF6F00; border-radius: 8px; background: white; color: #FF6F00; cursor: pointer; font-weight: 600; }
-.admin-tab.active { background: #FF6F00; color: white; }
-.admin-section { display: none; }
-.admin-section.visible { display: block; }
-.login-box { max-width: 400px; margin: 5rem auto; background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-th { background: #FFF3E0; padding: 0.6rem; text-align: left; }
-td { padding: 0.6rem; border-bottom: 1px solid #eee; }
-.product-img { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; }
-#toast { position: fixed; bottom: 2rem; right: 2rem; background: #333; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: none; z-index: 999; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <meta name="description" content="" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<!-- NAV -->
 <nav>
-<div class="nav-inner">
-<a href="index.html" class="nav-logo">🪔 अवधूत चिंतन गोशाळा</a>
-<ul class="nav-links" id="navLinks">
-<li><a href="index.html">मुख्यपृष्ठ</a></li>
-<li><a href="products.html">उत्पादने</a></li>
-<li><a href="events.html">कार्यक्रम</a></li>
-<li><a href="admin.html" class="active">Admin</a></li>
-</ul>
-<button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
-</div>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">🪔 <span>अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">मुख्यपृष्ठ</a></li>
+      <li><a href="events.html">कार्यक्रम</a></li>
+      <li><a href="products.html">उत्पादने</a></li>
+      <li><a href="reviews.html">अभिप्राय</a></li>
+      <li><a href="admin.html">Admin</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
-<!-- LOGIN -->
-<div id="loginSection">
-<div class="login-box">
-<div style="text-align:center; font-size:2rem;">🔐</div>
-<h2 style="text-align:center; color:#FF6F00;">Admin लॉगिन</h2>
-<div id="loginError" style="color:red; display:none; margin-bottom:1rem;">❌ चुकीचे नाव किंवा पासवर्ड</div>
-<div class="form-row"><label>वापरकर्ता नाव</label><input type="text" id="adminUser" /></div>
-<div class="form-row"><label>पासवर्ड</label><input type="password" id="adminPass" /></div>
-<button class="btn-saffron" style="width:100%" onclick="doLogin()">🔓 लॉगिन करा</button>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"></div>
+
+  <div style="margin: 1.5rem auto; max-width: 500px; height:auto;">
+    <img src="images/temple.png.jpeg" alt="अवधूत चिंतन" style="width:100%; border-radius:16px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);" />
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">अवधुत चिंतन बहुउद्देशिय सेवाभावी संस्था तळेगाव (मळे) ता-कोपरगाव जि-अहिल्यानगर</div>
+      <div>नोंदणी क्रमांक F-0025785(AHM)</div>
+      <div>80.g.-</div>
+      <div>A-12.-</div>
+      <div class="stat-lbl">आमच्या संस्थेमध्ये आपले स्वागत आहे.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED PRODUCTS -->
+<div class="section">
+  <div class="section-title">
+    <h2>लोकप्रिय उत्पादने</h2>
+    <div class="divider"></div>
+    <p>आमची सर्वाधिक मागणी असलेली शुद्ध उत्पादने</p>
+  </div>
+  <div class="grid-3" id="featuredProducts"></div>
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="products.html" class="btn btn-saffron">सर्व उत्पादने पहा →</a>
+  </div>
+</div>
+
+<!-- WHY US -->
+<div style="background: white; padding: 1px 0;">
+<div class="section">
+  <div class="section-title">
+    <h2>आम्ही का वेगळे आहोत?</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-3">
+    <div class="card" style="padding:2rem; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🌱</div>
+      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">१०० % नैसर्गिक</h3>
+      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">निसर्गाचे शुद्ध वरदान थेट तुमच्यापर्यंत.</p>
+    </div>
+    <div class="card" style="padding:2rem; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🏡</div>
+      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">गृहउद्योग</h3>
+      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट.</p>
+    </div>
+    <div class="card" style="padding:2rem; text-align:center;">
+      <div style="font-size:3rem; margin-bottom:1rem;">🚚</div>
+      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">दारापर्यंत डिलिव्हरी</h3>
+      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">पुणे, नाशिक, कोल्हापूर, सोलापूर आणि इतर जिल्ह्यांमध्ये जलद आणि सुरक्षित डिलिव्हरी.</p>
+    </div>
+  </div>
 </div>
 </div>
 
-<!-- ADMIN PANEL -->
-<div id="adminPanel" class="admin-wrap" style="display:none;">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
-<h1 style="color:#FF6F00;">🛠️ Admin डॅशबोर्ड</h1>
-<button class="btn-danger" onclick="doLogout()">🚪 लॉगआउट</button>
+<!-- UPCOMING EVENTS -->
+<div class="section">
+  <div class="section-title">
+    <h2>येणारे कार्यक्रम</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-2" id="homeEvents"></div>
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="events.html" class="btn btn-saffron">सर्व कार्यक्रम पहा →</a>
+  </div>
 </div>
 
-<div class="admin-tabs">
-<button class="admin-tab active" onclick="showTab('products', this)">🛍️ उत्पादने</button>
-<button class="admin-tab" onclick="showTab('events', this)">📅 कार्यक्रम</button>
-<button class="admin-tab" onclick="showTab('reviews', this)">⭐ अभिप्राय</button>
+<!-- REVIEWS -->
+<div style="background:white; padding:1px 0;">
+<div class="section">
+  <div class="section-title">
+    <h2>ग्राहकांचे अभिप्राय</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-3" id="homeReviews"></div>
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="reviews.html" class="btn btn-saffron">अभिप्राय लिहा →</a>
+  </div>
+</div>
 </div>
 
-<!-- PRODUCTS TAB -->
-<div id="tab-products" class="admin-section visible admin-card">
-<h3 style="color:#FF6F00; margin-bottom:1rem;">🛍️ नवीन उत्पादन जोडा</h3>
-<div class="form-row"><label>उत्पादनाचे नाव *</label><input type="text" id="pName" placeholder="उदा. गणपती अगरबत्ती" /></div>
-<div class="form-row"><label>श्रेणी *</label>
-<select id="pCategory">
-<option>शेणापासून</option>
-<option>घरगुती सुगंधित उत्पादने</option>
-<option>गोमूत्र उत्पादने</option>
-<option>इतर</option>
-</select></div>
-<div class="form-row"><label>वर्णन *</label><textarea id="pDesc" placeholder="उत्पादनाचे वर्णन"></textarea></div>
-<div class="form-row"><label>किंमत (₹) *</label><input type="number" id="pPrice" placeholder="280" /></div>
-<div class="form-row"><label>MRP (₹)</label><input type="number" id="pMrp" placeholder="350" /></div>
-<div class="form-row"><label>वजन</label><input type="text" id="pWeight" placeholder="उदा. 100g" /></div>
-<div class="form-row"><label>Photo URL (Cloudinary)</label><input type="text" id="pImage" placeholder="https://..." /></div>
-<div class="form-row"><label>Bestseller?</label>
-<select id="pBestseller"><option value="false">नाही</option><option value="true">हो</option></select></div>
-<button class="btn-saffron" onclick="saveProduct()">💾 उत्पादन जोडा</button>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">🪔 अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट</div>
+      <p style="font-size:0.88rem; line-height:1.6; color:rgba(255,255,255,0.6);">अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट तुमच्यापर्यंत पोहोचवतो.</p>
+    </div>
+    <div>
+      <h4>द्रुत दुवे</h4>
+      <ul>
+        <li><a href="index.html">मुख्यपृष्ठ</a></li>
+        <li><a href="products.html">उत्पादने</a></li>
+        <li><a href="events.html">कार्यक्रम</a></li>
+        <li><a href="reviews.html">अभिप्राय</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>संपर्क</h4>
+      <ul>
+        <li><a href="https://wa.me/91xxxxxxxxxx">📱 WhatsApp: +91 xxxxxxxxxx</a></li>
+        <li><a href="#">📍 अहिल्यानगर, महाराष्ट्र</a></li>
+        <li><a href="#">📧 avadhuttrust@email.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट. सर्व हक्क राखीव. | महाराष्ट्र, भारत 🇮🇳
+  </div>
+</footer>
 
-<h3 style="color:#FF6F00; margin:1.5rem 0 1rem;">📋 उत्पादन यादी</h3>
-<div id="productsList"></div>
-</div>
-
-<!-- EVENTS TAB -->
-<div id="tab-events" class="admin-section admin-card">
-<h3 style="color:#FF6F00; margin-bottom:1rem;">📅 नवीन कार्यक्रम जोडा</h3>
-<div class="form-row"><label>कार्यक्रमाचे नाव *</label><input type="text" id="eName" placeholder="उदा. गणेश पूजा" /></div>
-<div class="form-row"><label>तारीख *</label><input type="date" id="eDate" /></div>
-<div class="form-row"><label>वेळ *</label><input type="time" id="eTime" /></div>
-<div class="form-row"><label>ठिकाण *</label><input type="text" id="eLocation" placeholder="उदा. तळेगाव मळे" /></div>
-<div class="form-row"><label>वर्णन</label><textarea id="eDesc" placeholder="कार्यक्रमाचे वर्णन"></textarea></div>
-<div class="form-row"><label>प्रकार</label>
-<select id="eType"><option>धार्मिक</option><option>सामाजिक</option><option>शैक्षणिक</option><option>इतर</option></select></div>
-<div class="form-row"><label>Photo URL (Cloudinary)</label><input type="text" id="eImage" placeholder="https://..." /></div>
-<button class="btn-saffron" onclick="saveEvent()">💾 कार्यक्रम जोडा</button>
-
-<h3 style="color:#FF6F00; margin:1.5rem 0 1rem;">📋 कार्यक्रम यादी</h3>
-<div id="eventsList"></div>
-</div>
-
-<!-- REVIEWS TAB -->
-<div id="tab-reviews" class="admin-section admin-card">
-<h3 style="color:#FF6F00; margin-bottom:1rem;">⭐ अभिप्राय यादी</h3>
-<div id="reviewsList"></div>
-</div>
-
-</div>
 <div id="toast"></div>
+
+<script src="data.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
@@ -133,169 +162,103 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// LOGIN
-window.toggleNav = () => document.getElementById('navLinks').classList.toggle('open');
-window.doLogin = () => {
-  const u = document.getElementById('adminUser').value;
-  const p = document.getElementById('adminPass').value;
-  if (u === 'trust' && p === 'trust@12345') {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    loadProducts(); loadEvents(); loadReviews();
-  } else {
-    document.getElementById('loginError').style.display = 'block';
+window.toggleNav = () => {
+  document.getElementById('navLinks').classList.toggle('open');
+};
+
+window.orderWhatsApp = (name, price) => {
+  const msg = `नमस्कार 🙏\n\nमला "${name}" खरेदी करायचे आहे.\n💰 किंमत: ₹${price}\n\nकृपया ऑर्डर कशी करायची ते सांगा.`;
+  window.open('https://wa.me/91xxxxxxxxxxxx?text=' + encodeURIComponent(msg), '_blank');
+};
+
+// Firebase मधून Featured Products
+async function loadFeaturedProducts() {
+  const fp = document.getElementById('featuredProducts');
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    const products = [];
+    snap.forEach(d => products.push({ id: d.id, ...d.data() }));
+
+    if (products.length === 0) {
+      fp.innerHTML = '<p style="text-align:center;color:#999;grid-column:1/-1;">उत्पादने लवकरच येतील...</p>';
+      return;
+    }
+
+    products.slice(0, 3).forEach(p => {
+      fp.innerHTML += `
+        <div class="card">
+          <div class="product-img" style="min-height:180px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFF3E8,#FFE0C0);">
+            ${p.image
+              ? `<img src="${p.image}" style="width:100%;height:180px;object-fit:cover;" />`
+              : `<span style="font-size:4rem;">📦</span>`}
+          </div>
+          <div class="product-body">
+            <h3>${p.name}</h3>
+            <p>${p.desc || ''}</p>
+          </div>
+          <div class="product-footer">
+            <div class="price">₹${p.price} ${p.mrp ? `<span>₹${p.mrp}</span>` : ''}</div>
+            <button class="btn btn-wa"
+              onclick="orderWhatsApp('${p.name}', ${p.price})"
+              style="padding:0.5rem 1rem; font-size:0.88rem;">
+              🛒 खरेदी करा
+            </button>
+          </div>
+        </div>`;
+    });
+  } catch (err) {
+    console.error(err);
   }
-};
-window.doLogout = () => {
-  document.getElementById('loginSection').style.display = 'block';
-  document.getElementById('adminPanel').style.display = 'none';
-};
-
-// TABS
-window.showTab = (name, btn) => {
-  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('visible'));
-  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('visible');
-  btn.classList.add('active');
-};
-
-// TOAST
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 3000);
 }
 
-// ========== PRODUCTS ==========
-window.saveProduct = async () => {
-  const name = document.getElementById('pName').value.trim();
-  const price = document.getElementById('pPrice').value;
-  if (!name || !price) { alert('नाव आणि किंमत आवश्यक आहे!'); return; }
-  await addDoc(collection(db, 'products'), {
-    name, price: Number(price),
-    mrp: Number(document.getElementById('pMrp').value) || 0,
-    category: document.getElementById('pCategory').value,
-    desc: document.getElementById('pDesc').value,
-    weight: document.getElementById('pWeight').value,
-    image: document.getElementById('pImage').value,
-    bestseller: document.getElementById('pBestseller').value === 'true',
-    createdAt: new Date()
-  });
-  showToast('✅ उत्पादन जोडले!');
-  document.getElementById('pName').value = '';
-  document.getElementById('pPrice').value = '';
-  document.getElementById('pMrp').value = '';
-  document.getElementById('pDesc').value = '';
-  document.getElementById('pWeight').value = '';
-  document.getElementById('pImage').value = '';
-  loadProducts();
-};
+// Firebase मधून Home Events
+async function loadHomeEvents() {
+  const he = document.getElementById('homeEvents');
+  try {
+    const snap = await getDocs(collection(db, 'events'));
+    const events = [];
+    snap.forEach(d => events.push({ id: d.id, ...d.data() }));
+    events.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-async function loadProducts() {
-  const snap = await getDocs(collection(db, 'products'));
-  const div = document.getElementById('productsList');
-  if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतेही उत्पादन नाही.</p>'; return; }
-  let html = '<table><thead><tr><th>फोटो</th><th>नाव</th><th>किंमत</th><th>श्रेणी</th><th>कृती</th></tr></thead><tbody>';
-  snap.forEach(d => {
-    const p = d.data();
-    html += `<tr>
-      <td>${p.image ? `<img src="${p.image}" class="product-img" />` : '📦'}</td>
-      <td><strong>${p.name}</strong><br><small>${p.desc?.substring(0,40) || ''}</small></td>
-      <td>₹${p.price}<br><small style="text-decoration:line-through;color:#999;">₹${p.mrp}</small></td>
-      <td>${p.category}</td>
-      <td>
-        <button class="btn-danger" onclick="deleteProduct('${d.id}')">🗑️ काढा</button>
-      </td>
-    </tr>`;
-  });
-  html += '</tbody></table>';
-  div.innerHTML = html;
+    if (events.length === 0) {
+      he.innerHTML = '<p style="color:#999;grid-column:1/-1;">कार्यक्रम लवकरच येतील...</p>';
+      return;
+    }
+
+    const monthNames = ['जानेवारी','फेब्रुवारी','मार्च','एप्रिल','मे','जून','जुलै','ऑगस्ट','सप्टेंबर','ऑक्टोबर','नोव्हेंबर','डिसेंबर'];
+    events.slice(0, 2).forEach(e => {
+      const dateObj = new Date(e.date);
+      const day = dateObj.getDate().toString().padStart(2,'0');
+      const month = monthNames[dateObj.getMonth()];
+      he.innerHTML += `
+        <div class="card event-card">
+          <div class="event-date">
+            <div class="day">${day}</div>
+            <div class="month">${month}</div>
+          </div>
+          <div class="event-info">
+            <h3>${e.title}</h3>
+            <p>${e.desc || ''}</p>
+            <div class="event-meta">
+              <span>📍 ${e.location || ''}</span>
+              <span>🕐 ${e.time || ''}</span>
+            </div>
+          </div>
+        </div>`;
+    });
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-window.deleteProduct = async (id) => {
-  if (!confirm('हे उत्पादन काढायचे आहे का?')) return;
-  await deleteDoc(doc(db, 'products', id));
-  showToast('🗑️ उत्पादन काढले!');
-  loadProducts();
-};
+// Reviews - data.js मधून
+const hr = document.getElementById('homeReviews');
+getReviews().slice(0, 3).forEach(r => {
+  hr.innerHTML += reviewCard(r);
+});
 
-// ========== EVENTS ==========
-window.saveEvent = async () => {
-  const name = document.getElementById('eName').value.trim();
-  const date = document.getElementById('eDate').value;
-  if (!name || !date) { alert('नाव आणि तारीख आवश्यक आहे!'); return; }
-  await addDoc(collection(db, 'events'), {
-    title: name,
-    date, time: document.getElementById('eTime').value,
-    location: document.getElementById('eLocation').value,
-    desc: document.getElementById('eDesc').value,
-    type: document.getElementById('eType').value,
-    image: document.getElementById('eImage').value,
-    createdAt: new Date()
-  });
-  showToast('✅ कार्यक्रम जोडला!');
-  document.getElementById('eName').value = '';
-  document.getElementById('eDate').value = '';
-  document.getElementById('eTime').value = '';
-  document.getElementById('eLocation').value = '';
-  document.getElementById('eDesc').value = '';
-  document.getElementById('eImage').value = '';
-  loadEvents();
-};
-
-async function loadEvents() {
-  const snap = await getDocs(collection(db, 'events'));
-  const div = document.getElementById('eventsList');
-  if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतेही कार्यक्रम नाही.</p>'; return; }
-  let html = '<table><thead><tr><th>नाव</th><th>तारीख</th><th>ठिकाण</th><th>प्रकार</th><th>कृती</th></tr></thead><tbody>';
-  snap.forEach(d => {
-    const e = d.data();
-    html += `<tr>
-      <td><strong>${e.title}</strong></td>
-      <td>${e.date} ${e.time}</td>
-      <td>${e.location}</td>
-      <td>${e.type}</td>
-      <td><button class="btn-danger" onclick="deleteEvent('${d.id}')">🗑️ काढा</button></td>
-    </tr>`;
-  });
-  html += '</tbody></table>';
-  div.innerHTML = html;
-}
-
-window.deleteEvent = async (id) => {
-  if (!confirm('हा कार्यक्रम काढायचा आहे का?')) return;
-  await deleteDoc(doc(db, 'events', id));
-  showToast('🗑️ कार्यक्रम काढला!');
-  loadEvents();
-};
-
-// ========== REVIEWS ==========
-async function loadReviews() {
-  const snap = await getDocs(collection(db, 'reviews'));
-  const div = document.getElementById('reviewsList');
-  if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतेही अभिप्राय नाही.</p>'; return; }
-  let html = '<table><thead><tr><th>नाव</th><th>उत्पादन</th><th>रेटिंग</th><th>अभिप्राय</th><th>कृती</th></tr></thead><tbody>';
-  snap.forEach(d => {
-    const r = d.data();
-    html += `<tr>
-      <td><strong>${r.name}</strong><br><small>${r.city}</small></td>
-      <td>${r.product}</td>
-      <td>${'★'.repeat(r.rating)}</td>
-      <td style="max-width:200px;font-size:0.85rem;">${r.text?.substring(0,80) || ''}</td>
-      <td><button class="btn-danger" onclick="deleteReview('${d.id}')">🗑️ काढा</button></td>
-    </tr>`;
-  });
-  html += '</tbody></table>';
-  div.innerHTML = html;
-}
-
-window.deleteReview = async (id) => {
-  if (!confirm('हा अभिप्राय काढायचा आहे का?')) return;
-  await deleteDoc(doc(db, 'reviews', id));
-  showToast('🗑️ अभिप्राय काढला!');
-  loadReviews();
-};
+loadFeaturedProducts();
+loadHomeEvents();
 </script>
 </body>
 </html>

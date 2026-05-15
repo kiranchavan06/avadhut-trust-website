@@ -6,7 +6,7 @@
 // ===== PRODUCTS =====
 const PRODUCTS = [
   {
-    id: 1, emoji: '',
+    id: 1, 
     name: 'गणपती',
     category: 'शेणापासून',
     desc:'पूजा, ध्यान, सुगंधित वातावरण निर्मिती.',
@@ -14,7 +14,7 @@ const PRODUCTS = [
     bestseller: true
   },
   {
-    id: 2, emoji: '',
+    id: 2,
     name: 'अगरबत्ती',
     category: 'घरगुती सुगंधित उत्पादने',
     desc: 'पूजा, ध्यान, सुगंधित वातावरण निर्मिती.',
@@ -22,7 +22,7 @@ const PRODUCTS = [
     bestseller: true
   },
   {
-    id: 3, emoji: '',
+    id: 3,
     name: 'धूप',
     category: 'घरगुती सुगंधित उत्पादने',
     desc:'पूजा, ध्यान, सुगंधित वातावरण निर्मिती.',
@@ -30,7 +30,7 @@ const PRODUCTS = [
     bestseller: true 
   },
   {
-    id: 4, emoji: '🍃',
+    id: 4, 
     name: 'पणती',
     category: 'शेणामातीपासुन',
     desc:'भक्ती व श्रद्धेचे प्रतीक: गणपती बाप्पा म्हणजे भक्ती, विश्वास आणि अपार प्रेम, असे मानले जाते.',
@@ -38,69 +38,14 @@ const PRODUCTS = [
     bestseller: true
   },
   {
-    id: 5, emoji: '',
+    id: 5, 
     name: 'गौरी',
     category: 'नैसर्गिक',
     desc: 'धार्मिक विधी: हिंदू धर्मात गोवऱ्या पवित्र मानल्या जातात. यज्ञ, होम-हवन आणि सत्यनारायण पूजेमध्ये गोवऱ्यांचा वापर अग्नी प्रज्वलित करण्यासाठी केला जातो.',
     price: 450, mrp: 600, weight: 'नग',
     bestseller: true
   },
-  {
-    id: 6, emoji: '',
-    name: '',
-    category: '',
-    desc: '.',
-    price: 80, mrp: 100, weight: '1 किलो',
-    bestseller: false
-  },
-  {
-    id: 7, emoji: '🌽',
-    name: 'ज्वारी पीठ',
-    category: 'पीठ',
-    desc: 'ताज्या ज्वारीपासून दगडी चक्कीवर दळलेले पीठ. भाकरीसाठी अत्युत्तम.',
-    price: 60, mrp: 80, weight: '1 किलो',
-    bestseller: false
-  },
-  {
-    id: 8, emoji: '🥥',
-    name: 'सुका खोबरा',
-    category: 'नैसर्गिक',
-    desc: 'कोकणातील ताज्या नारळापासून तयार केलेला उच्च दर्जाचा सुका खोबरा.',
-    price: 180, mrp: 240, weight: '250 ग्रॅम',
-    bestseller: false
-  },
-  {
-    id: 9, emoji: '🟡',
-    name: 'हळद पावडर',
-    category: 'मसाले',
-    desc: 'सांगली हळदीपासून तयार केलेली शुद्ध आणि सुगंधी हळद. औषधी गुणधर्माने भरपूर.',
-    price: 90, mrp: 120, weight: '200 ग्रॅम',
-    bestseller: false
-  },
-  {
-    id: 10, emoji: '🫙',
-    name: 'आंबा लोणचे',
-    category: 'लोणचे',
-    desc: 'कोकणच्या हापूस आंब्यापासून घरगुती पद्धतीने तयार केलेले चविष्ट लोणचे.',
-    price: 200, mrp: 260, weight: '500 ग्रॅम',
-    bestseller: true
-  },
-  {
-    id: 11, emoji: '🫙',
-    name: 'लिंबू लोणचे',
-    category: 'लोणचे',
-    desc: 'खास मराठमोळ्या पद्धतीने तयार केलेले तिखट-मसाल्याचे लिंबू लोणचे.',
-    price: 160, mrp: 200, weight: '400 ग्रॅम',
-    bestseller: false
-  },
-  {
-    id: 12, emoji: '🌿',
-    name: 'कढीपत्ता पावडर',
-    category: 'मसाले',
-    desc: 'सुकवलेल्या ताज्या कढीपत्त्यापासून बनवलेली पावडर. चटणी व भाजीत उपयोगी.',
-    price: 70, mrp: 100, weight: '100 ग्रॅम',
-    bestseller: false
-  }
+  
 ];
 
 // ===== EVENTS =====

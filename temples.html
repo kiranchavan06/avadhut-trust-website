@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>मंदिर परिसर - अवधूत चिंतन गोशाळा</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+.temples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.temple-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+}
+.temple-img {
+  width: 100%;
+  height: 220px;
+  background: #FFF3E0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+}
+.temple-img img { width: 100%; height: 220px; object-fit: cover; }
+.temple-info { padding: 1rem; }
+.temple-name { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 0.3rem; }
+.temple-desc { font-size: 0.85rem; color: #666; line-height: 1.5; }
+.loading { text-align: center; padding: 3rem; color: #999; font-size: 1rem; }
+.page-hero {
+  background: linear-gradient(135deg, #E05A00, #FF8C3A);
+  color: white;
+  text-align: center;
+  padding: 3rem 1rem 2.5rem;
+}
+.page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; }
+.page-hero p { opacity: 0.9; font-size: 1rem; }
+</style>
+</head>
+<body>
+<nav>
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">🪔 <span>अवधूत चिंतन गोशाळा</span></a>
+<ul class="nav-links" id="navLinks">
+<li><a href="index.html">मुख्यपृष्ठ</a></li>
+<li><a href="events.html">कार्यक्रम</a></li>
+<li><a href="products.html">उत्पादने</a></li>
+<li><a href="reviews.html">अभिप्राय</a></li>
+<li><a href="active.html">सदस्य</a></li>
+<li><a href="temples.html" class="active">मंदिर परिसर</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul>
+<button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+</div>
+</nav>
+
+<div class="page-hero">
+  <h1>🛕 मंदिर परिसर</h1>
+  <p>अवधूत चिंतन देवस्थानचे सर्व मंदिरे</p>
+</div>
+
+<div id="templesContainer" class="temples-grid">
+  <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
+</div>
+
+<footer>
+<div class="footer-inner">
+<div>
+<div class="footer-logo">🪔 अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट</div>
+</div>
+<div>
+<h4>द्रुत दुवे</h4>
+<ul>
+<li><a href="index.html">मुख्यपृष्ठ</a></li>
+<li><a href="products.html">उत्पादने</a></li>
+<li><a href="events.html">कार्यक्रम</a></li>
+<li><a href="reviews.html">अभिप्राय</a></li>
+</ul>
+</div>
+<div>
+<h4>संपर्क</h4>
+<ul>
+<li><a href="https://wa.me/91xxxxxxxxxx">📱 WhatsApp: +91 xxxxxxxxxx</a></li>
+<li><a href="#">📍 अहिल्यानगर, महाराष्ट्र</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">© 2026 अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट. सर्व हक्क राखीव.</div>
+</footer>
+
+<script>
+function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+</script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
+  authDomain: "avadhut-trust.firebaseapp.com",
+  projectId: "avadhut-trust",
+  storageBucket: "avadhut-trust.firebasestorage.app",
+  messagingSenderId: "291155545994",
+  appId: "1:291155545994:web:2aaf2ad05bc1c716630273"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function loadTemples() {
+  const container = document.getElementById('templesContainer');
+  try {
+    const snap = await getDocs(collection(db, 'temples'));
+    if (snap.empty) {
+      container.innerHTML = '<div class="loading" style="grid-column:1/-1;">📭 सध्या कोणतेही मंदिर नाही.</div>';
+      return;
+    }
+    let html = '';
+    snap.forEach(d => {
+      const t = d.data();
+      html += `
+        <div class="temple-card">
+          <div class="temple-img">
+            ${t.image ? `<img src="${t.image}" alt="${t.name}" />` : '🛕'}
+          </div>
+          <div class="temple-info">
+            <div class="temple-name">${t.name}</div>
+            ${t.desc ? `<div class="temple-desc">${t.desc}</div>` : ''}
+          </div>
+        </div>`;
+    });
+    container.innerHTML = html;
+  } catch (err) {
+    container.innerHTML = '<div class="loading" style="grid-column:1/-1;">❌ लोड होण्यात अडचण आली.</div>';
+  }
+}
+
+loadTemples();
+</script>
+</body>
+</html>

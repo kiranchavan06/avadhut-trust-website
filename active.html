@@ -36,6 +36,17 @@
 .member-name { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 0.4rem; }
 .member-phone { font-size: 0.9rem; color: #FF6F00; font-weight: 600; margin-bottom: 0.3rem; }
 .member-address { font-size: 0.85rem; color: #666; line-height: 1.5; }
+.member-type-badge {
+  display: inline-block;
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.badge-board { background: #FF6F00; color: white; }
+.badge-team { background: #1565C0; color: white; }
+.badge-active { background: #2E7D32; color: white; }
 .loading { text-align: center; padding: 3rem; color: #999; font-size: 1rem; }
 .page-hero {
   background: linear-gradient(135deg, #E05A00, #FF8C3A);
@@ -45,10 +56,39 @@
 }
 .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; }
 .page-hero p { opacity: 0.9; font-size: 1rem; }
+.member-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 1.5rem 1rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.member-tab {
+  padding: 0.6rem 1.5rem;
+  border: 2px solid #FF6F00;
+  border-radius: 25px;
+  background: white;
+  color: #FF6F00;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+.member-tab.active { background: #FF6F00; color: white; }
+.tab-section { display: none; }
+.tab-section.visible { display: block; }
+.section-heading {
+  text-align: center;
+  padding: 1.5rem 1rem 0.5rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #FF6F00;
+}
 #toast { position: fixed; bottom: 2rem; right: 2rem; background: #333; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: none; z-index: 999; }
 </style>
 </head>
-
 <body>
 
 <nav>
@@ -62,7 +102,7 @@
       <li><a href="reviews.html">अभिप्राय</a></li>
       <li><a href="admin.html">Admin</a></li>
     </ul>
-    
+    <button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
@@ -71,8 +111,35 @@
   <p>अवधूत चिंतन गोशाळा संस्थेचे सदस्य</p>
 </div>
 
-<div id="membersContainer" class="members-grid">
-  <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
+<!-- 3 TABS -->
+<div class="member-tabs">
+  <button class="member-tab active" onclick="showTab('board', this)">🏅 Board Members</button>
+  <button class="member-tab" onclick="showTab('team', this)">👨‍💼 Our Team</button>
+  <button class="member-tab" onclick="showTab('active', this)">✅ Active Members</button>
+</div>
+
+<!-- BOARD MEMBERS -->
+<div id="tab-board" class="tab-section visible">
+  <div class="section-heading">🏅 Board Members</div>
+  <div id="boardContainer" class="members-grid">
+    <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
+  </div>
+</div>
+
+<!-- OUR TEAM -->
+<div id="tab-team" class="tab-section">
+  <div class="section-heading">👨‍💼 Our Team</div>
+  <div id="teamContainer" class="members-grid">
+    <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
+  </div>
+</div>
+
+<!-- ACTIVE MEMBERS -->
+<div id="tab-active" class="tab-section">
+  <div class="section-heading">✅ Active Members</div>
+  <div id="activeContainer" class="members-grid">
+    <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
+  </div>
 </div>
 
 <footer>
@@ -104,6 +171,13 @@
 
 <script>
 function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.member-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('visible');
+  btn.classList.add('active');
+}
 </script>
 
 <script type="module">
@@ -122,41 +196,60 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+function memberCard(s, badgeClass, badgeLabel) {
+  return `
+    <div class="member-card">
+      <div class="member-img">
+        ${s.image ? `<img src="${s.image}" alt="${s.name}" />` : '👤'}
+      </div>
+      <div class="member-info">
+        <div class="member-name">${s.name}</div>
+        <span class="member-type-badge ${badgeClass}">${badgeLabel}</span>
+        ${s.post ? `<div style="font-size:0.85rem;color:#555;margin-bottom:0.3rem;">🏷️ ${s.post}</div>` : ''}
+        <div class="member-phone">📱 ${s.phone}</div>
+        ${s.address ? `<div class="member-address">📍 ${s.address}</div>` : ''}
+      </div>
+    </div>`;
+}
+
 async function loadMembers() {
-  const container = document.getElementById('membersContainer');
   try {
     const snap = await getDocs(collection(db, 'sadasy'));
 
-    if (snap.empty) {
-      container.innerHTML = '<div class="loading" style="grid-column:1/-1;">📭 सध्या कोणतेही सदस्य नाहीत.</div>';
-      return;
-    }
+    let boardHtml = '';
+    let teamHtml = '';
+    let activeHtml = '';
 
-    let html = '';
     snap.forEach(d => {
       const s = d.data();
-      html += `
-        <div class="member-card">
-          <div class="member-img">
-            ${s.image ? `<img src="${s.image}" alt="${s.name}" />` : '👤'}
-          </div>
-          <div class="member-info">
-            <div class="member-name">${s.name}</div>
-            <div class="member-phone">📱 ${s.phone}</div>
-            ${s.address ? `<div class="member-address">📍 ${s.address}</div>` : ''}
-          </div>
-        </div>`;
+      const type = (s.memberType || '').toLowerCase().trim();
+
+      if (type === 'board members' || type === 'board') {
+        boardHtml += memberCard(s, 'badge-board', '🏅 Board Member');
+      } else if (type === 'our team' || type === 'team') {
+        teamHtml += memberCard(s, 'badge-team', '👨‍💼 Our Team');
+      } else {
+        activeHtml += memberCard(s, 'badge-active', '✅ Active Member');
+      }
     });
 
-    container.innerHTML = html;
+    document.getElementById('boardContainer').innerHTML =
+      boardHtml || '<div class="loading" style="grid-column:1/-1;">📭 Board Members नाहीत.</div>';
+    document.getElementById('teamContainer').innerHTML =
+      teamHtml || '<div class="loading" style="grid-column:1/-1;">📭 Team Members नाहीत.</div>';
+    document.getElementById('activeContainer').innerHTML =
+      activeHtml || '<div class="loading" style="grid-column:1/-1;">📭 Active Members नाहीत.</div>';
+
   } catch (err) {
-    container.innerHTML = '<div class="loading" style="grid-column:1/-1;">❌ लोड होण्यात अडचण आली.</div>';
     console.error(err);
+    ['boardContainer','teamContainer','activeContainer'].forEach(id => {
+      document.getElementById(id).innerHTML =
+        '<div class="loading" style="grid-column:1/-1;">❌ लोड होण्यात अडचण आली.</div>';
+    });
   }
 }
 
 loadMembers();
-
 </script>
 </body>
 </html>

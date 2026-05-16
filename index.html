@@ -48,6 +48,13 @@
 </div>
 
 <!-- FEATURED PRODUCTS -->
+ <section class="objectives-page">
+  <div class="objectives-title">
+    <h1>🎯 आमची उद्दिष्टे</h1>
+    <p>अवधूत चिंतन गोशाळा संस्थेची प्रमुख उद्दिष्टे</p>
+  </div>
+  <div class="objectives-grid" id="homeUdishtContainer"></div>
+</section>
 <div class="section">
   <div class="section-title">
     <h2>लोकप्रिय उत्पादने</h2>
@@ -310,6 +317,41 @@ async function loadHomeReviews() {
   }
 }
 
+// Home Udisht
+async function loadHomeUdisht() {
+  const container = document.getElementById('homeUdishtContainer');
+
+  try {
+    const snap = await getDocs(collection(db, 'udisht'));
+
+    if (snap.empty) {
+      container.innerHTML =
+        '<p style="text-align:center;color:#999;grid-column:1/-1;">उद्दिष्टे उपलब्ध नाहीत.</p>';
+      return;
+    }
+
+    let html = '';
+
+    snap.forEach(doc => {
+      const u = doc.data();
+
+      html += `
+        <div class="objective-card">
+          <div class="objective-icon">${u.icon || '🎯'}</div>
+          <h3>${u.title || ''}</h3>
+          <p>${u.desc || ''}</p>
+        </div>
+      `;
+    });
+
+    container.innerHTML = html;
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+loadHomeUdisht();
 loadFeaturedProducts();
 loadHomeEvents();
 loadHomeSadasy();

@@ -177,6 +177,23 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div class="form-row"><label>नाव *</label><input type="text" id="sName" placeholder="सदस्याचे नाव" /></div>
 <div class="form-row"><label>फोन नंबर *</label><input type="tel" id="sPhone" placeholder="9876543210" /></div>
 <div class="form-row"><label>पत्ता *</label><textarea id="sAddress" placeholder="पूर्ण पत्ता"></textarea></div>
+<div class="form-row"><label>प्रकार *</label>
+<select id="sType" onchange="showSubType()">
+  <option value="board">🏛️ बोर्ड मेंबर</option>
+  <option value="team">👨‍👩‍👧 आमची टीम</option>
+  <option value="active">✅ सक्रिय सदस्य</option>
+</select></div>
+
+<div class="form-row" id="subTypeRow">
+<label>पद *</label>
+<select id="sSubType">
+  <option value="adyksh">👑 अध्यक्ष</option>
+  <option value="upadyksh">🤝 उपाध्यक्ष</option>
+  <option value="sachiv">📝 सचिव</option>
+</select></div>
+
+<div class="form-row"><label>पद / काम</label>
+<input type="text" id="sWork" placeholder="उदा. गोशाळा सेवा, मार्केटिंग" /></div>
 <div class="form-row">
   <label>📷 फोटो</label>
   <div class="photo-upload-box">
@@ -453,7 +470,10 @@ window.uploadSadasyPhoto = (input) => {
   if (!file) return;
   uploadPhoto(file, 'sadasy', 'sProgressBar', 'sUploadProgress', 'sUploadStatus', 'sImagePreview', 'sImage', 'sSaveBtn');
 };
-
+window.showSubType = () => {
+  const type = document.getElementById('sType').value;
+  document.getElementById('subTypeRow').style.display = type === 'board' ? 'block' : 'none';
+};
 window.saveSadasy = async () => {
   const name = document.getElementById('sName').value.trim();
   const phone = document.getElementById('sPhone').value.trim();
@@ -463,6 +483,9 @@ window.saveSadasy = async () => {
     address: document.getElementById('sAddress').value,
     image: document.getElementById('sImage').value,
     createdAt: new Date()
+    type: document.getElementById('sType').value,
+    subType: document.getElementById('sSubType')?.value || '',
+    work: document.getElementById('sWork').value,
   });
   showToast('✅ सदस्य जोडला!');
   ['sName','sPhone','sAddress'].forEach(id => document.getElementById(id).value = '');

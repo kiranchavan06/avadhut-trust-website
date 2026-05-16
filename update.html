@@ -83,43 +83,51 @@
     </ul>
   </div>
 </nav>
-
 <section class="objectives-page">
-
-  <div class="objectives-title">
+<div class="objectives-title">
     <h1>🎯 आमची उद्दिष्टे</h1>
     <p>अवधूत चिंतन गोशाळा संस्थेची प्रमुख उद्दिष्टे</p>
-  </div>
-
-  <div class="objectives-grid">
-
-    <div class="objective-card">
-      <div class="objective-icon">🐄</div>
-      <h3>गोसेवा</h3>
-      <p>गायींचे संगोपन, संरक्षण आणि सेवा करणे.</p>
-    </div>
-
-    <div class="objective-card">
-      <div class="objective-icon">🪔</div>
-      <h3>धार्मिक कार्य</h3>
-      <p>धार्मिक कार्यक्रम आणि सत्संग आयोजित करणे.</p>
-    </div>
-
-    <div class="objective-card">
-      <div class="objective-icon">🌿</div>
-      <h3>नैसर्गिक उत्पादने</h3>
-      <p>गोमूत्र आणि शेणापासून उत्पादने तयार करणे.</p>
-    </div>
-
-    <div class="objective-card">
-      <div class="objective-icon">🤝</div>
-      <h3>समाजसेवा</h3>
-      <p>गरजू लोकांना मदत आणि सामाजिक सेवा करणे.</p>
-    </div>
-
-  </div>
-
+  <div class="objectives-grid" id="udishtContainer"></div>
+</div>
 </section>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const firebaseConfig = {
+  apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
+  authDomain: "avadhut-trust.firebaseapp.com",
+  projectId: "avadhut-trust",
+  storageBucket: "avadhut-trust.firebasestorage.app",
+  messagingSenderId: "291155545994",
+  appId: "1:291155545994:web:2aaf2ad05bc1c716630273"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+async function loadUdisht() {  const container = document.getElementById('udishtContainer');
+  const snap = await getDocs(collection(db, 'udisht'));
+  if (snap.empty) {
+    container.innerHTML = '<p>कोणतीही उद्दिष्टे नाहीत.</p>';
+    return;
+  }
+  let html = '';
+  snap.forEach(doc => {
+    const u = doc.data();
+    html += `
+      <div class="objective-card">
+        <div class="objective-icon">${u.icon}</div>
+        <h3>${u.title}</h3>
+        <p>${u.desc}</p>
+      </div>
+    `;
+  });
+  container.innerHTML = html;
+}
+loadUdisht();
 
+</script>
 </body>
 </html>

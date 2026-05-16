@@ -244,7 +244,10 @@ window.doLogin = () => {
   if (u === 'trust' && p === 'trust@12345') {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
-    loadProducts(); loadEvents(); loadReviews(); loadSadasy();
+    loadProducts(); 
+    loadEvents(); 
+    loadReviews(); 
+    loadSadasy();
     loadUdisht();
   } else {
     document.getElementById('loginError').style.display = 'block';

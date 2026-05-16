@@ -415,6 +415,12 @@ async function loadEvents() {
   snap.forEach(d => {
     const e = d.data();
     html += `<tr>
+      <td style="display:flex; gap:0.5rem;">
+
+  <button class="btn-edit"
+    onclick="editEvents()">
+    Edit
+    </button>
       <td>${e.image ? `<img src="${e.image}" class="product-img" />` : '📅'}</td>
       <td><strong>${e.title}</strong></td>
       <td>${e.date} ${e.time || ''}</td>

@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>कार्यक्रम - अवधूत चिंतन गोशाळा</title>
 <link rel="stylesheet" href="style.css" />
-
 <style>
 .events-grid {
   display: grid;
@@ -37,115 +36,96 @@
 .event-location { font-size: 0.85rem; color: #666; margin-bottom: 0.3rem; }
 .event-time { font-size: 0.85rem; color: #888; margin-bottom: 0.5rem; }
 .event-desc { font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; }
-
-.btn-register {
-  width: 100%;
-  padding: 0.6rem;
-  border: none;
-  border-radius: 8px;
-  background: #FF6F00;
-  color: white;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  margin-top: 0.5rem;
-}
+.seats-bar { margin: 0.75rem 0; }
+.seats-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem; }
+.seats-progress { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+.seats-fill { height: 100%; background: #FF6F00; border-radius: 4px; }
+.seats-fill.full { background: #C62828; }
+.btn-register { width: 100%; padding: 0.6rem; border: none; border-radius: 8px; background: #FF6F00; color: white; font-weight: 700; font-size: 0.95rem; cursor: pointer; margin-top: 0.5rem; }
 .btn-register:disabled { background: #ccc; cursor: not-allowed; }
 .btn-register.full { background: #C62828; }
-
-.modal-overlay {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-}
+.btn-register.past { background: #888; }
+.event-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; padding: 1rem; max-width: 1200px; margin: 0 auto; }
+.event-tab { padding: 0.5rem 1.2rem; border: 2px solid #FF6F00; border-radius: 20px; background: white; color: #FF6F00; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+.event-tab.active { background: #FF6F00; color: white; }
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal {
-  background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  width: 90%;
-  max-width: 400px;
-}
-.modal-btns { display: flex; gap: 0.5rem; margin-top: 1rem; }
-.btn-confirm {
-  flex: 1; padding: 0.6rem;
-  background: #FF6F00; color: white;
-  border: none; border-radius: 8px;
-}
-.btn-cancel {
-  flex: 1; padding: 0.6rem;
-  background: #eee; border: none;
-}
+.modal { background: white; border-radius: 12px; padding: 1.5rem; width: 90%; max-width: 400px; }
+.modal h3 { color: #FF6F00; margin-bottom: 1rem; }
+.modal input { width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 0.75rem; font-size: 0.95rem; box-sizing: border-box; }
+.modal-btns { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+.btn-confirm { flex: 1; padding: 0.6rem; background: #FF6F00; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+.btn-cancel { flex: 1; padding: 0.6rem; background: #eee; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+.update-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 1.25rem; margin-bottom: 1rem; border-left: 4px solid #FF6F00; }
+.update-title { font-size: 1rem; font-weight: 700; color: #333; margin-bottom: 0.4rem; }
+.update-text { font-size: 0.9rem; color: #555; line-height: 1.6; }
+.update-date { font-size: 0.8rem; color: #999; margin-top: 0.5rem; }
+.updates-wrap { max-width: 1200px; margin: 0 auto; padding: 1rem; }
 .loading { text-align: center; padding: 3rem; color: #999; }
-#toast { position: fixed; bottom: 2rem; right: 2rem; background: #333; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: none; z-index: 999; }
-
-.page-hero {
-  background: linear-gradient(135deg, #ca5e17, #fb8733);
-  color: white;
-  text-align: center;
-  padding: 3rem 1rem 2.5rem;
-}
+.page-hero { background: linear-gradient(135deg, #ca5e17, #fb8733); color: white; text-align: center; padding: 3rem 1rem 2.5rem; }
 .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; }
 .page-hero p { opacity: 0.9; font-size: 1rem; }
 #toast { position: fixed; bottom: 2rem; right: 2rem; background: #333; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: none; z-index: 999; }
-
 </style>
 </head>
-
 <body>
-  <!-- NAV -->
 <nav>
-  <div class="nav-inner">
-    <a href="index.html" class="nav-logo">🪔 <span>अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट</span></a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="index.html" >मुख्यपृष्ठ</a></li>
-      <li><a href="update.html" >उद्दिष्टे</a></li>
-      <li><a href="events.html" class="active">कार्यक्रम</a></li>
-      <li><a href="products.html">उत्पादने</a></li>
-      <li><a href="active.html">सदस्य</a></li>
-      <li><a href="reviews.html">अभिप्राय</a></li>
-      <li><a href="admin.html">Admin</a></li<>
-    </ul>
-    
-  </div>
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">🪔 <span>अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट</span></a>
+<ul class="nav-links" id="navLinks">
+<li><a href="index.html">मुख्यपृष्ठ</a></li>
+<li><a href="update.html">उद्दिष्टे</a></li>
+<li><a href="events.html" class="active">कार्यक्रम</a></li>
+<li><a href="products.html">उत्पादने</a></li>
+<li><a href="active.html">सदस्य</a></li>
+<li><a href="reviews.html">अभिप्राय</a></li>
+<li><a href="admin.html">Admin</a></li>
+</ul>
+<button class="hamburger" onclick="toggleNav()"><span></span><span></span><span></span></button>
+</div>
 </nav>
 
 <div class="page-hero">
-  <h1>आमचे कार्यक्रम</h1>
+  <h1>📅 आमचे कार्यक्रम</h1>
   <p>अवधूत चिंतन गोशाळेचे कार्यक्रम</p>
 </div>
 
-<div id="eventsContainer" class="events-grid">
-  <div class="loading">⏳ कार्यक्रम लोड होत आहेत...</div>
+<div class="event-tabs">
+  <button class="event-tab active" onclick="showEventTab('upcoming', this)">📅 येणारे कार्यक्रम</button>
+  <button class="event-tab" onclick="showEventTab('past', this)">✅ झालेले कार्यक्रम</button>
+  <button class="event-tab" onclick="showEventTab('updates', this)">📢 Daily Updates</button>
+</div>
+
+<div id="upcomingContainer" class="events-grid">
+  <div class="loading">⏳ लोड होत आहे...</div>
+</div>
+
+<div id="pastContainer" class="events-grid" style="display:none;">
+  <div class="loading">⏳ लोड होत आहे...</div>
+</div>
+
+<div id="updatesContainer" class="updates-wrap" style="display:none;">
+  <div class="loading">⏳ लोड होत आहे...</div>
 </div>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="regModal">
   <div class="modal">
     <h3>📝 नोंदणी करा</h3>
-    <p id="modalEventName"></p>
-
-    <input type="text" id="regName" placeholder="नाव" />
-    <input type="tel" id="regPhone" placeholder="फोन" />
-    <input type="text" id="regCity" placeholder="शहर" />
-
+    <p id="modalEventName" style="color:#666; margin-bottom:1rem; font-size:0.9rem;"></p>
+    <input type="text" id="regName" placeholder="पूर्ण नाव *" />
+    <input type="tel" id="regPhone" placeholder="फोन नंबर *" />
+    <input type="text" id="regCity" placeholder="गाव/शहर" />
     <div class="modal-btns">
-      <button class="btn-cancel" onclick="closeModal()">रद्द</button>
-      <button class="btn-confirm" onclick="confirmRegister()">नोंदणी</button>
+      <button class="btn-cancel" onclick="closeModal()">रद्द करा</button>
+      <button class="btn-confirm" onclick="confirmRegister()">✅ नोंदणी करा</button>
     </div>
   </div>
 </div>
-
 <div id="toast"></div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, increment, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, increment, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
@@ -159,77 +139,137 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-let currentEventId = "";
-let currentEventName = "";
+window.toggleNav = () => document.getElementById('navLinks').classList.toggle('open');
 
-/* 🔥 NEW: DATE CHECK */
+let currentEventId = '';
+let currentEventName = '';
+let allEvents = [];
+
 function isEventPast(dateStr) {
   if (!dateStr) return false;
-
   const today = new Date();
   const eventDate = new Date(dateStr);
-
   today.setHours(0,0,0,0);
   eventDate.setHours(0,0,0,0);
-
   return eventDate < today;
 }
 
-/* LOAD EVENTS */
-async function loadEvents() {
-  const container = document.getElementById('eventsContainer');
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('mr-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+}
 
-  const snap = await getDocs(collection(db, 'events'));
-
-  if (snap.empty) {
-    container.innerHTML = "No events";
+function renderEvents(events, containerId, showRegister) {
+  const container = document.getElementById(containerId);
+  if (events.length === 0) {
+    container.innerHTML = '<div class="loading">📭 कोणतेही कार्यक्रम नाहीत.</div>';
     return;
   }
 
-  let events = [];
-  snap.forEach(d => events.push({ id: d.id, ...d.data() }));
-
-  events.sort((a,b) => new Date(a.date) - new Date(b.date));
-
   container.innerHTML = events.map(e => {
-
     const totalSeats = e.seats || 0;
     const registeredSeats = e.registeredSeats || 0;
     const availableSeats = totalSeats - registeredSeats;
-
     const isFull = totalSeats > 0 && availableSeats <= 0;
-    const isPast = isEventPast(e.date);
     const hasSeats = totalSeats > 0;
     const percent = hasSeats ? Math.min((registeredSeats / totalSeats) * 100, 100) : 0;
 
     return `
       <div class="event-card">
         <div class="event-img">
-          ${e.image ? `<img src="${e.image}">` : "📅"}
+          ${e.image ? `<img src="${e.image}" alt="${e.title}" />` : '📅'}
         </div>
-
         <div class="event-info">
           <div class="event-title">${e.title}</div>
-          <div class="event-date">📆 ${e.date}</div>
-          <div class="event-time">${e.time || ""}</div>
-          <div class="event-location">${e.location || ""}</div>
-          <div class="event-desc">${e.desc || ""}</div>
-
-          <button class="btn-register ${(isFull || isPast) ? 'full' : ''}"
-            ${(isFull || isPast) ? "disabled" : `onclick="openModal('${e.id}','${e.title}')"`}>
-
-            ${isPast ? "⛔ वेळ संपली" : isFull ? "🔴 बंद" : "📝 नोंदणी करा"}
-          </button>
+          <div class="event-date">📆 ${formatDate(e.date)}</div>
+          ${e.time ? `<div class="event-time">🕐 ${e.time}</div>` : ''}
+          ${e.location ? `<div class="event-location">📍 ${e.location}</div>` : ''}
+          ${e.desc ? `<div class="event-desc">${e.desc}</div>` : ''}
+          ${hasSeats && showRegister ? `
+          <div class="seats-bar">
+            <div class="seats-info">
+              <span>${isFull ? '🔴 सर्व जागा भरल्या' : `🟢 ${availableSeats} जागा उपलब्ध`}</span>
+              <span>${registeredSeats}/${totalSeats}</span>
+            </div>
+            <div class="seats-progress">
+              <div class="seats-fill ${isFull ? 'full' : ''}" style="width:${percent}%"></div>
+            </div>
+          </div>` : ''}
+          ${showRegister ? `
+          <button class="btn-register ${isFull ? 'full' : ''}"
+            ${isFull ? 'disabled' : `onclick="openModal('${e.id}','${e.title}')"`}>
+            ${isFull ? '🔴 नोंदणी बंद' : '📝 नोंदणी करा'}
+          </button>` : `
+          <button class="btn-register past" disabled>✅ कार्यक्रम झाला</button>`}
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
-/* MODAL */
-window.openModal = (id,name) => {
+async function loadEvents() {
+  const snap = await getDocs(collection(db, 'events'));
+  allEvents = [];
+  snap.forEach(d => allEvents.push({ id: d.id, ...d.data() }));
+  allEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const upcoming = allEvents.filter(e => !isEventPast(e.date));
+  const past = allEvents.filter(e => isEventPast(e.date));
+
+  renderEvents(upcoming, 'upcomingContainer', true);
+  renderEvents(past, 'pastContainer', false);
+}
+
+async function loadUpdates() {
+  const container = document.getElementById('updatesContainer');
+  try {
+    const q = query(collection(db, 'updates'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      container.innerHTML = '<div class="loading">📭 कोणतेही updates नाहीत.</div>';
+      return;
+    }
+    let html = '';
+    snap.forEach(d => {
+      const u = d.data();
+      const date = u.createdAt?.toDate ? u.createdAt.toDate().toLocaleDateString('mr-IN') : '';
+      html += `
+        <div class="update-card">
+          <div class="update-title">📢 ${u.title}</div>
+          <div class="update-text">${u.text}</div>
+          <div class="update-date">🕐 ${date}</div>
+        </div>`;
+    });
+    container.innerHTML = html;
+  } catch (err) {
+    container.innerHTML = '<div class="loading">❌ लोड होण्यात अडचण आली.</div>';
+  }
+}
+
+window.showEventTab = (tab, btn) => {
+  document.querySelectorAll('.event-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('upcomingContainer').style.display = 'none';
+  document.getElementById('pastContainer').style.display = 'none';
+  document.getElementById('updatesContainer').style.display = 'none';
+
+  if (tab === 'upcoming') {
+    document.getElementById('upcomingContainer').style.display = 'grid';
+  } else if (tab === 'past') {
+    document.getElementById('pastContainer').style.display = 'grid';
+  } else if (tab === 'updates') {
+    document.getElementById('updatesContainer').style.display = 'block';
+    loadUpdates();
+  }
+};
+
+window.openModal = (id, name) => {
   currentEventId = id;
   currentEventName = name;
+  document.getElementById('modalEventName').textContent = '📅 ' + name;
+  document.getElementById('regName').value = '';
+  document.getElementById('regPhone').value = '';
+  document.getElementById('regCity').value = '';
   document.getElementById('regModal').classList.add('open');
 };
 
@@ -237,29 +277,48 @@ window.closeModal = () => {
   document.getElementById('regModal').classList.remove('open');
 };
 
-/* BOOKING */
 window.confirmRegister = async () => {
-  const name = regName.value;
-  const phone = regPhone.value;
-  const city = regCity.value;
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const city = document.getElementById('regCity').value.trim();
 
-  await addDoc(collection(db,"registrations"),{
-    eventId: currentEventId,
-    eventName: currentEventName,
-    name, phone, city,
-    createdAt: new Date()
-  });
+  if (!name || !phone) { alert('नाव आणि फोन नंबर आवश्यक आहे!'); return; }
+  if (phone.length !== 10) { alert('10 अंकी फोन नंबर टाका!'); return; }
 
-  await updateDoc(doc(db,"events",currentEventId),{
-    registeredSeats: increment(1)
-  });
+  try {
+    const q = query(collection(db, 'registrations'),
+      where('eventId', '==', currentEventId),
+      where('phone', '==', phone));
+    const existing = await getDocs(q);
+    if (!existing.empty) { alert('हा फोन नंबर आधीच नोंदणी केलेला आहे!'); return; }
 
-  closeModal();
-  loadEvents();
+    await addDoc(collection(db, 'registrations'), {
+      eventId: currentEventId,
+      eventName: currentEventName,
+      name, phone, city,
+      createdAt: new Date()
+    });
+
+    await updateDoc(doc(db, 'events', currentEventId), {
+      registeredSeats: increment(1)
+    });
+
+    closeModal();
+    showToast('✅ नोंदणी यशस्वी! ' + name + ' यांचे स्वागत आहे!');
+    loadEvents();
+  } catch (err) {
+    alert('Error: ' + err.message);
+  }
 };
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 4000);
+}
 
 loadEvents();
 </script>
-
 </body>
 </html>

@@ -222,15 +222,15 @@ async function loadMembers() {
 
     snap.forEach(d => {
       const s = d.data();
-      const type = (s.memberType || '').toLowerCase().trim();
+     const type = (s.type || '').toLowerCase().trim();
 
-      if (type === 'board members' || type === 'board') {
-        boardHtml += memberCard(s, 'badge-board', '🏅 Board Member');
-      } else if (type === 'our team' || type === 'team') {
-        teamHtml += memberCard(s, 'badge-team', '👨‍💼 Our Team');
-      } else {
-        activeHtml += memberCard(s, 'badge-active', '✅ Active Member');
-      }
+     if (type === 'board') {
+  boardHtml += memberCard(s, 'badge-board', '🏅 Board Member');
+} else if (type === 'team') {
+  teamHtml += memberCard(s, 'badge-team', '👨‍💼 Our Team');
+} else {
+  activeHtml += memberCard(s, 'badge-active', '✅ Active Member');
+}
     });
 
     document.getElementById('boardContainer').innerHTML =

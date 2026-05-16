@@ -92,6 +92,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <button class="admin-tab" onclick="showTab('events', this)">📅 कार्यक्रम</button>
 <button class="admin-tab" onclick="showTab('sadasy', this)">👥 सदस्य</button>
 <button class="admin-tab" onclick="showTab('reviews', this)">⭐ अभिप्राय</button>
+<button class="admin-tab" onclick="showTab('udisht', this)">🎯 उद्दिष्टे</button>
 </div>
 
 <!-- PRODUCTS TAB -->
@@ -200,6 +201,17 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div id="tab-reviews" class="admin-section admin-card">
 <h3 style="color:#FF6F00; margin-bottom:1rem;">⭐ अभिप्राय यादी</h3>
 <div id="reviewsList"></div>
+</div>
+<div id="tab-udisht" class="admin-section admin-card">
+   <h3 style="color:#FF6F00; margin-bottom:1rem;">🎯 नवीन उद्दिष्ट जोडा</h3>
+   <div class="form-row"><label>Icon</label><input type="text" id="uIcon" placeholder="🐄" /></div>
+ <div class="form-row"><label>शीर्षक</label>
+  <input type="text" id="uTitle" placeholder="गोसेवा" />
+ </div>
+ <div class="form-row"><label>वर्णन</label><textarea id="uDesc"></textarea></div>
+ <button class="btn-saffron" onclick="saveUdisht()">💾 उद्दिष्ट जतन करा</button>
+ <h3 style="margin-top:2rem; color:#FF6F00;">📋 उद्दिष्ट यादी</h3>
+ <div id="udishtList"></div>
 </div>
 
 </div>

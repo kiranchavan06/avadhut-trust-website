@@ -605,12 +605,24 @@ async function loadUdisht() {
 
     html += `
       <tr>
-        <td style="font-size:1.5rem;">${u.icon || '🎯'}</td>
-        <td><strong>${u.title}</strong></td>
-        <td>${u.desc}</td>
-        <td>
-          <button class="btn-danger" onclick="deleteUdisht('${d.id}')">🗑️ Delete</button>
-        </td>
+        <td style="display:flex; gap:0.5rem;">
+
+  <button class="btn-edit"
+    onclick="editUdisht(
+      '${doc.id}',
+      '${u.icon}',
+      '${u.title}',
+      '${u.desc}'
+    )">
+    ✏️ Edit
+  </button>
+
+  <button class="btn-danger"
+    onclick="deleteUdisht('${doc.id}')">
+    🗑️ Delete
+  </button>
+
+</td>
       </tr>
     `;
   });

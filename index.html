@@ -15,7 +15,7 @@
     <ul class="nav-links" id="navLinks">
       <li><a href="index.html" class="active">मुख्यपृष्ठ</a></li>
       <li><a href="events.html">कार्यक्रम</a></li>
-      <li><a href="active.html">सदस्य</a></li>
+      <li><a href="action.html">सदस्य</a></li>
       <li><a href="products.html">उत्पादने</a></li>
       <li><a href="reviews.html">अभिप्राय</a></li>
       <li><a href="admin.html">Admin</a></li>
@@ -29,7 +29,6 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-badge"></div>
-
   <div style="margin: 1.5rem auto; max-width: 500px; height:auto;">
     <img src="images/temple.png.jpeg" alt="अवधूत चिंतन" style="width:100%; border-radius:16px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);" />
   </div>
@@ -39,7 +38,8 @@
 <div class="stats">
   <div class="stats-inner">
     <div>
-      <div class="stat-num">अवधुत चिंतन बहुउद्देशिय सेवाभावी संस्था तळेगाव (मळे) ता-कोपरगाव जि-अहिल्यानगर</div><div>stapna-22-07-2025</div>
+      <div class="stat-num">अवधुत चिंतन बहुउद्देशिय सेवाभावी संस्था तळेगाव (मळे) ता-कोपरगाव जि-अहिल्यानगर</div>
+      <div>stapna-22-07-2025</div>
       <div>नोंदणी क्रमांक F-0025785(AHM)</div>
       <div>80.g-AALTA9244MF20251</div>
       <div>12-A-AALTEA9244ME20251</div>
@@ -102,6 +102,20 @@
   </div>
 </div>
 
+<!-- SADASY -->
+<div style="background:white; padding:1px 0;">
+<div class="section">
+  <div class="section-title">
+    <h2>आमचे सदस्य</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="grid-3" id="homeSadasy"></div>
+  <div style="text-align:center; margin-top:2rem;">
+    <a href="action.html" class="btn btn-saffron">सर्व सदस्य पहा →</a>
+  </div>
+</div>
+</div>
+
 <!-- REVIEWS -->
 <div style="background:white; padding:1px 0;">
 <div class="section">
@@ -151,7 +165,7 @@
 <script src="data.js"></script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
@@ -174,26 +188,22 @@ window.orderWhatsApp = (name, price) => {
   window.open('https://wa.me/91xxxxxxxxxx?text=' + encodeURIComponent(msg), '_blank');
 };
 
-// Firebase मधून Featured Products
+// Featured Products
 async function loadFeaturedProducts() {
   const fp = document.getElementById('featuredProducts');
   try {
     const snap = await getDocs(collection(db, 'products'));
     const products = [];
     snap.forEach(d => products.push({ id: d.id, ...d.data() }));
-
     if (products.length === 0) {
       fp.innerHTML = '<p style="text-align:center;color:#999;grid-column:1/-1;">उत्पादने लवकरच येतील...</p>';
       return;
     }
-
     products.slice(0, 3).forEach(p => {
       fp.innerHTML += `
         <div class="card">
           <div class="product-img" style="min-height:180px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFF3E8,#FFE0C0);">
-            ${p.image
-              ? `<img src="${p.image}" style="width:100%;height:180px;object-fit:cover;" />`
-              : `<span style="font-size:4rem;">📦</span>`}
+            ${p.image ? `<img src="${p.image}" style="width:100%;height:180px;object-fit:cover;" />` : `<span style="font-size:4rem;">📦</span>`}
           </div>
           <div class="product-body">
             <h3>${p.name}</h3>
@@ -201,20 +211,16 @@ async function loadFeaturedProducts() {
           </div>
           <div class="product-footer">
             <div class="price">₹${p.price} ${p.mrp ? `<span>₹${p.mrp}</span>` : ''}</div>
-            <button class="btn btn-wa"
-              onclick="orderWhatsApp('${p.name}', ${p.price})"
-              style="padding:0.5rem 1rem; font-size:0.88rem;">
+            <button class="btn btn-wa" onclick="orderWhatsApp('${p.name}', ${p.price})" style="padding:0.5rem 1rem; font-size:0.88rem;">
               🛒 खरेदी करा
             </button>
           </div>
         </div>`;
     });
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) { console.error(err); }
 }
 
-// Firebase मधून Home Events
+// Home Events
 async function loadHomeEvents() {
   const he = document.getElementById('homeEvents');
   try {
@@ -222,12 +228,10 @@ async function loadHomeEvents() {
     const events = [];
     snap.forEach(d => events.push({ id: d.id, ...d.data() }));
     events.sort((a, b) => new Date(a.date) - new Date(b.date));
-
     if (events.length === 0) {
       he.innerHTML = '<p style="color:#999;grid-column:1/-1;">कार्यक्रम लवकरच येतील...</p>';
       return;
     }
-
     const monthNames = ['जानेवारी','फेब्रुवारी','मार्च','एप्रिल','मे','जून','जुलै','ऑगस्ट','सप्टेंबर','ऑक्टोबर','नोव्हेंबर','डिसेंबर'];
     events.slice(0, 2).forEach(e => {
       const dateObj = new Date(e.date);
@@ -249,57 +253,69 @@ async function loadHomeEvents() {
           </div>
         </div>`;
     });
-  } catch (err) {
-    console.error(err);
-  }
+  } catch (err) { console.error(err); }
 }
 
-// Reviews - data.js मधून
-const hr = document.getElementById('homeReviews');
-getReviews().slice(0, 3).forEach(r => {
-  hr.innerHTML += reviewCard(r);
-});
+// Home Sadasy
+async function loadHomeSadasy() {
+  const hs = document.getElementById('homeSadasy');
+  try {
+    const snap = await getDocs(collection(db, 'sadasy'));
+    const members = [];
+    snap.forEach(d => members.push({ id: d.id, ...d.data() }));
+    if (members.length === 0) {
+      hs.innerHTML = '<p style="color:#999;grid-column:1/-1;">सदस्य लवकरच येतील...</p>';
+      return;
+    }
+    members.slice(0, 3).forEach(s => {
+      hs.innerHTML += `
+        <div class="card" style="text-align:center; padding:1.5rem;">
+          <div style="width:80px; height:80px; border-radius:50%; overflow:hidden; margin:0 auto 1rem; background:#FFF3E0; display:flex; align-items:center; justify-content:center; font-size:2.5rem;">
+            ${s.image ? `<img src="${s.image}" style="width:100%; height:100%; object-fit:cover;" />` : '👤'}
+          </div>
+          <h3 style="font-size:1rem; font-weight:700; color:#333; margin-bottom:0.3rem;">${s.name}</h3>
+          ${s.work ? `<div style="font-size:0.82rem; color:#FF6F00; font-weight:600;">${s.work}</div>` : ''}
+          <div style="font-size:0.82rem; color:#666; margin-top:0.3rem;">📱 ${s.phone}</div>
+        </div>`;
+    });
+  } catch (err) { console.error(err); }
+}
 
-loadFeaturedProducts();
-loadHomeEvents();
-</script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
-  authDomain: "avadhut-trust.firebaseapp.com",
-  projectId: "avadhut-trust",
-  storageBucket: "avadhut-trust.firebasestorage.app",
-  messagingSenderId: "291155545994",
-  appId: "1:291155545994:web:2aaf2ad05bc1c716630273"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
+// Home Reviews - Firebase मधून
 async function loadHomeReviews() {
-  const container = document.getElementById('homeReviews');
-  if (!container) return;
+  const hr = document.getElementById('homeReviews');
   try {
     const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'), limit(3));
     const snap = await getDocs(q);
-    if (snap.empty) { container.innerHTML = '<p style="text-align:center;color:#999;">अजून कोणतेही अभिप्राय नाहीत.</p>'; return; }
-    let html = '';
+    if (snap.empty) {
+      // Firebase मध्ये नसल्यास data.js वरून दाखवा
+      getReviews().slice(0, 3).forEach(r => { hr.innerHTML += reviewCard(r); });
+      return;
+    }
     snap.forEach(d => {
       const r = d.data();
-      html += `<div class="review-card">
-        <div class="stars">${'★'.repeat(r.rating)}</div>
-        <p class="review-text">"${r.text}"</p>
-        <div class="reviewer-name">${r.name}</div>
-        <div style="font-size:0.8rem;color:#999;">📍 ${r.city || ''}</div>
-      </div>`;
+      hr.innerHTML += `
+        <div class="card review-card">
+          <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+          <p class="review-text">"${r.text?.substring(0,140) || ''}"</p>
+          <div class="reviewer">
+            <div class="reviewer-avatar">${r.name?.charAt(0) || '?'}</div>
+            <div>
+              <div class="reviewer-name">${r.name}</div>
+              <div class="reviewer-place">📍 ${r.city || ''}</div>
+            </div>
+          </div>
+        </div>`;
     });
-    container.innerHTML = html;
-  } catch(err) { console.error(err); }
+  } catch (err) {
+    // error आल्यास data.js वरून दाखवा
+    getReviews().slice(0, 3).forEach(r => { hr.innerHTML += reviewCard(r); });
+  }
 }
 
+loadFeaturedProducts();
+loadHomeEvents();
+loadHomeSadasy();
 loadHomeReviews();
 </script>
 </body>

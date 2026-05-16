@@ -230,8 +230,8 @@ const firebaseConfig = {
   messagingSenderId: "291155545994",
   appId: "1:291155545994:web:2aaf2ad05bc1c716630273"
 };
-
-
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 window.toggleNav = () => document.getElementById('navLinks').classList.toggle('open');
 

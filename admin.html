@@ -265,7 +265,7 @@ window.doLogin = () => {
   if (u === 'trust' && p === 'trust@12345') {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
-    loadProducts(); loadEvents(); loadReviews(); loadSadasy();
+    loadProducts(); loadEvents(); loadReviews(); loadSadasy();loadUdisht();
   } else {
     document.getElementById('loginError').style.display = 'block';
   }
@@ -660,6 +660,8 @@ window.deleteSadasy = async (id) => {
 };
 
 // ===== UDISHT =====
+<!-- UDISHT TAB SCRIPT - हे </script> च्या आधी paste करा -->
+
 window.loadUdisht = async () => {
   const snap = await getDocs(collection(db, 'udisht'));
   const div = document.getElementById('udishtList');
@@ -710,6 +712,14 @@ window.saveUdisht = async () => {
   document.getElementById('uIcon').value = '';
   document.getElementById('uTitle').value = '';
   document.getElementById('uDesc').value = '';
+  loadUdisht();
+};
+
+// ✅ हे नवीन add केले - DELETE function
+window.deleteUdisht = async (id) => {
+  if (!confirm('हे उद्दिष्ट काढायचे आहे का?')) return;
+  await deleteDoc(doc(db, 'udisht', id));
+  showToast('🗑️ उद्दिष्ट काढले!');
   loadUdisht();
 };
 </script>

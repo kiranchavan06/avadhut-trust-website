@@ -153,6 +153,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
   <img id="eImagePreview" class="event-img-preview" />
   <input type="hidden" id="eImage" />
 </div>
+<input type="hidden" id="eEditId" />
 <button class="btn-saffron" id="eSaveBtn" onclick="saveEvent()">💾 कार्यक्रम जोडा</button>
 <h3 style="color:#FF6F00; margin:1.5rem 0 1rem;">📋 कार्यक्रम यादी</h3>
 <div id="eventsList"></div>
@@ -377,29 +378,6 @@ window.deleteProduct = async (id) => {
 };
 
 // ===== EVENTS =====
-window.saveEvent = async () => {
-  const name = document.getElementById('eName').value.trim();
-  const date = document.getElementById('eDate').value;
-  if (!name || !date) { alert('नाव आणि तारीख आवश्यक आहे!'); return; }
-  await addDoc(collection(db, 'events'), {
-    title: name, date,
-    time: document.getElementById('eTime').value,
-    location: document.getElementById('eLocation').value,
-    desc: document.getElementById('eDesc').value,
-    type: document.getElementById('eType').value,
-    image: document.getElementById('eImage').value,
-    createdAt: new Date()
-  });
-  showToast('✅ कार्यक्रम जोडला!');
-  ['eName','eDate','eTime','eLocation','eDesc'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('eImage').value = '';
-  document.getElementById('eImagePreview').style.display = 'none';
-  document.getElementById('eUploadProgress').style.display = 'none';
-  document.getElementById('eUploadStatus').style.display = 'none';
-  document.getElementById('ePhotoFile').value = '';
-  loadEvents();
-};
-
 async function loadEvents() {
   const snap = await getDocs(collection(db, 'events'));
   const div = document.getElementById('eventsList');
@@ -408,17 +386,70 @@ async function loadEvents() {
   snap.forEach(d => {
     const e = d.data();
     html += `<tr>
-      <td>${e.image ? `<img src="${e.image}" class="product-img" />` : '📅'}</td>
+      <td>${e.image ? `<img src="${e.image}" class="product-img" />` : '🖼️'}</td>
       <td><strong>${e.title}</strong></td>
-      <td>${e.date} ${e.time || ''}</td>
+      <td>${e.date}</td>
       <td>${e.location || ''}</td>
       <td>${e.type || ''}</td>
-      <td><button class="btn-danger" onclick="deleteEvent('${d.id}')">🗑️ काढा</button></td>
+      <td>
+        <button class="btn-edit" onclick="editEvent('${d.id}')">✏️ Edit</button>
+        <button class="btn-danger" onclick="deleteEvent('${d.id}')">🗑️ काढा</button>
+      </td>
     </tr>`;
   });
   html += '</tbody></table>';
   div.innerHTML = html;
 }
+
+window.editEvent = async (id) => {
+  const snap = await getDocs(collection(db, 'events'));
+  snap.forEach(d => {
+    if (d.id === id) {
+      const e = d.data();
+      document.getElementById('eName').value = e.title;
+      document.getElementById('eDate').value = e.date;
+      document.getElementById('eTime').value = e.time || '';
+      document.getElementById('eLocation').value = e.location || '';
+      document.getElementById('eDesc').value = e.desc || '';
+      document.getElementById('eType').value = e.type || '';
+      document.getElementById('eImage').value = e.image || '';
+      document.getElementById('eEditId').value = id;
+      document.getElementById('eSaveBtn').textContent = '💾 बदल जतन करा';
+      window.scrollTo(0, 0);
+    }
+  });
+};
+
+window.saveEvent = async () => {
+  const name = document.getElementById('eName').value.trim();
+  const date = document.getElementById('eDate').value;
+  const editId = document.getElementById('eEditId').value;
+  if (!name || !date) { alert('नाव आणि तारीख आवश्यक आहे!'); return; }
+  const data = {
+    title: name, date,
+    time: document.getElementById('eTime').value,
+    location: document.getElementById('eLocation').value,
+    desc: document.getElementById('eDesc').value,
+    type: document.getElementById('eType').value,
+    image: document.getElementById('eImage').value,
+  };
+  if (editId) {
+    await updateDoc(doc(db, 'events', editId), data);
+    showToast('✅ कार्यक्रम अपडेट झाला!');
+    document.getElementById('eEditId').value = '';
+    document.getElementById('eSaveBtn').textContent = '💾 कार्यक्रम जोडा';
+  } else {
+    await addDoc(collection(db, 'events'), { ...data, createdAt: new Date() });
+    showToast('✅ कार्यक्रम जोडला!');
+  }
+  ['eName','eDate','eTime','eLocation','eDesc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('eImage').value = '';
+  document.getElementById('eImagePreview').style.display = 'none';
+  document.getElementById('eUploadProgress').style.display = 'none';
+  document.getElementById('eUploadStatus').style.display = 'none';
+  document.getElementById('ePhotoFile').value = '';
+  loadEvents();
+};
 
 window.deleteEvent = async (id) => {
   if (!confirm('हा कार्यक्रम काढायचा आहे का?')) return;
@@ -482,7 +513,7 @@ window.saveSadasy = async () => {
   document.getElementById('sPhotoFile').value = '';
   loadSadasy();
 };
-
+  /* Function loadSadasy */
 async function loadSadasy() {
   const snap = await getDocs(collection(db, 'sadasy'));
   const div = document.getElementById('sadasyList');
@@ -524,6 +555,7 @@ window.editSadasy = (id, name, phone, address, image, type, subType, work) => {
   document.getElementById('sSaveBtn').onclick = () => updateSadasy(id);
   document.getElementById('tab-sadasy').scrollIntoView({ behavior: 'smooth' });
 };
+
 
 window.updateSadasy = async (id) => {
   const name = document.getElementById('sName').value.trim();

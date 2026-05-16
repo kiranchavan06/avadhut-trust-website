@@ -415,12 +415,6 @@ async function loadEvents() {
   snap.forEach(d => {
     const e = d.data();
     html += `<tr>
-      <td style="display:flex; gap:0.5rem;">
-
-  <button class="btn-edit"
-    onclick="editEvents()">
-    Edit
-    </button>
       <td>${e.image ? `<img src="${e.image}" class="product-img" />` : '📅'}</td>
       <td><strong>${e.title}</strong></td>
       <td>${e.date} ${e.time || ''}</td>
@@ -611,24 +605,12 @@ async function loadUdisht() {
 
     html += `
       <tr>
-        <td style="display:flex; gap:0.5rem;">
-
-  <button class="btn-edit"
-    onclick="editUdisht(
-      '${doc.id}',
-      '${u.icon}',
-      '${u.title}',
-      '${u.desc}'
-    )">
-    ✏️ Edit
-  </button>
-
-  <button class="btn-danger"
-    onclick="deleteUdisht('${doc.id}')">
-    🗑️ Delete
-  </button>
-
-</td>
+        <td style="font-size:1.5rem;">${u.icon || '🎯'}</td>
+        <td><strong>${u.title}</strong></td>
+        <td>${u.desc}</td>
+        <td>
+          <button class="btn-danger" onclick="deleteUdisht('${d.id}')">🗑️ Delete</button>
+        </td>
       </tr>
     `;
   });

@@ -221,8 +221,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
-
+const storage = getStorage(app);
 const firebaseConfig = {
   apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
   authDomain: "avadhut-trust.firebaseapp.com",
@@ -268,20 +267,18 @@ function showToast(msg) {
   t.style.display = 'block';
   setTimeout(() => t.style.display = 'none', 3000);
 }
-
-// ===== PHOTO UPLOAD =====
 function uploadPhoto(file, folder, progressBarId, progressDivId, statusId, previewId, hiddenInputId, saveBtn) {
   if (!file) return;
-  const ext = file.name.split('.').pop();
-  const fileName = `${folder}/${Date.now()}.${ext}`;
-  const storageRef = ref(storage, fileName);
-  const uploadTask = uploadBytesResumable(storageRef, file);
-
+  const CLOUD_NAME = 'dvl3csahg';
+  const UPLOAD_PRESET = 'avadhut-gosala';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', UPLOAD_PRESET);
+  formData.append('folder', folder);
   document.getElementById(progressDivId).style.display = 'block';
   document.getElementById(statusId).style.display = 'block';
   document.getElementById(statusId).textContent = '⏳ अपलोड होत आहे...';
   document.getElementById(saveBtn).disabled = true;
-
   const reader = new FileReader();
   reader.onload = e => {
     const preview = document.getElementById(previewId);
@@ -289,39 +286,42 @@ function uploadPhoto(file, folder, progressBarId, progressDivId, statusId, previ
     preview.style.display = 'block';
   };
   reader.readAsDataURL(file);
-
-  uploadTask.on('state_changed',
-    (snapshot) => {
-      const pct = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
+  xhr.upload.onprogress = (e) => {
+    if (e.lengthComputable) {
+      const pct = Math.round((e.loaded / e.total) * 100);
       document.getElementById(progressBarId).style.width = pct + '%';
       document.getElementById(statusId).textContent = `⏳ ${pct}% अपलोड...`;
-    },
-    (error) => {
-      document.getElementById(statusId).textContent = '❌ अपलोड अयशस्वी!';
-      document.getElementById(saveBtn).disabled = false;
-    },
-    async () => {
-      const url = await getDownloadURL(uploadTask.snapshot.ref);
-      document.getElementById(hiddenInputId).value = url;
-      document.getElementById(previewId).src = url;
-      document.getElementById(statusId).textContent = '✅ फोटो अपलोड झाला!';
-      document.getElementById(saveBtn).disabled = false;
     }
-  );
+  };
+  xhr.onload = () => {
+    const res = JSON.parse(xhr.responseText);
+    if (res.secure_url) {
+      document.getElementById(hiddenInputId).value = res.secure_url;
+      document.getElementById(previewId).src = res.secure_url;
+      document.getElementById(statusId).textContent = '✅ फोटो अपलोड झाला!';
+    } else {
+      document.getElementById(statusId).textContent = '❌ अपलोड अयशस्वी!';
+    }
+    document.getElementById(saveBtn).disabled = false;
+  };
+  xhr.onerror = () => {
+    document.getElementById(statusId).textContent = '❌ Error आला!';
+    document.getElementById(saveBtn).disabled = false;
+  };
+  xhr.send(formData);
 }
-
 window.uploadEventPhoto = (input) => {
   const file = input.files[0];
   if (!file) return;
   uploadPhoto(file, 'events', 'eProgressBar', 'eUploadProgress', 'eUploadStatus', 'eImagePreview', 'eImage', 'eSaveBtn');
 };
-
 window.uploadProductPhoto = (input) => {
   const file = input.files[0];
   if (!file) return;
   uploadPhoto(file, 'products', 'pProgressBar', 'pUploadProgress', 'pUploadStatus', 'pImagePreview', 'pImage', 'pSaveBtn');
 };
-
 window.uploadSadasyPhoto = (input) => {
   const file = input.files[0];
   if (!file) return;

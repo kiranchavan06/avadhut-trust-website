@@ -97,6 +97,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div class="admin-tabs">
 <button class="admin-tab active" onclick="showTab('products', this)">🛍️ उत्पादने</button>
 <button class="admin-tab" onclick="showTab('events', this)">📅 कार्यक्रम</button>
+<button class="admin-tab" onclick="showTab('sadasy', this)">👥 सदस्य</button>
 <button class="admin-tab" onclick="showTab('reviews', this)">⭐ अभिप्राय</button>
 </div>
 
@@ -170,7 +171,28 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <h3 style="color:#FF6F00; margin:1.5rem 0 1rem;">📋 कार्यक्रम यादी</h3>
 <div id="eventsList"></div>
 </div>
-
+<!-- SADASY TAB -->
+<div id="tab-sadasy" class="admin-section admin-card">
+<h3 style="color:#FF6F00; margin-bottom:1rem;">👥 नवीन सदस्य जोडा</h3>
+<div class="form-row"><label>नाव *</label><input type="text" id="sName" placeholder="सदस्याचे नाव" /></div>
+<div class="form-row"><label>फोन नंबर *</label><input type="tel" id="sPhone" placeholder="9876543210" /></div>
+<div class="form-row"><label>पत्ता *</label><textarea id="sAddress" placeholder="पूर्ण पत्ता"></textarea></div>
+<div class="form-row">
+  <label>📷 फोटो</label>
+  <div class="photo-upload-box">
+    <input type="file" id="sPhotoFile" accept="image/*" onchange="uploadSadasyPhoto(this)" />
+    <div style="font-size:2rem;">📷</div>
+    <div style="font-weight:600; color:#FF6F00;">फोटो निवडा</div>
+  </div>
+  <div class="upload-progress" id="sUploadProgress"><div class="upload-progress-bar" id="sProgressBar"></div></div>
+  <div class="upload-status" id="sUploadStatus"></div>
+  <img id="sImagePreview" class="event-img-preview" />
+  <input type="hidden" id="sImage" />
+</div>
+<button class="btn-saffron" id="sSaveBtn" onclick="saveSadasy()">💾 सदस्य जोडा</button>
+<h3 style="color:#FF6F00; margin:1.5rem 0 1rem;">📋 सदस्य यादी</h3>
+<div id="sadasyList"></div>
+</div>
 <!-- REVIEWS TAB -->
 <div id="tab-reviews" class="admin-section admin-card">
 <h3 style="color:#FF6F00; margin-bottom:1rem;">⭐ अभिप्राय यादी</h3>
@@ -207,7 +229,7 @@ window.doLogin = () => {
   if (u === 'trust' && p === 'trust@12345') {
     document.getElementById('loginSection').style.display = 'none';
     document.getElementById('adminPanel').style.display = 'block';
-    loadProducts(); loadEvents(); loadReviews();
+    loadProducts(); loadEvents(); loadReviews();loadSadasy();
   } else {
     document.getElementById('loginError').style.display = 'block';
   }
@@ -424,6 +446,92 @@ window.deleteReview = async (id) => {
   await deleteDoc(doc(db, 'reviews', id));
   showToast('🗑️ अभिप्राय काढला!');
   loadReviews();
+};
+// ========== SADASY ==========
+window.uploadSadasyPhoto = (input) => {
+  const file = input.files[0];
+  if (!file) return;
+  uploadPhoto(file, 'sadasy', 'sProgressBar', 'sUploadProgress', 'sUploadStatus', 'sImagePreview', 'sImage', 'sSaveBtn');
+};
+
+window.saveSadasy = async () => {
+  const name = document.getElementById('sName').value.trim();
+  const phone = document.getElementById('sPhone').value.trim();
+  if (!name || !phone) { alert('नाव आणि फोन नंबर आवश्यक आहे!'); return; }
+  await addDoc(collection(db, 'sadasy'), {
+    name, phone,
+    address: document.getElementById('sAddress').value,
+    image: document.getElementById('sImage').value,
+    createdAt: new Date()
+  });
+  showToast('✅ सदस्य जोडला!');
+  ['sName','sPhone','sAddress'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('sImage').value = '';
+  document.getElementById('sImagePreview').style.display = 'none';
+  document.getElementById('sUploadProgress').style.display = 'none';
+  document.getElementById('sUploadStatus').style.display = 'none';
+  document.getElementById('sPhotoFile').value = '';
+  loadSadasy();
+};
+
+async function loadSadasy() {
+  const snap = await getDocs(collection(db, 'sadasy'));
+  const div = document.getElementById('sadasyList');
+  if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतेही सदस्य नाही.</p>'; return; }
+  let html = '<table><thead><tr><th>फोटो</th><th>नाव</th><th>फोन</th><th>पत्ता</th><th>कृती</th></tr></thead><tbody>';
+  snap.forEach(d => {
+    const s = d.data();
+    html += `<tr>
+      <td>${s.image ? `<img src="${s.image}" class="product-img" />` : '👤'}</td>
+      <td><strong>${s.name}</strong></td>
+      <td>${s.phone}</td>
+      <td style="font-size:0.85rem;">${s.address || ''}</td>
+      <td>
+        <button class="btn-edit" onclick="editSadasy('${d.id}','${s.name}','${s.phone}','${s.address||''}','${s.image||''}')">✏️ Edit</button>
+        <button class="btn-danger" onclick="deleteSadasy('${d.id}')">🗑️ काढा</button>
+      </td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  div.innerHTML = html;
+}
+
+window.editSadasy = (id, name, phone, address, image) => {
+  document.getElementById('sName').value = name;
+  document.getElementById('sPhone').value = phone;
+  document.getElementById('sAddress').value = address;
+  document.getElementById('sImage').value = image;
+  if (image) {
+    document.getElementById('sImagePreview').src = image;
+    document.getElementById('sImagePreview').style.display = 'block';
+  }
+  document.getElementById('sSaveBtn').textContent = '💾 Update करा';
+  document.getElementById('sSaveBtn').onclick = () => updateSadasy(id);
+};
+
+window.updateSadasy = async (id) => {
+  const name = document.getElementById('sName').value.trim();
+  const phone = document.getElementById('sPhone').value.trim();
+  if (!name || !phone) { alert('नाव आणि फोन नंबर आवश्यक आहे!'); return; }
+  await updateDoc(doc(db, 'sadasy', id), {
+    name, phone,
+    address: document.getElementById('sAddress').value,
+    image: document.getElementById('sImage').value,
+  });
+  showToast('✅ सदस्य update झाला!');
+  ['sName','sPhone','sAddress'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('sImage').value = '';
+  document.getElementById('sImagePreview').style.display = 'none';
+  document.getElementById('sSaveBtn').textContent = '💾 सदस्य जोडा';
+  document.getElementById('sSaveBtn').onclick = () => saveSadasy();
+  loadSadasy();
+};
+
+window.deleteSadasy = async (id) => {
+  if (!confirm('हा सदस्य काढायचा आहे का?')) return;
+  await deleteDoc(doc(db, 'sadasy', id));
+  showToast('🗑️ सदस्य काढला!');
+  loadSadasy();
 };
 </script>
 </body>

@@ -210,11 +210,10 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
   <input type="text" id="uTitle" placeholder="गोसेवा" />
  </div>
  <div class="form-row"><label>वर्णन</label><textarea id="uDesc"></textarea></div>
- <button class="btn-saffron" onclick="saveUdisht()">💾 उद्दिष्ट जतन करा</button>
+ <input type="hidden" id="uEditId" />
+<button class="btn-saffron" id="uSaveBtn" onclick="saveUdisht()">💾 उद्दिष्ट जतन करा</button>
  <h3 style="margin-top:2rem; color:#FF6F00;">📋 उद्दिष्ट यादी</h3>
- <div id="udishtList"></div>
-</div>
-
+ <div id="udishtList"></div></div>
 </div>
 <div id="toast"></div>
 
@@ -555,85 +554,57 @@ window.deleteSadasy = async (id) => {
 };
 
 // ===== UDISHT =====
+window.loadUdisht = async () => {
+  const snap = await getDocs(collection(db, 'udisht'));
+  const div = document.getElementById('udishtList');
+  if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतेही उद्दिष्ट नाही.</p>'; return; }
+  let html = '<table><thead><tr><th>Icon</th><th>शीर्षक</th><th>वर्णन</th><th>कृती</th></tr></thead><tbody>';
+  snap.forEach(d => {
+    const u = d.data();
+    html += `<tr>
+      <td style="font-size:1.5rem;">${u.icon || ''}</td>
+      <td><strong>${u.title}</strong></td>
+      <td>${u.desc?.substring(0,60) || ''}</td>
+      <td>
+        <button class="btn-edit" onclick="editUdisht('${d.id}','${u.icon}','${u.title}','${u.desc}')">✏️ Edit</button>
+        <button class="btn-danger" onclick="deleteUdisht('${d.id}')">🗑️ काढा</button>
+      </td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  div.innerHTML = html;
+};
+
+window.editUdisht = (id, icon, title, desc) => {
+  document.getElementById('uIcon').value = icon;
+  document.getElementById('uTitle').value = title;
+  document.getElementById('uDesc').value = desc;
+  document.getElementById('uEditId').value = id;
+  document.getElementById('uSaveBtn').textContent = '💾 बदल जतन करा';
+  window.scrollTo(0, 0);
+};
 
 window.saveUdisht = async () => {
-  const icon = document.getElementById('uIcon').value.trim();
+  const icon = document.getElementById('uIcon').value;
   const title = document.getElementById('uTitle').value.trim();
-  const desc = document.getElementById('uDesc').value.trim();
+  const desc = document.getElementById('uDesc').value;
+  const editId = document.getElementById('uEditId').value;
+  if (!title) { alert('शीर्षक आवश्यक आहे!'); return; }
 
-  if (!title || !desc) {
-    alert('शीर्षक आणि वर्णन आवश्यक आहे!');
-    return;
+  if (editId) {
+    await updateDoc(doc(db, 'udisht', editId), { icon, title, desc });
+    showToast('✅ उद्दिष्ट अपडेट झाले!');
+    document.getElementById('uEditId').value = '';
+    document.getElementById('uSaveBtn').textContent = '💾 उद्दिष्ट जतन करा';
+  } else {
+    await addDoc(collection(db, 'udisht'), { icon, title, desc, createdAt: new Date() });
+    showToast('✅ उद्दिष्ट जोडले!');
   }
-
-  await addDoc(collection(db, 'udisht'), {
-    icon,
-    title,
-    desc,
-    createdAt: new Date()
-  });
-
-  showToast('✅ उद्दिष्ट जोडले!');
 
   document.getElementById('uIcon').value = '';
   document.getElementById('uTitle').value = '';
   document.getElementById('uDesc').value = '';
-
   loadUdisht();
-};
-
-async function loadUdisht() {
-  const snap = await getDocs(collection(db, 'udisht'));
-  const div = document.getElementById('udishtList');
-
-  if (snap.empty) {
-    div.innerHTML = '<p style="color:#999;">उद्दिष्ट नाहीत.</p>';
-    return;
-  }
-
-  let html = `
-    <table>
-      <thead>
-        <tr>
-          <th>Icon</th>
-          <th>शीर्षक</th>
-          <th>वर्णन</th>
-          <th>कृती</th>
-        </tr>
-      </thead>
-      <tbody>
-  `;
-
-  snap.forEach(d => {
-    const u = d.data();
-
-    html += `
-      <tr>
-        <td style="font-size:1.5rem;">${u.icon || '🎯'}</td>
-        <td><strong>${u.title}</strong></td>
-        <td>${u.desc}</td>
-        <td>
-          <button class="btn-danger" onclick="deleteUdisht('${d.id}')">
-            🗑️ Delete
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-
-  html += '</tbody></table>';
-
-  div.innerHTML = html;
-}
-
-window.deleteUdisht = async (id) => {
-  if (!confirm('हे उद्दिष्ट delete करायचे आहे का?')) return;
-
-  await deleteDoc(doc(db, 'udisht', id));
-
-  showToast('🗑️ उद्दिष्ट delete झाले!');
-
-loadUdisht();
 };
 </script>
 </body>

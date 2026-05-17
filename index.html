@@ -196,7 +196,7 @@
   <p>अवधूत चिंतन गोशाळेचे कार्यक्रम</p>
 </div>
 <div class="event-tabs">
-  <button class="event-tab active" onclick="showEventTab('upcoming', this)">📅 येणारे कार्यक्रम</button>
+  <button class="event-tab active" onclick="showEventTab('upcoming', this)"> येणारे कार्यक्रम</button>
   <button class="event-tab" onclick="showEventTab('past', this)">✅ झालेले कार्यक्रम</button>
   <button class="event-tab" onclick="showEventTab('updates', this)">📢 Daily Updates</button>
 </div>
@@ -491,7 +491,7 @@ function renderEvents(events, containerId, showRegister) {
     const percent = hasSeats ? Math.min((registered / totalSeats) * 100, 100) : 0;
     const canReg = showRegister && e.registrationOpen === true;
     return `<div class="event-card-full reveal">
-      <div class="event-img">${e.image ? `<img src="${e.image}" alt="${e.title}" />` : '📅'}</div>
+      <div class="event-img">${e.image ? `<img src="${e.image}" alt="${e.title}" />` : ''}</div>
       <div class="event-info-full">
         <div class="event-title">${e.title}</div>
         <div class="event-date-lbl">📆 ${formatDate(e.date)}</div>

@@ -204,7 +204,7 @@ async function loadFeaturedProducts() {
       fp.innerHTML = '<p style="text-align:center;color:#999;grid-column:1/-1;">उत्पादने लवकरच येतील...</p>';
       return;
     }
-    products.slice(0, 3).forEach(p => {
+    products.slice().forEach(p => {
       fp.innerHTML += `
         <div class="card">
           <div class="product-img" style="min-height:180px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFF3E8,#FFE0C0);">
@@ -238,7 +238,7 @@ async function loadHomeEvents() {
       return;
     }
     const monthNames = ['जानेवारी','फेब्रुवारी','मार्च','एप्रिल','मे','जून','जुलै','ऑगस्ट','सप्टेंबर','ऑक्टोबर','नोव्हेंबर','डिसेंबर'];
-    events.slice(0, 2).forEach(e => {
+    events.slice().forEach(e => {
       const dateObj = new Date(e.date);
       const day = dateObj.getDate().toString().padStart(2,'0');
       const month = monthNames[dateObj.getMonth()];
@@ -272,7 +272,7 @@ async function loadHomeSadasy() {
       hs.innerHTML = '<p style="color:#999;grid-column:1/-1;">सदस्य लवकरच येतील...</p>';
       return;
     }
-    members.slice(0, 3).forEach(s => {
+    members.slice().forEach(s => {
       hs.innerHTML += `
         <div class="card" style="text-align:center; padding:1.5rem;">
           <div style="width:80px; height:80px; border-radius:50%; overflow:hidden; margin:0 auto 1rem; background:#FFF3E0; display:flex; align-items:center; justify-content:center; font-size:2.5rem;">

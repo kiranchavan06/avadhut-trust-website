@@ -34,17 +34,18 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 .upload-progress { display: none; margin-top: 0.75rem; background: #eee; border-radius: 100px; height: 8px; overflow: hidden; }
 .upload-progress-bar { height: 100%; background: #FF6F00; border-radius: 100px; transition: width 0.3s; width: 0%; }
 .upload-status { font-size: 0.85rem; color: #FF6F00; margin-top: 0.4rem; display: none; }
+.toggle-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+.toggle-row label { font-weight: 600; color: #333; }
+.toggle { width: 50px; height: 26px; background: #ccc; border-radius: 13px; position: relative; cursor: pointer; transition: background 0.3s; }
+.toggle.on { background: #FF6F00; }
+.toggle::after { content: ''; position: absolute; width: 22px; height: 22px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: left 0.3s; }
+.toggle.on::after { left: 26px; }
 #toast { position: fixed; bottom: 2rem; right: 2rem; background: #333; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: none; z-index: 999; }
-.page-hero {
-  background: linear-gradient(135deg, #E05A00, #FF8C3A);
-  color: white;
-  text-align: center;
-  padding: 3rem 1rem 2.5rem;
-}
+.page-hero { background: linear-gradient(135deg, #E05A00, #FF8C3A); color: white; text-align: center; padding: 3rem 1rem 2.5rem; }
 .page-hero h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 900; margin-bottom: 0.5rem; }
 .page-hero p { opacity: 0.9; font-size: 1rem; }
-#toast { position: fixed; bottom: 2rem; right: 2rem; background: #333; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; display: none; z-index: 999; }
-
+.reg-badge { background: #E8F5E9; color: #2E7D32; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.reg-badge.off { background: #FFEBEE; color: #C62828; }
 </style>
 </head>
 <body>
@@ -54,7 +55,6 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <ul class="nav-links" id="navLinks">
 <li><a href="index.html">मुख्यपृष्ठ</a></li>
 <li><a href="update.html">उद्दिष्टे</a></li>
-<li><a href="temples.html">मंदिर परिसर</a></li>
 <li><a href="events.html">कार्यक्रम</a></li>
 <li><a href="products.html">उत्पादने</a></li>
 <li><a href="active.html">सदस्य</a></li>
@@ -75,8 +75,8 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div style="text-align:center; font-size:2rem;">🔐</div>
 <h2 style="text-align:center; color:#FF6F00;">Admin लॉगिन</h2>
 <div id="loginError" style="color:red; display:none; margin-bottom:1rem;">❌ चुकीचे नाव किंवा पासवर्ड</div>
-<div class="form-row"><label>वापरकर्ता नाव</label><input type="text" id="adminUser" /></div>
-<div class="form-row"><label>पासवर्ड</label><input type="password" id="adminPass" /></div>
+<div class="form-row"><label>वापरकर्ता नाव</label><input type="text" id="adminUser" autocomplete="off" /></div>
+<div class="form-row"><label>पासवर्ड</label><input type="password" id="adminPass" autocomplete="off" /></div>
 <button class="btn-saffron" style="width:100%" onclick="doLogin()">🔓 लॉगिन करा</button>
 </div>
 </div>
@@ -91,6 +91,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div class="admin-tabs">
 <button class="admin-tab active" onclick="showTab('products', this)">🛍️ उत्पादने</button>
 <button class="admin-tab" onclick="showTab('events', this)">📅 कार्यक्रम</button>
+<button class="admin-tab" onclick="showTab('registrations', this)">📋 नोंदणी</button>
 <button class="admin-tab" onclick="showTab('sadasy', this)">👥 सदस्य</button>
 <button class="admin-tab" onclick="showTab('temples', this)">🛕 मंदिर परिसर</button>
 <button class="admin-tab" onclick="showTab('reviews', this)">⭐ अभिप्राय</button>
@@ -142,6 +143,13 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div class="form-row"><label>वर्णन</label><textarea id="eDesc" placeholder="कार्यक्रमाचे वर्णन"></textarea></div>
 <div class="form-row"><label>प्रकार</label>
 <select id="eType"><option>धार्मिक</option><option>सामाजिक</option><option>शैक्षणिक</option><option>इतर</option></select></div>
+<div class="form-row"><label>एकूण जागा (0 = unlimited)</label><input type="number" id="eSeats" placeholder="उदा. 50" /></div>
+<div class="toggle-row">
+  <label>नोंदणी चालू ठेवायची का?</label>
+  <div class="toggle" id="eRegToggle" onclick="toggleReg()"></div>
+  <span id="eRegLabel" style="font-size:0.9rem; color:#999;">बंद</span>
+</div>
+<input type="hidden" id="eRegOpen" value="false" />
 <div class="form-row">
   <label>📷 कार्यक्रमाचा फोटो</label>
   <div class="photo-upload-box">
@@ -159,6 +167,18 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <button class="btn-saffron" id="eSaveBtn" onclick="saveEvent()">💾 कार्यक्रम जोडा</button>
 <h3 style="color:#FF6F00; margin:1.5rem 0 1rem;">📋 कार्यक्रम यादी</h3>
 <div id="eventsList"></div>
+</div>
+
+<!-- REGISTRATIONS TAB -->
+<div id="tab-registrations" class="admin-section admin-card">
+<h3 style="color:#FF6F00; margin-bottom:1rem;">📋 नोंदणी यादी</h3>
+<div class="form-row">
+  <label>कार्यक्रम निवडा</label>
+  <select id="regEventFilter" onchange="loadRegistrations()">
+    <option value="">-- सर्व कार्यक्रम --</option>
+  </select>
+</div>
+<div id="registrationsList"></div>
 </div>
 
 <!-- SADASY TAB -->
@@ -199,6 +219,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <h3 style="color:#FF6F00; margin:1.5rem 0 1rem;">📋 सदस्य यादी</h3>
 <div id="sadasyList"></div>
 </div>
+
 <!-- TEMPLES TAB -->
 <div id="tab-temples" class="admin-section admin-card">
 <h3 style="color:#FF6F00; margin-bottom:1rem;">🛕 नवीन मंदिर जोडा</h3>
@@ -206,7 +227,7 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div class="form-row"><label>वर्णन</label><textarea id="tDesc" placeholder="मंदिराचे वर्णन"></textarea></div>
 <div class="form-row">
   <label>📷 मंदिराचा फोटो</label>
-  <div class="photo-upload-box" id="tPhotoBox">
+  <div class="photo-upload-box">
     <input type="file" id="tPhotoFile" accept="image/*" onchange="uploadTemplePhoto(this)" />
     <div style="font-size:2rem;">🛕</div>
     <div style="font-weight:600; color:#FF6F00;">फोटो निवडा</div>
@@ -228,23 +249,23 @@ td { padding: 0.6rem; border-bottom: 1px solid #eee; vertical-align: middle; }
 <div id="reviewsList"></div>
 </div>
 
+<!-- UDISHT TAB -->
 <div id="tab-udisht" class="admin-section admin-card">
-   <h3 style="color:#FF6F00; margin-bottom:1rem;">🎯 नवीन उद्दिष्ट जोडा</h3>
-   <div class="form-row"><label>Icon</label><input type="text" id="uIcon" placeholder="🐄" /></div>
- <div class="form-row"><label>शीर्षक</label>
-  <input type="text" id="uTitle" placeholder="गोसेवा" />
- </div>
- <div class="form-row"><label>वर्णन</label><textarea id="uDesc"></textarea></div>
- <input type="hidden" id="uEditId" />
+<h3 style="color:#FF6F00; margin-bottom:1rem;">🎯 नवीन उद्दिष्ट जोडा</h3>
+<div class="form-row"><label>Icon</label><input type="text" id="uIcon" placeholder="🐄" /></div>
+<div class="form-row"><label>शीर्षक</label><input type="text" id="uTitle" placeholder="गोसेवा" /></div>
+<div class="form-row"><label>वर्णन</label><textarea id="uDesc"></textarea></div>
+<input type="hidden" id="uEditId" />
 <button class="btn-saffron" id="uSaveBtn" onclick="saveUdisht()">💾 उद्दिष्ट जतन करा</button>
- <h3 style="margin-top:2rem; color:#FF6F00;">📋 उद्दिष्ट यादी</h3>
- <div id="udishtList"></div></div>
+<h3 style="margin-top:2rem; color:#FF6F00;">📋 उद्दिष्ट यादी</h3>
+<div id="udishtList"></div>
+</div>
+
 </div>
 <div id="toast"></div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
@@ -259,28 +280,42 @@ const db = getFirestore(app);
 
 window.toggleNav = () => document.getElementById('navLinks').classList.toggle('open');
 
+// ===== LOGIN SESSION =====
 window.doLogin = () => {
   const u = document.getElementById('adminUser').value;
   const p = document.getElementById('adminPass').value;
   if (u === 'trust' && p === 'trust@12345') {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'block';
-    loadProducts(); loadEvents(); loadReviews(); loadSadasy();loadUdisht();
+    sessionStorage.setItem('adminLoggedIn', 'true');
+    showAdminPanel();
   } else {
     document.getElementById('loginError').style.display = 'block';
   }
 };
 
 window.doLogout = () => {
+  sessionStorage.removeItem('adminLoggedIn');
   document.getElementById('loginSection').style.display = 'block';
   document.getElementById('adminPanel').style.display = 'none';
 };
+
+function showAdminPanel() {
+  document.getElementById('loginSection').style.display = 'none';
+  document.getElementById('adminPanel').style.display = 'block';
+  loadProducts(); loadEvents(); loadReviews(); loadSadasy();
+}
+
+if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+  showAdminPanel();
+}
 
 window.showTab = (name, btn) => {
   document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('visible'));
   document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('visible');
   btn.classList.add('active');
+  if (name === 'registrations') { loadEventFilter(); loadRegistrations(); }
+  if (name === 'temples') loadTemples();
+  if (name === 'udisht') loadUdisht();
 };
 
 function showToast(msg) {
@@ -289,6 +324,19 @@ function showToast(msg) {
   t.style.display = 'block';
   setTimeout(() => t.style.display = 'none', 3000);
 }
+
+// ===== REGISTRATION TOGGLE =====
+window.toggleReg = () => {
+  const toggle = document.getElementById('eRegToggle');
+  const label = document.getElementById('eRegLabel');
+  const hidden = document.getElementById('eRegOpen');
+  const isOn = toggle.classList.toggle('on');
+  hidden.value = isOn ? 'true' : 'false';
+  label.textContent = isOn ? 'चालू ✅' : 'बंद';
+  label.style.color = isOn ? '#2E7D32' : '#999';
+};
+
+// ===== PHOTO UPLOAD =====
 function uploadPhoto(file, folder, progressBarId, progressDivId, statusId, previewId, hiddenInputId, saveBtn) {
   if (!file) return;
   const CLOUD_NAME = 'dvl3csahg';
@@ -334,21 +382,11 @@ function uploadPhoto(file, folder, progressBarId, progressDivId, statusId, previ
   };
   xhr.send(formData);
 }
-window.uploadEventPhoto = (input) => {
-  const file = input.files[0];
-  if (!file) return;
-  uploadPhoto(file, 'events', 'eProgressBar', 'eUploadProgress', 'eUploadStatus', 'eImagePreview', 'eImage', 'eSaveBtn');
-};
-window.uploadProductPhoto = (input) => {
-  const file = input.files[0];
-  if (!file) return;
-  uploadPhoto(file, 'products', 'pProgressBar', 'pUploadProgress', 'pUploadStatus', 'pImagePreview', 'pImage', 'pSaveBtn');
-};
-window.uploadSadasyPhoto = (input) => {
-  const file = input.files[0];
-  if (!file) return;
-  uploadPhoto(file, 'sadasy', 'sProgressBar', 'sUploadProgress', 'sUploadStatus', 'sImagePreview', 'sImage', 'sSaveBtn');
-};
+
+window.uploadEventPhoto = (input) => { uploadPhoto(input.files[0], 'events', 'eProgressBar', 'eUploadProgress', 'eUploadStatus', 'eImagePreview', 'eImage', 'eSaveBtn'); };
+window.uploadProductPhoto = (input) => { uploadPhoto(input.files[0], 'products', 'pProgressBar', 'pUploadProgress', 'pUploadStatus', 'pImagePreview', 'pImage', 'pSaveBtn'); };
+window.uploadSadasyPhoto = (input) => { uploadPhoto(input.files[0], 'sadasy', 'sProgressBar', 'sUploadProgress', 'sUploadStatus', 'sImagePreview', 'sImage', 'sSaveBtn'); };
+window.uploadTemplePhoto = (input) => { uploadPhoto(input.files[0], 'temples', 'tProgressBar', 'tUploadProgress', 'tUploadStatus', 'tImagePreview', 'tImage', 'tSaveBtn'); };
 
 // ===== PRODUCTS =====
 window.saveProduct = async () => {
@@ -402,19 +440,58 @@ window.deleteProduct = async (id) => {
 };
 
 // ===== EVENTS =====
+window.saveEvent = async () => {
+  const name = document.getElementById('eName').value.trim();
+  const date = document.getElementById('eDate').value;
+  const editId = document.getElementById('eEditId').value;
+  if (!name || !date) { alert('नाव आणि तारीख आवश्यक आहे!'); return; }
+  const data = {
+    title: name, date,
+    time: document.getElementById('eTime').value,
+    location: document.getElementById('eLocation').value,
+    desc: document.getElementById('eDesc').value,
+    type: document.getElementById('eType').value,
+    image: document.getElementById('eImage').value,
+    seats: Number(document.getElementById('eSeats').value) || 0,
+    registrationOpen: document.getElementById('eRegOpen').value === 'true',
+  };
+  if (editId) {
+    await updateDoc(doc(db, 'events', editId), data);
+    showToast('✅ कार्यक्रम अपडेट झाला!');
+    document.getElementById('eEditId').value = '';
+    document.getElementById('eSaveBtn').textContent = '💾 कार्यक्रम जोडा';
+  } else {
+    await addDoc(collection(db, 'events'), { ...data, registeredSeats: 0, createdAt: new Date() });
+    showToast('✅ कार्यक्रम जोडला!');
+  }
+  ['eName','eDate','eTime','eLocation','eDesc','eSeats'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('eImage').value = '';
+  document.getElementById('eImagePreview').style.display = 'none';
+  document.getElementById('eUploadProgress').style.display = 'none';
+  document.getElementById('eUploadStatus').style.display = 'none';
+  document.getElementById('ePhotoFile').value = '';
+  document.getElementById('eRegToggle').classList.remove('on');
+  document.getElementById('eRegOpen').value = 'false';
+  document.getElementById('eRegLabel').textContent = 'बंद';
+  loadEvents();
+};
+
 async function loadEvents() {
   const snap = await getDocs(collection(db, 'events'));
   const div = document.getElementById('eventsList');
   if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतेही कार्यक्रम नाही.</p>'; return; }
-  let html = '<table><thead><tr><th>फोटो</th><th>नाव</th><th>तारीख</th><th>ठिकाण</th><th>प्रकार</th><th>कृती</th></tr></thead><tbody>';
+  let html = '<table><thead><tr><th>फोटो</th><th>नाव</th><th>तारीख</th><th>जागा</th><th>नोंदणी</th><th>कृती</th></tr></thead><tbody>';
   snap.forEach(d => {
     const e = d.data();
+    const regStatus = e.registrationOpen
+      ? `<span class="reg-badge">✅ चालू</span>`
+      : `<span class="reg-badge off">❌ बंद</span>`;
     html += `<tr>
       <td>${e.image ? `<img src="${e.image}" class="product-img" />` : '🖼️'}</td>
-      <td><strong>${e.title}</strong></td>
+      <td><strong>${e.title}</strong><br><small>${e.location || ''}</small></td>
       <td>${e.date}</td>
-      <td>${e.location || ''}</td>
-      <td>${e.type || ''}</td>
+      <td>${e.seats ? `${e.registeredSeats || 0}/${e.seats}` : '-'}</td>
+      <td>${regStatus}</td>
       <td>
         <button class="btn-edit" onclick="editEvent('${d.id}')">✏️ Edit</button>
         <button class="btn-danger" onclick="deleteEvent('${d.id}')">🗑️ काढा</button>
@@ -437,42 +514,17 @@ window.editEvent = async (id) => {
       document.getElementById('eDesc').value = e.desc || '';
       document.getElementById('eType').value = e.type || '';
       document.getElementById('eImage').value = e.image || '';
+      document.getElementById('eSeats').value = e.seats || '';
       document.getElementById('eEditId').value = id;
       document.getElementById('eSaveBtn').textContent = '💾 बदल जतन करा';
+      const isOpen = e.registrationOpen === true;
+      document.getElementById('eRegOpen').value = isOpen ? 'true' : 'false';
+      const toggle = document.getElementById('eRegToggle');
+      isOpen ? toggle.classList.add('on') : toggle.classList.remove('on');
+      document.getElementById('eRegLabel').textContent = isOpen ? 'चालू ✅' : 'बंद';
       window.scrollTo(0, 0);
     }
   });
-};
-
-window.saveEvent = async () => {
-  const name = document.getElementById('eName').value.trim();
-  const date = document.getElementById('eDate').value;
-  const editId = document.getElementById('eEditId').value;
-  if (!name || !date) { alert('नाव आणि तारीख आवश्यक आहे!'); return; }
-  const data = {
-    title: name, date,
-    time: document.getElementById('eTime').value,
-    location: document.getElementById('eLocation').value,
-    desc: document.getElementById('eDesc').value,
-    type: document.getElementById('eType').value,
-    image: document.getElementById('eImage').value,
-  };
-  if (editId) {
-    await updateDoc(doc(db, 'events', editId), data);
-    showToast('✅ कार्यक्रम अपडेट झाला!');
-    document.getElementById('eEditId').value = '';
-    document.getElementById('eSaveBtn').textContent = '💾 कार्यक्रम जोडा';
-  } else {
-    await addDoc(collection(db, 'events'), { ...data, createdAt: new Date() });
-    showToast('✅ कार्यक्रम जोडला!');
-  }
-  ['eName','eDate','eTime','eLocation','eDesc'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('eImage').value = '';
-  document.getElementById('eImagePreview').style.display = 'none';
-  document.getElementById('eUploadProgress').style.display = 'none';
-  document.getElementById('eUploadStatus').style.display = 'none';
-  document.getElementById('ePhotoFile').value = '';
-  loadEvents();
 };
 
 window.deleteEvent = async (id) => {
@@ -480,6 +532,51 @@ window.deleteEvent = async (id) => {
   await deleteDoc(doc(db, 'events', id));
   showToast('🗑️ कार्यक्रम काढला!');
   loadEvents();
+};
+
+// ===== REGISTRATIONS =====
+async function loadEventFilter() {
+  const snap = await getDocs(collection(db, 'events'));
+  const select = document.getElementById('regEventFilter');
+  select.innerHTML = '<option value="">-- सर्व कार्यक्रम --</option>';
+  snap.forEach(d => {
+    const e = d.data();
+    select.innerHTML += `<option value="${d.id}">${e.title} (${e.date})</option>`;
+  });
+}
+
+window.loadRegistrations = async () => {
+  const div = document.getElementById('registrationsList');
+  const eventId = document.getElementById('regEventFilter').value;
+  div.innerHTML = '<p style="color:#999;">⏳ लोड होत आहे...</p>';
+  try {
+    let snap;
+    if (eventId) {
+      const q = query(collection(db, 'registrations'), where('eventId', '==', eventId));
+      snap = await getDocs(q);
+    } else {
+      snap = await getDocs(collection(db, 'registrations'));
+    }
+    if (snap.empty) { div.innerHTML = '<p style="color:#999;">कोणतीही नोंदणी नाही.</p>'; return; }
+    let html = '<table><thead><tr><th>#</th><th>नाव</th><th>फोन</th><th>गाव</th><th>कार्यक्रम</th><th>तारीख</th></tr></thead><tbody>';
+    let i = 1;
+    snap.forEach(d => {
+      const r = d.data();
+      const date = r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString('mr-IN') : '';
+      html += `<tr>
+        <td>${i++}</td>
+        <td><strong>${r.name}</strong></td>
+        <td>${r.phone}</td>
+        <td>${r.city || '-'}</td>
+        <td>${r.eventName}</td>
+        <td>${date}</td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    div.innerHTML = html;
+  } catch (err) {
+    div.innerHTML = '<p style="color:red;">❌ Error: ' + err.message + '</p>';
+  }
 };
 
 // ===== REVIEWS =====
@@ -491,8 +588,8 @@ async function loadReviews() {
   snap.forEach(d => {
     const r = d.data();
     html += `<tr>
-      <td><strong>${r.name}</strong><br><small>${r.city}</small></td>
-      <td>${r.product}</td>
+      <td><strong>${r.name}</strong><br><small>${r.city || ''}</small></td>
+      <td>${r.product || ''}</td>
       <td>${'★'.repeat(r.rating)}</td>
       <td style="max-width:200px;font-size:0.85rem;">${r.text?.substring(0,80) || ''}</td>
       <td><button class="btn-danger" onclick="deleteReview('${d.id}')">🗑️ काढा</button></td>
@@ -510,18 +607,12 @@ window.deleteReview = async (id) => {
 };
 
 // ===== TEMPLES =====
-window.uploadTemplePhoto = (input) => {
-  uploadPhoto(input.files[0], 'temples', 'tProgressBar', 'tUploadProgress', 'tUploadStatus', 'tImagePreview', 'tImage', 'tSaveBtn');
-};
-
 window.saveTemple = async () => {
   const name = document.getElementById('tName').value.trim();
   if (!name) { alert('मंदिराचे नाव आवश्यक आहे!'); return; }
   await addDoc(collection(db, 'temples'), {
-    name,
-    desc: document.getElementById('tDesc').value,
-    image: document.getElementById('tImage').value,
-    createdAt: new Date()
+    name, desc: document.getElementById('tDesc').value,
+    image: document.getElementById('tImage').value, createdAt: new Date()
   });
   showToast('✅ मंदिर जोडले!');
   document.getElementById('tName').value = '';
@@ -587,7 +678,7 @@ window.saveSadasy = async () => {
   document.getElementById('sPhotoFile').value = '';
   loadSadasy();
 };
-  /* Function loadSadasy */
+
 async function loadSadasy() {
   const snap = await getDocs(collection(db, 'sadasy'));
   const div = document.getElementById('sadasyList');
@@ -630,7 +721,6 @@ window.editSadasy = (id, name, phone, address, image, type, subType, work) => {
   document.getElementById('tab-sadasy').scrollIntoView({ behavior: 'smooth' });
 };
 
-
 window.updateSadasy = async (id) => {
   const name = document.getElementById('sName').value.trim();
   const phone = document.getElementById('sPhone').value.trim();
@@ -638,7 +728,7 @@ window.updateSadasy = async (id) => {
   await updateDoc(doc(db, 'sadasy', id), {
     name, phone,
     address: document.getElementById('sAddress').value,
-    image: document.getElementById('sImage').value,
+  image: document.getElementById('sImage').value,
     type: document.getElementById('sType').value,
     subType: document.getElementById('sSubType')?.value || '',
     work: document.getElementById('sWork').value,
@@ -660,8 +750,6 @@ window.deleteSadasy = async (id) => {
 };
 
 // ===== UDISHT =====
-
-
 window.loadUdisht = async () => {
   const snap = await getDocs(collection(db, 'udisht'));
   const div = document.getElementById('udishtList');
@@ -698,7 +786,6 @@ window.saveUdisht = async () => {
   const desc = document.getElementById('uDesc').value;
   const editId = document.getElementById('uEditId').value;
   if (!title) { alert('शीर्षक आवश्यक आहे!'); return; }
-
   if (editId) {
     await updateDoc(doc(db, 'udisht', editId), { icon, title, desc });
     showToast('✅ उद्दिष्ट अपडेट झाले!');
@@ -708,14 +795,12 @@ window.saveUdisht = async () => {
     await addDoc(collection(db, 'udisht'), { icon, title, desc, createdAt: new Date() });
     showToast('✅ उद्दिष्ट जोडले!');
   }
-
   document.getElementById('uIcon').value = '';
   document.getElementById('uTitle').value = '';
   document.getElementById('uDesc').value = '';
   loadUdisht();
 };
 
-// ✅ हे नवीन add केले - DELETE function
 window.deleteUdisht = async (id) => {
   if (!confirm('हे उद्दिष्ट काढायचे आहे का?')) return;
   await deleteDoc(doc(db, 'udisht', id));

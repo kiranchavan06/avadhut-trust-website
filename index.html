@@ -166,7 +166,7 @@
 <!-- 2. उद्दिष्टे -->
 <span class="section-anchor" id="udishte"></span>
 <div class="section-hero reveal">
-  <h2>🎯 आमची उद्दिष्टे</h2>
+  <h2> आमची उद्दिष्टे</h2>
   <p>अवधूत चिंतन गोशाळा संस्थेची प्रमुख उद्दिष्टे</p>
 </div>
 <div style="padding: 2rem 0;">
@@ -192,7 +192,7 @@
 <!-- 4. कार्यक्रम -->
 <span class="section-anchor" id="karykram"></span>
 <div class="section-hero reveal">
-  <h2>📅 आमचे कार्यक्रम</h2>
+  <h2> आमचे कार्यक्रम</h2>
   <p>अवधूत चिंतन गोशाळेचे कार्यक्रम</p>
 </div>
 <div class="event-tabs">
@@ -214,7 +214,7 @@
 <span class="section-anchor" id="utpadane"></span>
 <div style="background: white; padding: 1px 0;">
   <div class="section-hero reveal">
-    <h2>🛍️ आमची उत्पादने</h2>
+    <h2> आमची उत्पादने</h2>
     <p>अवधूत चिंतन गोशाळेची शुद्ध उत्पादने</p>
   </div>
   <div class="filter-bar" id="filterBar">
@@ -404,7 +404,7 @@ let currentEventName = '';
 function openModal(id, name) {
   currentEventId = id;
   currentEventName = name;
-  document.getElementById('modalEventName').textContent = '📅 ' + name;
+  document.getElementById('modalEventName').textContent =  + name;
   document.getElementById('regName').value = '';
   document.getElementById('regPhone').value = '';
   document.getElementById('regCity').value = '';
@@ -448,7 +448,7 @@ async function loadUdisht() {
   let html = '';
   snap.forEach(d => {
     const u = d.data();
-    html += `<div class="objective-card reveal"><div class="objective-icon">${u.icon || '🎯'}</div><h3>${u.title || ''}</h3><p>${u.desc || ''}</p></div>`;
+    html += `<div class="objective-card reveal"><div class="objective-icon"></div><h3>${u.title || ''}</h3><p>${u.desc || ''}</p></div>`;
   });
   container.innerHTML = html;
   revealNew();

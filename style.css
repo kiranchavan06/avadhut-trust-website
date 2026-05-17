@@ -48,6 +48,7 @@ nav {
   color: var(--white);
   text-decoration: none;
   letter-spacing: 0.5px;
+  margin-right: auto;
 }
 .nav-logo span { opacity: 0.8; font-weight: 400; font-size: 1rem; }
 .nav-links {

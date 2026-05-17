@@ -3,39 +3,152 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title></title>
-  <meta name="description" content="" />
+  <title>अवधूत चिंतन गोशाळा</title>
+  <meta name="description" content="अवधूत चिंतन बहुउद्देशिय सेवाभावी संस्था तळेगाव" />
   <link rel="stylesheet" href="style.css" />
   <meta name="google-site-verification" content="Vp3PA8jlEeQtsq3Hap2U6GT0veptZDy7Pi284vlmXLg" />
+  <style>
+    html { scroll-behavior: smooth; }
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .section-anchor { display: block; height: 70px; margin-top: -70px; visibility: hidden; }
+    .objectives-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .objective-card { background: white; border-radius: 16px; padding: 2rem 1.5rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.08); transition: 0.3s; }
+    .objective-card:hover { transform: translateY(-5px); }
+    .objective-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .objective-card h3 { color: #E05A00; margin-bottom: 0.7rem; }
+    .objective-card p { color: #666; line-height: 1.6; }
+    .temples-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .temple-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; text-align: center; }
+    .temple-img { width: 100%; height: 220px; background: #FFF3E0; display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+    .temple-img img { width: 100%; height: 220px; object-fit: cover; }
+    .temple-info { padding: 1rem; }
+    .temple-name { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 0.3rem; }
+    .temple-desc { font-size: 0.85rem; color: #666; line-height: 1.5; }
+    .events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .event-card-full { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+    .event-img { width: 100%; height: 180px; background: #FFF3E0; display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden; }
+    .event-img img { width: 100%; height: 180px; object-fit: cover; }
+    .event-info-full { padding: 1rem; }
+    .event-title { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 0.5rem; }
+    .event-date-lbl { font-size: 0.9rem; color: #FF6F00; font-weight: 600; margin-bottom: 0.3rem; }
+    .event-location { font-size: 0.85rem; color: #666; margin-bottom: 0.3rem; }
+    .event-time { font-size: 0.85rem; color: #888; margin-bottom: 0.5rem; }
+    .event-desc-txt { font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; }
+    .seats-bar { margin: 0.75rem 0; }
+    .seats-info { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .seats-progress { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+    .seats-fill { height: 100%; background: #FF6F00; border-radius: 4px; }
+    .seats-fill.full { background: #C62828; }
+    .btn-register { width: 100%; padding: 0.6rem; border: none; border-radius: 8px; background: #FF6F00; color: white; font-weight: 700; font-size: 0.95rem; cursor: pointer; margin-top: 0.5rem; }
+    .btn-register:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-register.full { background: #C62828; }
+    .btn-register.past { background: #888; }
+    .event-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem; max-width: 1200px; margin: 0 auto; }
+    .event-tab { padding: 0.5rem 1.2rem; border: 2px solid #FF6F00; border-radius: 20px; background: white; color: #FF6F00; cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+    .event-tab.active { background: #FF6F00; color: white; }
+    .update-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); padding: 1.25rem; margin-bottom: 1rem; border-left: 4px solid #FF6F00; }
+    .update-title { font-size: 1rem; font-weight: 700; color: #333; margin-bottom: 0.4rem; }
+    .update-text { font-size: 0.9rem; color: #555; line-height: 1.6; }
+    .update-date { font-size: 0.8rem; color: #999; margin-top: 0.5rem; }
+    .updates-wrap { max-width: 1200px; margin: 0 auto; padding: 1rem; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .product-card-full { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; transition: transform 0.2s; }
+    .product-card-full:hover { transform: translateY(-4px); }
+    .product-img-full { width: 100%; height: 200px; background: #FFF3E0; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+    .product-img-full img { width: 100%; height: 200px; object-fit: cover; }
+    .product-info { padding: 1rem; }
+    .product-name { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 0.3rem; }
+    .product-category { font-size: 0.8rem; color: #FF6F00; font-weight: 600; margin-bottom: 0.5rem; }
+    .product-desc-txt { font-size: 0.85rem; color: #666; margin-bottom: 0.75rem; }
+    .product-price-lbl { font-size: 1.2rem; font-weight: 800; color: #FF6F00; }
+    .product-mrp { font-size: 0.85rem; color: #999; text-decoration: line-through; margin-left: 0.5rem; }
+    .btn-buy { display: flex; align-items: center; justify-content: center; gap: 0.4rem; background: #25D366; color: white; padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-top: 0.75rem; width: 100%; }
+    .bestseller-badge { background: #FF6F00; color: white; font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 4px; margin-bottom: 0.5rem; display: inline-block; }
+    .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem; max-width: 1200px; margin: 0 auto; }
+    .filter-btn { padding: 0.4rem 1rem; border: 2px solid #FF6F00; border-radius: 20px; background: white; color: #FF6F00; cursor: pointer; font-weight: 600; font-size: 0.85rem; }
+    .filter-btn.active { background: #FF6F00; color: white; }
+    .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .member-card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; text-align: center; padding-bottom: 1rem; }
+    .member-img { width: 100%; height: 200px; background: #FFF3E0; display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+    .member-img img { width: 100%; height: 200px; object-fit: cover; }
+    .member-info { padding: 1rem; }
+    .member-name { font-size: 1.1rem; font-weight: 700; color: #333; margin-bottom: 0.4rem; }
+    .member-phone { font-size: 0.9rem; color: #FF6F00; font-weight: 600; margin-bottom: 0.3rem; }
+    .member-address { font-size: 0.85rem; color: #666; line-height: 1.5; }
+    .member-type-badge { display: inline-block; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .badge-board { background: #FF6F00; color: white; }
+    .badge-team { background: #1565C0; color: white; }
+    .badge-active { background: #2E7D32; color: white; }
+    .member-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; padding: 1rem; max-width: 1200px; margin: 0 auto; }
+    .member-tab { padding: 0.6rem 1.5rem; border: 2px solid #FF6F00; border-radius: 25px; background: white; color: #FF6F00; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: all 0.2s; }
+    .member-tab.active { background: #FF6F00; color: white; }
+    .tab-section { display: none; }
+    .tab-section.visible { display: block; }
+    .reviews-wrap-inner { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    .review-form-card { background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 2rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+    .reviews-grid-inner { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .review-card-inner { background: white; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .review-stars { color: #FF6F00; font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .review-text-inner { font-size: 0.9rem; color: #555; margin-bottom: 0.75rem; font-style: italic; }
+    .review-name { font-weight: 700; color: #333; font-size: 0.95rem; }
+    .review-city { font-size: 0.8rem; color: #999; }
+    .review-product-lbl { font-size: 0.8rem; color: #FF6F00; margin-top: 0.3rem; }
+    .star-select { display: flex; gap: 0.5rem; font-size: 1.5rem; cursor: pointer; }
+    .star-select span { cursor: pointer; color: #ddd; }
+    .star-select span.active { color: #FF6F00; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center; }
+    .modal-overlay.open { display: flex; }
+    .modal { background: white; border-radius: 12px; padding: 1.5rem; width: 90%; max-width: 400px; }
+    .modal h3 { color: #FF6F00; margin-bottom: 1rem; }
+    .modal input { width: 100%; padding: 0.6rem; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 0.75rem; font-size: 0.95rem; box-sizing: border-box; }
+    .modal-btns { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
+    .btn-confirm { flex: 1; padding: 0.6rem; background: #FF6F00; color: white; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .btn-cancel { flex: 1; padding: 0.6rem; background: #eee; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+    .section-hero { background: linear-gradient(135deg, var(--saffron-dark) 0%, var(--saffron) 100%); color: white; text-align: center; padding: 2.5rem 1rem 2rem; }
+    .section-hero h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 900; margin-bottom: 0.4rem; }
+    .section-hero p { opacity: 0.9; font-size: 1rem; }
+    .loading { text-align: center; padding: 2rem; color: #999; font-size: 1rem; }
+    @media (max-width: 640px) {
+      .grid-3, .grid-2, .objectives-grid, .temples-grid, .events-grid, .products-grid, .members-grid, .reviews-grid-inner { grid-template-columns: 1fr; }
+      .section { padding: 2rem 1rem; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .btn { width: 100%; justify-content: center; }
+    }
+  </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">🪔 <span>अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट</span></a>
+    <a href="#home" class="nav-logo">🪔 <span>अवधूत चिंतन गोशाळा</span></a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html" class="active">मुख्यपृष्ठ</a></li>
-      <li><a href="update.html" >उद्दिष्टे</a></li>
-      <li><a href="temples.html">मंदिर परिसर</a></li>
-      <li><a href="events.html">कार्यक्रम</a></li>
-      <li><a href="products.html">उत्पादने</a></li>
-      <li><a href="active.html">सदस्य</a></li>
-      <li><a href="reviews.html">अभिप्राय</a></li>
+      <li><a href="#home" class="active">मुख्यपृष्ठ</a></li>
+      <li><a href="#udishte">उद्दिष्टे</a></li>
+      <li><a href="#mandir">मंदिर परिसर</a></li>
+      <li><a href="#karykram">कार्यक्रम</a></li>
+      <li><a href="#utpadane">उत्पादने</a></li>
+      <li><a href="#sadasy">सदस्य</a></li>
+      <li><a href="#abhipray">अभिप्राय</a></li>
       <li><a href="admin.html">Admin</a></li>
     </ul>
+    <button class="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
+<!-- 1. HERO -->
+<span class="section-anchor" id="home"></span>
+<section class="hero reveal">
   <div style="margin: -15px auto 0; max-width: 400px; height:auto;">
     <img src="images/temple.png.jpeg" alt="अवधूत चिंतन" style="width:100%; border-radius:20px; box-shadow: 1px 5px 20px rgba(0,0,0,0.2);" />
   </div>
 </section>
 
 <!-- STATS -->
-<div class="stats">
+<div class="stats reveal">
   <div class="stats-inner">
     <div>
       <div class="stat-num">अवधुत चिंतन बहुउद्देशिय सेवाभावी संस्था तळेगाव (मळे) ता-कोपरगाव जि-अहिल्यानगर</div>
@@ -50,91 +163,126 @@
   </div>
 </div>
 
-<!-- FEATURED PRODUCTS -->
- <section class="objectives-page">
-  <div class="objectives-title">
-    <h1>🎯 आमची उद्दिष्टे</h1>
-    <p>अवधूत चिंतन गोशाळा संस्थेची प्रमुख उद्दिष्टे</p>
-  </div>
-  <div class="objectives-grid" id="homeUdishtContainer"></div>
-</section>
-<div class="section">
-  <div class="section-title">
-    <h2>लोकप्रिय उत्पादने</h2>
-    <div class="divider"></div>
-    <p>आमची सर्वाधिक मागणी असलेली शुद्ध उत्पादने</p>
-  </div>
-  <div class="grid-3" id="featuredProducts"></div>
-  <div style="text-align:center; margin-top:2rem;">
-    <a href="products.html" class="btn btn-saffron">सर्व उत्पादने पहा →</a>
+<!-- 2. उद्दिष्टे -->
+<span class="section-anchor" id="udishte"></span>
+<div class="section-hero reveal">
+  <h2>🎯 आमची उद्दिष्टे</h2>
+  <p>अवधूत चिंतन गोशाळा संस्थेची प्रमुख उद्दिष्टे</p>
+</div>
+<div style="padding: 2rem 0;">
+  <div class="objectives-grid" id="udishtContainer">
+    <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
   </div>
 </div>
 
-<!-- WHY US -->
+<!-- 3. मंदिर परिसर -->
+<span class="section-anchor" id="mandir"></span>
 <div style="background: white; padding: 1px 0;">
-<div class="section">
-  <div class="section-title">
-    <h2>आम्ही का वेगळे आहोत?</h2>
-    <div class="divider"></div>
+  <div class="section-hero reveal">
+    <h2>🛕 मंदिर परिसर</h2>
+    <p>अवधूत चिंतन देवस्थानचे सर्व मंदिरे</p>
   </div>
-  <div class="grid-3">
-    <div class="card" style="padding:2rem; text-align:center;">
-      <div style="font-size:3rem; margin-bottom:1rem;">🌱</div>
-      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">१०० % नैसर्गिक</h3>
-      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">निसर्गाचे शुद्ध वरदान थेट तुमच्यापर्यंत.</p>
-    </div>
-    <div class="card" style="padding:2rem; text-align:center;">
-      <div style="font-size:3rem; margin-bottom:1rem;">🏡</div>
-      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">गृहउद्योग</h3>
-      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">अवधूत चिंतन गोशाळा निमित्त प्रॉडक्ट.</p>
-    </div>
-    <div class="card" style="padding:2rem; text-align:center;">
-      <div style="font-size:3rem; margin-bottom:1rem;">🚚</div>
-      <h3 style="font-size:1.15rem; font-weight:700; color:var(--saffron-dark); margin-bottom:0.5rem;">दारापर्यंत डिलिव्हरी</h3>
-      <p style="color:var(--text-light); font-size:0.9rem; line-height:1.6;">पुणे, नाशिक, कोल्हापूर, सोलापूर आणि इतर जिल्ह्यांमध्ये जलद आणि सुरक्षित डिलिव्हरी.</p>
+  <div style="padding: 2rem 0;">
+    <div id="templesContainer" class="temples-grid">
+      <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
     </div>
   </div>
 </div>
+
+<!-- 4. कार्यक्रम -->
+<span class="section-anchor" id="karykram"></span>
+<div class="section-hero reveal">
+  <h2>📅 आमचे कार्यक्रम</h2>
+  <p>अवधूत चिंतन गोशाळेचे कार्यक्रम</p>
+</div>
+<div class="event-tabs">
+  <button class="event-tab active" onclick="showEventTab('upcoming', this)">📅 येणारे कार्यक्रम</button>
+  <button class="event-tab" onclick="showEventTab('past', this)">✅ झालेले कार्यक्रम</button>
+  <button class="event-tab" onclick="showEventTab('updates', this)">📢 Daily Updates</button>
+</div>
+<div id="upcomingContainer" class="events-grid" style="padding: 1rem;">
+  <div class="loading">⏳ लोड होत आहे...</div>
+</div>
+<div id="pastContainer" class="events-grid" style="display:none; padding: 1rem;">
+  <div class="loading">⏳ लोड होत आहे...</div>
+</div>
+<div id="updatesContainer" class="updates-wrap" style="display:none;">
+  <div class="loading">⏳ लोड होत आहे...</div>
 </div>
 
-<!-- UPCOMING EVENTS -->
-<div class="section">
-  <div class="section-title">
-    <h2>येणारे कार्यक्रम</h2>
-    <div class="divider"></div>
+<!-- 5. उत्पादने -->
+<span class="section-anchor" id="utpadane"></span>
+<div style="background: white; padding: 1px 0;">
+  <div class="section-hero reveal">
+    <h2>🛍️ आमची उत्पादने</h2>
+    <p>अवधूत चिंतन गोशाळेची शुद्ध उत्पादने</p>
   </div>
-  <div class="grid-2" id="homeEvents"></div>
-  <div style="text-align:center; margin-top:2rem;">
-    <a href="events.html" class="btn btn-saffron">सर्व कार्यक्रम पहा →</a>
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-btn active" onclick="filterProducts('all', this)">सर्व</button>
+  </div>
+  <div id="productsContainer" class="products-grid" style="padding-bottom: 2rem;">
+    <div class="loading" style="grid-column:1/-1;">⏳ उत्पादने लोड होत आहेत...</div>
   </div>
 </div>
 
-<!-- SADASY -->
-<div style="background:white; padding:1px 0;">
-<div class="section">
-  <div class="section-title">
-    <h2>आमचे सदस्य</h2>
-    <div class="divider"></div>
-  </div>
-  <div class="grid-3" id="homeSadasy"></div>
-  <div style="text-align:center; margin-top:2rem;">
-    <a href="active.html" class="btn btn-saffron">सर्व सदस्य पहा →</a>
+<!-- 6. सदस्य -->
+<span class="section-anchor" id="sadasy"></span>
+<div class="section-hero reveal">
+  <h2>👥 आमचे सदस्य</h2>
+  <p>अवधूत चिंतन गोशाळा संस्थेचे सदस्य</p>
+</div>
+<div class="member-tabs">
+  <button class="member-tab active" onclick="showMemberTab('board', this)">🏅 Board Members</button>
+  <button class="member-tab" onclick="showMemberTab('team', this)">👨‍💼 Our Team</button>
+  <button class="member-tab" onclick="showMemberTab('active', this)">✅ Active Members</button>
+</div>
+<div id="tab-board" class="tab-section visible" style="padding: 1rem 0 2rem;">
+  <div id="boardContainer" class="members-grid">
+    <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
   </div>
 </div>
+<div id="tab-team" class="tab-section" style="padding: 1rem 0 2rem;">
+  <div id="teamContainer" class="members-grid">
+    <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
+  </div>
+</div>
+<div id="tab-active" class="tab-section" style="padding: 1rem 0 2rem;">
+  <div id="activeContainer" class="members-grid">
+    <div class="loading" style="grid-column:1/-1;">⏳ लोड होत आहे...</div>
+  </div>
 </div>
 
-<!-- REVIEWS -->
-<div style="background:white; padding:1px 0;">
-<div class="section">
-  <div class="section-title">
-    <h2>ग्राहकांचे अभिप्राय</h2>
-    <div class="divider"></div>
+<!-- 7. अभिप्राय -->
+<span class="section-anchor" id="abhipray"></span>
+<div style="background: white; padding: 1px 0;">
+  <div class="section-hero reveal">
+    <h2>⭐ अभिप्राय</h2>
+    <p>आपला अनुभव आमच्यासोबत शेअर करा</p>
   </div>
-  <div class="grid-3" id="homeReviews"></div>
-  <div style="text-align:center; margin-top:2rem;">
-    <a href="reviews.html" class="btn btn-saffron">अभिप्राय लिहा →</a>
+  <div class="reviews-wrap-inner" style="padding-top: 2rem; padding-bottom: 2rem;">
+    <div class="review-form-card">
+      <h3 style="color:#FF6F00; margin-bottom:1rem;">✍️ आपला अभिप्राय द्या</h3>
+      <div class="form-row">
+        <label style="font-weight:600; margin-bottom:0.4rem; display:block;">रेटिंग *</label>
+        <div class="star-select" id="starSelect">
+          <span onclick="setRating(1)">★</span>
+          <span onclick="setRating(2)">★</span>
+          <span onclick="setRating(3)">★</span>
+          <span onclick="setRating(4)">★</span>
+          <span onclick="setRating(5)">★</span>
+        </div>
+      </div>
+      <div style="margin-top:1rem;"><label style="font-weight:600; display:block; margin-bottom:0.4rem;">नाव *</label><input type="text" id="rName" placeholder="तुमचे नाव" style="width:100%; padding:0.6rem; border:1px solid #ddd; border-radius:8px; font-size:0.95rem;" /></div>
+      <div style="margin-top:0.75rem;"><label style="font-weight:600; display:block; margin-bottom:0.4rem;">शहर</label><input type="text" id="rCity" placeholder="तुमचे शहर" style="width:100%; padding:0.6rem; border:1px solid #ddd; border-radius:8px; font-size:0.95rem;" /></div>
+      <div style="margin-top:0.75rem;"><label style="font-weight:600; display:block; margin-bottom:0.4rem;">उत्पादन</label><input type="text" id="rProduct" placeholder="कोणते उत्पादन वापरले?" style="width:100%; padding:0.6rem; border:1px solid #ddd; border-radius:8px; font-size:0.95rem;" /></div>
+      <div style="margin-top:0.75rem;"><label style="font-weight:600; display:block; margin-bottom:0.4rem;">अभिप्राय *</label><textarea id="rText" placeholder="तुमचा अनुभव लिहा..." style="width:100%; padding:0.6rem; border:1px solid #ddd; border-radius:8px; font-size:0.95rem; height:100px; resize:vertical; font-family:inherit;"></textarea></div>
+      <button onclick="submitReview()" style="background:#FF6F00; color:white; border:none; padding:0.7rem 1.5rem; border-radius:8px; cursor:pointer; font-weight:600; font-size:1rem; width:100%; margin-top:0.75rem;">💾 अभिप्राय सादर करा</button>
+    </div>
+    <h2 style="text-align:center; color:#FF6F00; margin-bottom:1.5rem;">सर्व अभिप्राय</h2>
+    <div id="reviewsContainer" class="reviews-grid-inner">
+      <div class="loading">⏳ अभिप्राय लोड होत आहेत...</div>
+    </div>
   </div>
-</div>
 </div>
 
 <!-- FOOTER -->
@@ -147,10 +295,13 @@
     <div>
       <h4>द्रुत दुवे</h4>
       <ul>
-        <li><a href="index.html">मुख्यपृष्ठ</a></li>
-        <li><a href="products.html">उत्पादने</a></li>
-        <li><a href="events.html">कार्यक्रम</a></li>
-        <li><a href="reviews.html">अभिप्राय</a></li>
+        <li><a href="#home">मुख्यपृष्ठ</a></li>
+        <li><a href="#udishte">उद्दिष्टे</a></li>
+        <li><a href="#mandir">मंदिर परिसर</a></li>
+        <li><a href="#karykram">कार्यक्रम</a></li>
+        <li><a href="#utpadane">उत्पादने</a></li>
+        <li><a href="#sadasy">सदस्य</a></li>
+        <li><a href="#abhipray">अभिप्राय</a></li>
       </ul>
     </div>
     <div>
@@ -162,17 +313,115 @@
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
-    © 2026 अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट. सर्व हक्क राखीव. | महाराष्ट्र, भारत 🇮🇳
-  </div>
+  <div class="footer-bottom">© 2026 अवधूत चिंतन गोशाळा निर्मित प्रॉडक्ट. सर्व हक्क राखीव. | महाराष्ट्र, भारत 🇮🇳</div>
 </footer>
 
-<div id="toast"></div>
+<!-- MODAL -->
+<div class="modal-overlay" id="regModal">
+  <div class="modal">
+    <h3>📝 नोंदणी करा</h3>
+    <p id="modalEventName" style="color:#666; margin-bottom:1rem; font-size:0.9rem;"></p>
+    <input type="text" id="regName" placeholder="पूर्ण नाव *" />
+    <input type="tel" id="regPhone" placeholder="फोन नंबर *" />
+    <input type="text" id="regCity" placeholder="गाव/शहर" />
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">रद्द करा</button>
+      <button class="btn-confirm" onclick="confirmRegister()">✅ नोंदणी करा</button>
+    </div>
+  </div>
+</div>
 
-<script src="data.js"></script>
+<div id="toast"></div>
+<script>
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const targets = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  targets.forEach(el => observer.observe(el));
+});
+
+window.addEventListener('scroll', () => {
+  const sections = ['home','udishte','mandir','karykram','utpadane','sadasy','abhipray'];
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && window.scrollY >= el.offsetTop - 100) current = id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+  });
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = '#333';
+  t.style.color = 'white';
+  t.style.padding = '0.8rem 1.5rem';
+  t.style.borderRadius = '8px';
+  t.style.position = 'fixed';
+  t.style.bottom = '2rem';
+  t.style.right = '2rem';
+  t.style.display = 'block';
+  t.style.zIndex = '999';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function showEventTab(tab, btn) {
+  document.querySelectorAll('.event-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('upcomingContainer').style.display = 'none';
+  document.getElementById('pastContainer').style.display = 'none';
+  document.getElementById('updatesContainer').style.display = 'none';
+  if (tab === 'upcoming') document.getElementById('upcomingContainer').style.display = 'grid';
+  else if (tab === 'past') document.getElementById('pastContainer').style.display = 'grid';
+  else { document.getElementById('updatesContainer').style.display = 'block'; loadUpdates(); }
+}
+
+function showMemberTab(name, btn) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.member-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('visible');
+  btn.classList.add('active');
+}
+
+let selectedRating = 0;
+function setRating(rating) {
+  selectedRating = rating;
+  document.querySelectorAll('#starSelect span').forEach((s, i) => {
+    s.classList.toggle('active', i < rating);
+  });
+}
+
+let currentEventId = '';
+let currentEventName = '';
+function openModal(id, name) {
+  currentEventId = id;
+  currentEventName = name;
+  document.getElementById('modalEventName').textContent = '📅 ' + name;
+  document.getElementById('regName').value = '';
+  document.getElementById('regPhone').value = '';
+  document.getElementById('regCity').value = '';
+  document.getElementById('regModal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('regModal').classList.remove('open');
+}
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import {
+  getFirestore, collection, addDoc, getDocs,
+  doc, updateDoc, increment,
+  query, where, orderBy
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCm7G8W2EM2B9nNvujP8SQQht7HHkQYqLA",
@@ -182,189 +431,235 @@ const firebaseConfig = {
   messagingSenderId: "291155545994",
   appId: "1:291155545994:web:2aaf2ad05bc1c716630273"
 };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-window.toggleNav = () => {
-  document.getElementById('navLinks').classList.toggle('open');
+function revealNew() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+}
+
+async function loadUdisht() {
+  const container = document.getElementById('udishtContainer');
+  const snap = await getDocs(collection(db, 'udisht'));
+  if (snap.empty) { container.innerHTML = '<p class="loading">उद्दिष्टे उपलब्ध नाहीत.</p>'; return; }
+  let html = '';
+  snap.forEach(d => {
+    const u = d.data();
+    html += `<div class="objective-card reveal"><div class="objective-icon">${u.icon || '🎯'}</div><h3>${u.title || ''}</h3><p>${u.desc || ''}</p></div>`;
+  });
+  container.innerHTML = html;
+  revealNew();
+}
+
+async function loadTemples() {
+  const container = document.getElementById('templesContainer');
+  try {
+    const snap = await getDocs(collection(db, 'temples'));
+    if (snap.empty) { container.innerHTML = '<div class="loading" style="grid-column:1/-1;">📭 सध्या कोणतेही मंदिर नाही.</div>'; return; }
+    let html = '';
+    snap.forEach(d => {
+      const t = d.data();
+      html += `<div class="temple-card reveal"><div class="temple-img">${t.image ? `<img src="${t.image}" alt="${t.name}" />` : '🛕'}</div><div class="temple-info"><div class="temple-name">${t.name}</div>${t.desc ? `<div class="temple-desc">${t.desc}</div>` : ''}</div></div>`;
+    });
+    container.innerHTML = html;
+    revealNew();
+  } catch { container.innerHTML = '<div class="loading" style="grid-column:1/-1;">❌ लोड होण्यात अडचण आली.</div>'; }
+}
+
+function isEventPast(dateStr) {
+  if (!dateStr) return false;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const ev = new Date(dateStr); ev.setHours(0,0,0,0);
+  return ev < today;
+}
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  return new Date(dateStr).toLocaleDateString('mr-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+function renderEvents(events, containerId, showRegister) {
+  const container = document.getElementById(containerId);
+  if (events.length === 0) { container.innerHTML = '<div class="loading">📭 कोणतेही कार्यक्रम नाहीत.</div>'; return; }
+  container.innerHTML = events.map(e => {
+    const totalSeats = e.seats || 0;
+    const registered = e.registeredSeats || 0;
+    const available = totalSeats - registered;
+    const isFull = totalSeats > 0 && available <= 0;
+    const hasSeats = totalSeats > 0;
+    const percent = hasSeats ? Math.min((registered / totalSeats) * 100, 100) : 0;
+    const canReg = showRegister && e.registrationOpen === true;
+    return `<div class="event-card-full reveal">
+      <div class="event-img">${e.image ? `<img src="${e.image}" alt="${e.title}" />` : '📅'}</div>
+      <div class="event-info-full">
+        <div class="event-title">${e.title}</div>
+        <div class="event-date-lbl">📆 ${formatDate(e.date)}</div>
+        ${e.time ? `<div class="event-time">🕐 ${e.time}</div>` : ''}
+        ${e.location ? `<div class="event-location">📍 ${e.location}</div>` : ''}
+        ${e.desc ? `<div class="event-desc-txt">${e.desc}</div>` : ''}
+        ${hasSeats && canReg ? `<div class="seats-bar"><div class="seats-info"><span>${isFull ? '🔴 सर्व जागा भरल्या' : `🟢 ${available} जागा उपलब्ध`}</span><span>${registered}/${totalSeats}</span></div><div class="seats-progress"><div class="seats-fill ${isFull ? 'full' : ''}" style="width:${percent}%"></div></div></div>` : ''}
+        ${canReg ? `<button class="btn-register ${isFull ? 'full' : ''}" ${isFull ? 'disabled' : `onclick="openModal('${e.id}','${e.title}')"`}>${isFull ? '🔴 नोंदणी बंद' : '📝 नोंदणी करा'}</button>` : showRegister ? '' : `<button class="btn-register past" disabled>✅ कार्यक्रम झाला</button>`}
+      </div>
+    </div>`;
+  }).join('');
+  revealNew();
+}
+async function loadEvents() {
+  const snap = await getDocs(collection(db, 'events'));
+  const all = [];
+  snap.forEach(d => all.push({ id: d.id, ...d.data() }));
+  all.sort((a, b) => new Date(a.date) - new Date(b.date));
+  renderEvents(all.filter(e => !isEventPast(e.date)), 'upcomingContainer', true);
+  renderEvents(all.filter(e => isEventPast(e.date)), 'pastContainer', false);
+}
+
+window.loadUpdates = async function() {
+  const container = document.getElementById('updatesContainer');
+  try {
+    const q = query(collection(db, 'updates'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    if (snap.empty) { container.innerHTML = '<div class="loading">📭 कोणतेही updates नाहीत.</div>'; return; }
+    let html = '';
+    snap.forEach(d => {
+      const u = d.data();
+      const date = u.createdAt?.toDate ? u.createdAt.toDate().toLocaleDateString('mr-IN') : '';
+      html += `<div class="update-card"><div class="update-title">📢 ${u.title}</div><div class="update-text">${u.text}</div><div class="update-date">🕐 ${date}</div></div>`;
+    });
+    container.innerHTML = html;
+  } catch { container.innerHTML = '<div class="loading">❌ लोड होण्यात अडचण आली.</div>'; }
+}
+
+window.confirmRegister = async () => {
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const city = document.getElementById('regCity').value.trim();
+  if (!name || !phone) { alert('नाव आणि फोन नंबर आवश्यक आहे!'); return; }
+  if (phone.length !== 10) { alert('10 अंकी फोन नंबर टाका!'); return; }
+  try {
+    const q = query(collection(db, 'registrations'), where('eventId', '==', currentEventId), where('phone', '==', phone));
+    const existing = await getDocs(q);
+    if (!existing.empty) { alert('हा फोन नंबर आधीच नोंदणी केलेला आहे!'); return; }
+    await addDoc(collection(db, 'registrations'), { eventId: currentEventId, eventName: currentEventName, name, phone, city, createdAt: new Date() });
+    await updateDoc(doc(db, 'events', currentEventId), { registeredSeats: increment(1) });
+    closeModal();
+    showToast('✅ नोंदणी यशस्वी! ' + name + ' यांचे स्वागत आहे!');
+    loadEvents();
+  } catch (err) { alert('Error: ' + err.message); }
 };
 
-window.orderWhatsApp = (name, price) => {
-  const msg = `नमस्कार 🙏\n\nमला "${name}" खरेदी करायचे आहे.\n💰 किंमत: ₹${price}\n\nकृपया ऑर्डर कशी करायची ते सांगा.`;
-  window.open('https://wa.me/91xxxxxxxxxx?text=' + encodeURIComponent(msg), '_blank');
-};
-
-// Featured Products
-async function loadFeaturedProducts() {
-  const fp = document.getElementById('featuredProducts');
+let allProducts = [];
+let categories = new Set();
+async function loadProducts() {
+  const container = document.getElementById('productsContainer');
+  const filterBar = document.getElementById('filterBar');
   try {
     const snap = await getDocs(collection(db, 'products'));
-    const products = [];
-    snap.forEach(d => products.push({ id: d.id, ...d.data() }));
-    if (products.length === 0) {
-      fp.innerHTML = '<p style="text-align:center;color:#999;grid-column:1/-1;">उत्पादने लवकरच येतील...</p>';
-      return;
-    }
-    products.slice().forEach(p => {
-      fp.innerHTML += `
-        <div class="card">
-          <div class="product-img" style="min-height:180px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#FFF3E8,#FFE0C0);">
-            ${p.image ? `<img src="${p.image}" style="width:100%;height:180px;object-fit:cover;" />` : `<span style="font-size:4rem;">📦</span>`}
-          </div>
-          <div class="product-body">
-            <h3>${p.name}</h3>
-            <p>${p.desc || ''}</p>
-          </div>
-          <div class="product-footer">
-            <div class="price">₹${p.price} ${p.mrp ? `<span>₹${p.mrp}</span>` : ''}</div>
-            <button class="btn btn-wa" onclick="orderWhatsApp('${p.name}', ${p.price})" style="padding:0.5rem 1rem; font-size:0.88rem;">
-              🛒 खरेदी करा
-            </button>
-          </div>
-        </div>`;
+    if (snap.empty) { container.innerHTML = '<div class="loading">कोणतेही उत्पादन नाही.</div>'; return; }
+    allProducts = [];
+    snap.forEach(d => { allProducts.push({ id: d.id, ...d.data() }); if (d.data().category) categories.add(d.data().category); });
+    categories.forEach(cat => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = cat;
+      btn.onclick = () => filterProducts(cat, btn);
+      filterBar.appendChild(btn);
     });
-  } catch (err) { console.error(err); }
+    displayProducts(allProducts);
+  } catch (err) { container.innerHTML = '<div class="loading">❌ ' + err.message + '</div>'; }
 }
-
-// Home Events
-async function loadHomeEvents() {
-  const he = document.getElementById('homeEvents');
-  try {
-    const snap = await getDocs(collection(db, 'events'));
-    const events = [];
-    snap.forEach(d => events.push({ id: d.id, ...d.data() }));
-    events.sort((a, b) => new Date(a.date) - new Date(b.date));
-    if (events.length === 0) {
-      he.innerHTML = '<p style="color:#999;grid-column:1/-1;">कार्यक्रम लवकरच येतील...</p>';
-      return;
-    }
-    const monthNames = ['जानेवारी','फेब्रुवारी','मार्च','एप्रिल','मे','जून','जुलै','ऑगस्ट','सप्टेंबर','ऑक्टोबर','नोव्हेंबर','डिसेंबर'];
-    events.slice().forEach(e => {
-      const dateObj = new Date(e.date);
-      const day = dateObj.getDate().toString().padStart(2,'0');
-      const month = monthNames[dateObj.getMonth()];
-      he.innerHTML += `
-        <div class="card event-card">
-          <div class="event-date">
-            <div class="day">${day}</div>
-            <div class="month">${month}</div>
-          </div>
-          <div class="event-info">
-            <h3>${e.title}</h3>
-            <p>${e.desc || ''}</p>
-            <div class="event-meta">
-              <span>📍 ${e.location || ''}</span>
-              <span>🕐 ${e.time || ''}</span>
-            </div>
-          </div>
-        </div>`;
-    });
-  } catch (err) { console.error(err); }
+function displayProducts(products) {
+  const container = document.getElementById('productsContainer');
+  if (products.length === 0) { container.innerHTML = '<div class="loading">कोणतेही उत्पादन नाही.</div>'; return; }
+  container.innerHTML = products.map(p => `
+    <div class="product-card-full reveal">
+      <div class="product-img-full">${p.image ? `<img src="${p.image}" alt="${p.name}" />` : '📦'}</div>
+      <div class="product-info">
+        ${p.bestseller ? '<span class="bestseller-badge">⭐ बेस्टसेलर</span>' : ''}
+        <div class="product-name">${p.name}</div>
+        <div class="product-category">${p.category || ''}</div>
+        <div class="product-desc-txt">${p.desc || ''}</div>
+        ${p.weight ? `<div style="font-size:0.8rem;color:#888;">⚖️ ${p.weight}</div>` : ''}
+        <div><span class="product-price-lbl">₹${p.price}</span>${p.mrp ? `<span class="product-mrp">₹${p.mrp}</span>` : ''}</div>
+        <a href="https://wa.me/xxxxxxxxxx?text=मला%20${encodeURIComponent(p.name)}%20खरेदी%20करायचे%20आहे" class="btn-buy" target="_blank">📱 WhatsApp वर खरेदी करा</a>
+      </div>
+    </div>`).join('');
+  revealNew();
 }
-
-// Home Sadasy
-async function loadHomeSadasy() {
-  const hs = document.getElementById('homeSadasy');
-  try {
-    const snap = await getDocs(collection(db, 'sadasy'));
-    const members = [];
-    snap.forEach(d => members.push({ id: d.id, ...d.data() }));
-    if (members.length === 0) {
-      hs.innerHTML = '<p style="color:#999;grid-column:1/-1;">सदस्य लवकरच येतील...</p>';
-      return;
-    }
-    members.slice().forEach(s => {
-      hs.innerHTML += `
-        <div class="card" style="text-align:center; padding:1.5rem;">
-          <div style="width:80px; height:80px; border-radius:50%; overflow:hidden; margin:0 auto 1rem; background:#FFF3E0; display:flex; align-items:center; justify-content:center; font-size:2.5rem;">
-            ${s.image ? `<img src="${s.image}" style="width:100%; height:100%; object-fit:cover;" />` : '👤'}
-          </div>
-          <h3 style="font-size:1rem; font-weight:700; color:#333; margin-bottom:0.3rem;">${s.name}</h3>
-          ${s.work ? `<div style="font-size:0.82rem; color:#FF6F00; font-weight:600;">${s.work}</div>` : ''}
-          <div style="font-size:0.82rem; color:#666; margin-top:0.3rem;">📱 ${s.phone}</div>
-        </div>`;
-    });
-  } catch (err) { console.error(err); }
-}
-
-// Home Reviews - Firebase मधून
-async function loadHomeReviews() {
-  const hr = document.getElementById('homeReviews');
-  try {
-    const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'), limit(3));
-    const snap = await getDocs(q);
-    if (snap.empty) {
-  hr.innerHTML = '<p style="text-align:center;color:#999;grid-column:1/-1;">अजून कोणतेही अभिप्राय नाहीत.</p>';
-  return;
-}
-    snap.forEach(d => {
-      const r = d.data();
-      hr.innerHTML += `
-        <div class="card review-card">
-          <div class="stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-          <p class="review-text">"${r.text?.substring(0,140) || ''}"</p>
-          <div class="reviewer">
-            <div class="reviewer-avatar">${r.name?.charAt(0) || '?'}</div>
-            <div>
-              <div class="reviewer-name">${r.name}</div>
-              <div class="reviewer-place">📍 ${r.city || ''}</div>
-            </div>
-          </div>
-        </div>`;
-    });
-  } catch (err) {
-  hr.innerHTML = '<p style="text-align:center;color:#999;">अभिप्राय लोड होऊ शकले नाहीत.</p>';
-}
-}
-
-// Home Udisht
-async function loadHomeUdisht() {
-  const container = document.getElementById('homeUdishtContainer');
-
-  try {
-    const snap = await getDocs(collection(db, 'udisht'));
-
-    if (snap.empty) {
-      container.innerHTML =
-        '<p style="text-align:center;color:#999;grid-column:1/-1;">उद्दिष्टे उपलब्ध नाहीत.</p>';
-      return;
-    }
-
-    let html = '';
-
-    snap.forEach(doc => {
-      const u = doc.data();
-
-      html += `
-        <div class="objective-card">
-          <div class="objective-icon">${u.icon || '🎯'}</div>
-          <h3>${u.title || ''}</h3>
-          <p>${u.desc || ''}</p>
-        </div>
-      `;
-    });
-
-    container.innerHTML = html;
-
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-const btn = document.getElementById("menu-btn");
-const menu = document.getElementById("menu");
-
-btn.onclick = () => {
-  menu.classList.toggle("show");
+window.filterProducts = (category, btn) => {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  displayProducts(category === 'all' ? allProducts : allProducts.filter(p => p.category === category));
 };
 
-loadHomeUdisht();
-loadFeaturedProducts();
-loadHomeEvents();
-loadHomeSadasy();
-loadHomeReviews();
+function memberCard(s, badgeClass, badgeLabel) {
+  return `<div class="member-card reveal">
+    <div class="member-img">${s.image ? `<img src="${s.image}" alt="${s.name}" />` : '👤'}</div>
+    <div class="member-info">
+      <div class="member-name">${s.name}</div>
+      <span class="member-type-badge ${badgeClass}">${badgeLabel}</span>
+      ${s.post ? `<div style="font-size:0.85rem;color:#555;margin-bottom:0.3rem;">🏷️ ${s.post}</div>` : ''}
+      <div class="member-phone">📱 ${s.phone}</div>
+      ${s.address ? `<div class="member-address">📍 ${s.address}</div>` : ''}
+    </div>
+  </div>`;
+}
+async function loadMembers() {
+  try {
+    const snap = await getDocs(collection(db, 'sadasy'));
+    let boardHtml = '', teamHtml = '', activeHtml = '';
+    snap.forEach(d => {
+      const s = d.data();
+      const type = (s.type || '').toLowerCase().trim();
+      if (type === 'board') boardHtml += memberCard(s, 'badge-board', '🏅 Board Member');
+      else if (type === 'team') teamHtml += memberCard(s, 'badge-team', '👨‍💼 Our Team');
+      else activeHtml += memberCard(s, 'badge-active', '✅ Active Member');
+    });
+    document.getElementById('boardContainer').innerHTML = boardHtml || '<div class="loading" style="grid-column:1/-1;">📭 Board Members नाहीत.</div>';
+    document.getElementById('teamContainer').innerHTML = teamHtml || '<div class="loading" style="grid-column:1/-1;">📭 Team Members नाहीत.</div>';
+    document.getElementById('activeContainer').innerHTML = activeHtml || '<div class="loading" style="grid-column:1/-1;">📭 Active Members नाहीत.</div>';
+    revealNew();
+  } catch (err) { console.error(err); }
+}
+
+window.submitReview = async () => {
+  const name = document.getElementById('rName').value.trim();
+  const text = document.getElementById('rText').value.trim();
+  if (!name || !text || selectedRating === 0) { alert('नाव, अभिप्राय आणि रेटिंग आवश्यक आहे!'); return; }
+  try {
+    await addDoc(collection(db, 'reviews'), { name, city: document.getElementById('rCity').value.trim(), product: document.getElementById('rProduct').value.trim(), text, rating: selectedRating, date: new Date().toLocaleDateString('mr-IN'), createdAt: new Date() });
+    showToast('✅ अभिप्राय सादर झाला! धन्यवाद!');
+    document.getElementById('rName').value = '';
+    document.getElementById('rCity').value = '';
+    document.getElementById('rProduct').value = '';
+    document.getElementById('rText').value = '';
+    selectedRating = 0;
+    document.querySelectorAll('#starSelect span').forEach(s => s.classList.remove('active'));
+    loadReviews();
+  } catch (err) { alert('Error: ' + err.message); }
+};
+async function loadReviews() {
+  const container = document.getElementById('reviewsContainer');
+  try {
+    const q = query(collection(db, 'reviews'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    if (snap.empty) { container.innerHTML = '<div class="loading">अजून कोणतेही अभिप्राय नाहीत.</div>'; return; }
+    let html = '';
+    snap.forEach(d => {
+      const r = d.data();
+      html += `<div class="review-card-inner reveal"><div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div><div class="review-text-inner">"${r.text}"</div><div class="review-name">${r.name}</div><div class="review-city">📍 ${r.city || ''}</div><div class="review-product-lbl">🛍️ ${r.product || ''}</div></div>`;
+    });
+    container.innerHTML = html;
+    revealNew();
+  } catch (err) { container.innerHTML = '<div class="loading">❌ ' + err.message + '</div>'; }
+}
+
+loadUdisht();
+loadTemples();
+loadEvents();
+loadProducts();
+loadMembers();
+loadReviews();
 </script>
-<script src="scroll.js"></script>
 </body>
 </html>
